@@ -1,0 +1,101 @@
+id,first_name,last_name,birthdate,gender,city,orders,order_amount,opt_in
+1,Wessel,Peterse,1991-02-27,male,Amsterdam,3,41,False
+2,Bilal,van den Henst,2000-12-07,male,Rotterdam,4,64,False
+3,Amir,de Haas,1992-09-14,male,Amsterdam,8,29,True
+4,Noa,Huijben,1991-07-22,female,Eindhoven,3,7,False
+5,Zara,Arent,2002-01-22,female,Amsterdam,2,31,False
+6,Mika,Volcke,1993-07-23,male,Rotterdam,3,17,False
+7,Bilal,de Plantard,1991-04-12,male,Den Haag,3,3,False
+8,Kyra,van Salmen,1995-04-13,female,Rotterdam,8,3,True
+9,Bastiaan,Spruyt,1998-12-15,male,Den Haag,4,4,True
+10,Ashley,de Bock,1999-10-17,female,Utrecht,2,12,True
+11,Matthijs,Jorrisen,2000-06-30,male,Den Haag,1,7,True
+12,Annemijn,Kort,1997-01-27,female,Rotterdam,3,96,False
+13,Faye,Wolzak,1994-06-07,female,Den Haag,1,17,False
+14,Joy,Smits,1991-05-11,female,Den Haag,12,30,False
+15,Valentijn,Bresé,1996-09-14,male,Eindhoven,2,8,True
+16,Daphne,Robbrechts Bruijne,1997-06-13,female,Rotterdam,6,7,False
+17,Elena,Broeders,1999-06-24,female,Eindhoven,12,28,False
+18,Elena,Takkelenburg,1993-06-26,female,Eindhoven,1,18,True
+19,Ali,Lommert,1992-12-01,male,Rotterdam,2,38,False
+20,Vincent,Elsenaar,1996-03-23,male,Amsterdam,2,5,False
+21,Kevin,Olykan,2002-04-19,male,Amsterdam,9,6,True
+22,Pien,Ghoerle,1993-08-29,female,Eindhoven,1,15,True
+23,Floor,van Maasgouw,1998-12-07,female,Den Haag,2,22,False
+24,Aron,Middelkoop,1996-12-23,male,Eindhoven,2,20,False
+25,Lex,Van Bragt,1998-12-29,male,Eindhoven,4,54,True
+26,Lars,van Dongen,1999-01-15,male,Eindhoven,1,13,False
+27,Sarah,Vergeer,1993-12-03,female,Eindhoven,4,32,False
+28,Kai,van Dokkum,1998-06-24,male,Den Haag,2,110,False
+29,Fleur,Doesburg,1994-03-10,female,Rotterdam,5,35,True
+30,Jennifer,van Brunswijk,2000-01-17,female,Den Haag,2,13,True
+31,Britt,van Loon,1997-06-10,female,Den Haag,5,3,False
+32,Puck,Wooning,2001-12-08,female,Utrecht,5,10,False
+33,Duuk,Cosman,2002-12-10,male,Rotterdam,2,18,True
+34,Pippa,Françoise,1995-08-12,female,Rotterdam,4,17,True
+35,Willem,van Mare,1996-07-14,male,Amsterdam,9,31,False
+36,Sander,Poncelet,1992-03-26,male,Utrecht,2,7,False
+37,Benjamin,Hendriks,1995-11-24,male,Amsterdam,6,14,True
+38,Phileine,Hermans,1992-07-09,female,Rotterdam,1,42,False
+39,Samuel,van den Broek,1996-06-03,male,Den Haag,2,9,False
+40,James,Rehorst,2000-12-24,male,Utrecht,2,23,True
+41,Fatima,Brievingh,1998-04-13,female,Amsterdam,5,10,False
+42,Vigo,Coolen,1994-05-05,male,Den Haag,2,14,True
+43,Owen,van Stralen,1999-07-19,male,Amsterdam,3,11,False
+44,Evelien,van Evelingen,1994-07-09,female,Den Haag,4,15,True
+45,Laura,de Keijser,1994-01-01,female,Eindhoven,3,8,False
+46,Vince,Heerkens,1992-01-21,male,Eindhoven,1,44,True
+47,Sep,Spanhaak,1999-07-13,male,Utrecht,2,6,True
+48,Tim,van den Pol,1999-01-25,male,Den Haag,12,7,True
+49,Helena,Drysdale,2001-08-27,female,Den Haag,2,41,True
+50,Elena,Ernst,2000-04-27,female,Den Haag,1,14,True
+51,Beau,Lambregt,1991-01-22,male,Amsterdam,4,14,True
+52,Marit,Bosch,1992-07-09,female,Den Haag,2,21,True
+53,Ninthe,Everts,1994-09-21,female,Amsterdam,1,6,True
+54,Amélie,Moet,1996-07-19,female,Den Haag,10,23,False
+55,Ella,van Hoevel en van Zwindrecht,1997-07-07,female,Rotterdam,3,17,False
+56,Tyler,van de Elzas,1995-10-18,male,Utrecht,3,6,True
+57,Luuk,van de Pavert,1998-03-18,male,Amsterdam,13,17,False
+58,Hailey,Uphaus,1993-08-09,female,Amsterdam,5,5,True
+59,Sjoerd,Cant,1995-06-17,male,Den Haag,2,5,False
+60,Femke,Mulder,2000-08-22,female,Eindhoven,4,10,False
+61,Ian,Dekker,1997-06-01,male,Den Haag,32,7,False
+62,Hugo,Koning,2001-01-09,male,Eindhoven,1,17,True
+63,Jordy,Lorreijn,1998-07-11,male,Den Haag,6,31,True
+64,Eva,Sas,1997-07-03,female,Amsterdam,5,25,False
+65,Jamie,Brievingh,1997-10-01,male,Den Haag,10,9,True
+66,Jacob,van Lucel,1999-03-11,male,Eindhoven,2,14,False
+67,Elisabeth,Wendt,1993-09-14,female,Utrecht,1,34,True
+68,Ibrahim,Mater,2001-03-31,male,Eindhoven,2,24,True
+69,Jelte,Geldens,2000-09-10,male,Amsterdam,4,10,False
+70,Kian,Zuidweg,2002-04-04,male,Amsterdam,2,44,False
+71,Amin,van Es,1998-12-28,male,Rotterdam,1,18,True
+72,Mare,Coreth von und zu Coredo und Starkenberg,1997-04-08,female,Utrecht,6,18,False
+73,Yasmin,Roodesteijn,1993-05-31,female,Amsterdam,4,10,True
+74,Thomas,van Verdun,1996-09-03,male,Rotterdam,3,4,True
+75,Yinthe,van Beeck Beeckmans,1995-12-16,female,Den Haag,5,3,False
+76,Fleur,de Groot,1996-08-27,female,Amsterdam,4,27,True
+77,Lisanne,van den Velde,2000-08-07,female,Amsterdam,2,30,True
+78,Eliza,van Hagen,1995-10-11,female,Den Haag,1,6,False
+79,Ben,de Haas,1994-07-02,male,Utrecht,4,52,True
+80,Imke,Leene,1996-06-29,female,Amsterdam,4,5,False
+81,Joëlle,Brumleve,2000-01-01,female,Amsterdam,4,10,False
+82,Max,Stichter,1995-03-15,male,Rotterdam,4,3,True
+83,Fatima,Eijkelboom,1991-07-07,female,Amsterdam,8,3,False
+84,Janne,Zeldenrust,1991-10-12,female,Den Haag,3,37,True
+85,Yasmine,Zijlemans,1996-05-09,female,Utrecht,3,10,False
+86,Luca,Peeters,1999-10-18,male,Rotterdam,2,58,False
+87,Sophie,van Luinenburg,1996-03-22,female,Amsterdam,1,12,True
+88,Fay,Rutten,2000-11-22,female,Amsterdam,2,19,False
+89,Fedde,Schilt,2002-02-21,male,Amsterdam,2,6,True
+90,Stella,Arnold,2000-12-25,female,Eindhoven,4,10,True
+91,Helena,Thomas,1993-10-17,female,Utrecht,4,7,False
+92,Lars,de Gratie,2002-07-12,male,Utrecht,5,5,False
+93,Vigo,Elsemulder,2000-02-01,male,Amsterdam,3,22,True
+94,Mika,Brandt,2000-01-26,male,Den Haag,4,63,False
+95,Vigo,Hulshouts,1993-10-28,male,Amsterdam,2,6,True
+96,Sterre,van Beek,2002-10-16,female,Rotterdam,7,43,True
+97,Ruben,van Nederlotharingen,1996-08-01,male,Eindhoven,2,9,True
+98,Casper,van het Heerenveen,2000-08-30,male,Den Haag,1,8,True
+99,Lieve,Verheuvel,1998-08-16,female,Rotterdam,2,19,False
+100,Amélie,Brandt,1997-04-23,female,Den Haag,2,14,True
