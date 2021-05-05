@@ -1,0 +1,5 @@
+{
+    "subscription_id": "<Your Azure Subscription ID>",
+    "resource_group": "<AzureML Resource Group ID",
+    "workspace_name": "<AzureML Workspace Name>"
+}
