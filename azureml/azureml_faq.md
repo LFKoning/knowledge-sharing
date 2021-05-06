@@ -12,7 +12,12 @@
     - [2.1 How do I include additional files?](#21-how-do-i-include-additional-files)
   - [3. Environments](#3-environments)
     - [3.1 What are environments?](#31-what-are-environments)
-    - [3.2 What is inside the standard Docker Image?](#32-what-is-inside-the-standard-docker-image)
+    - [3.2 Do I need Docker?](#32-do-i-need-docker)
+    - [3.3 How to control environments in AzureML?](#33-how-to-control-environments-in-azureml)
+      - [Controlling the Python environment](#controlling-the-python-environment)
+      - [Controlling the Docker environment](#controlling-the-docker-environment)
+    - [3.x What do I need to create my own Docker?](#3x-what-do-i-need-to-create-my-own-docker)
+    - [3.x What is inside a standard Docker Image?](#3x-what-is-inside-a-standard-docker-image)
   - [4. Security](#4-security)
     - [4.1 How to secure an AzureML workspace?](#41-how-to-secure-an-azureml-workspace)
     - [4.2 Which authentication options are supported?](#42-which-authentication-options-are-supported)
@@ -216,13 +221,18 @@ Environments are used to control the software layer around your Python code. Dif
 
 The OS layers is the lowest level and controls your system's hardware, typically it is either Windows, Linux or MacOS. The OS layer cannot be controlled by Azure ML.
 
-The application layers sits on top of the OS layer and includes libraries and programs installed on the OS. This layer can be controlled by using Docker. Docker provides virtualization of the application layer and allows you to bundle specific applications with your Python code. You can use the `docker` section of the `Environment` to build a Docker container.
+The application layers sits on top of the OS layer and includes libraries and programs installed on the OS. This layer can be controlled by using Docker. Docker provides virtualization of the application layer and allows you to bundle specific applications with your Python code.
 
 Python is one application data scientists typically use. However, Python also allows you to create separate environments. For example, using Anaconda you can create a new environment with `conda create -n new_python_environment`. These environments have their own copy of the Python interpreter (`python.exe`) and their own library of packages.
 
-Most projects only need control over the Python layer. If you also need to bundle other applications with your project, you can look at Docker. Note that to use Docker, it must be available on your OS.
+For an introduction to environments, see:
+<https://docs.microsoft.com/en-us/azure/machine-learning/concept-environments>
 
-If you are deploying to Azure Container Instances (ACI) / Azure Kubernetes Services (AKS), you obviously must create a Docker container. However, you can use one of the many standard Docker images provided by Microsoft. Use the following code to see which standard environments are availaible in your workspace:
+### 3.2 Do I need Docker?
+
+Typically, you do not. For most data science projects, setting up the Python environment should suffice. Docker is only needed if your code requires applications in addition to Python.
+
+However, if you want to deploy your code to Azure Container Instances (ACI) or Azure Kubernetes Services (AKS) you must use Docker. You can use one of the many standard Docker images provided by Microsoft. Use the following code to see which standard environments are availaible in your workspace:
 
 ```python
 from azureml.core import Workspace, Environment
@@ -233,12 +243,89 @@ for name, spec in Environment.list(workspace=ws).items():
         print(name)
 ```
 
-For an introduction to environments, see:
-<https://docs.microsoft.com/en-us/azure/machine-learning/concept-environments>
+Finally, if you want to use Docker on your local system you should install it manually first. The data science virtual machines from Microsoft come with Docker pre-installed.
 
-### 3.2 What is inside the standard Docker Image?
+### 3.3 How to control environments in AzureML?
+
+In AzureML you can control the runtime environment by using the `Environment` class. The most relevant properties for this class are the `python` and `docker` properties.
+
+#### Controlling the Python environment
+
+The `python` property is used to control the Python environment. For example, with the `CondaDependencies` class you can easily specify which Python version and packages must be installed:
+
+```python
+from azureml.core import Environment
+from azureml.core.conda_dependencies import CondaDependencies
+
+# Specify Python version and dependencies
+deps = CondaDependencies()
+deps.set_python_version("3.8")
+deps.add_pip_package("pandas>=1.1")
+deps.add_conda_package("scikit-learn>=0.24")
+
+# Create an environment and plug in the dependencies
+env = Environment("test_environment")
+env.python.conda_dependencies = deps
+```
+
+This code creates an Anaconda environment running Python version 3.8. It also installs pandas (via PyPI) and scikit-learn (via Anaconda).
+
+You can also create an AzureML environment from an existing Anaconda environment like so:
+
+```python
+# From an environment.yml on the local disk
+env = Environment.from_conda_specification(
+    "test_environment", "path/to/environment.yml"
+)
+
+# Directly from a local Anaconda environment
+env = Environment.from_existing_conda_environment(
+    "test_environment", "name_of_the_local_environment"
+)
+```
+
+If your project uses a `requirements.txt` instead, try:
+
+```python
+env = Environment.from_pip_requirements(
+    "test_environment", "path/to/requirements.txt"
+)
+```
+
+See also: <https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.environment.pythonsection>
+
+#### Controlling the Docker environment
+
+To take advantage of Docker, use the `docker` property of the `Environment` class. Here are some examples:
+
+```python
+from azureml.core import Environment
+
+env = Environment("test_environment")
+
+# Set the Docker base image
+env.docker.base_image = ""
+
+# Or specify your own Dockerfile
+# Note: base_image and base_dockerfile are mutually exclusive
+env.docker.base_dockerfile = r"""
+
+"""
+```
+
+See also: <https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.environment.dockersection>
+
+### 3.x What do I need to create my own Docker?
+
+See also: <https://docs.microsoft.com/en-us/azure/machine-learning/how-to-deploy-custom-docker-image>
+
+### 3.x What is inside a standard Docker Image?
 
 The standard Docker includes the following components:
+
+1. A `Flask` application that serves your scoring script.
+2. A `gunicorn` WSGI server that creates `Flask` workers for each request.
+3. An `ngnix` HTTP server that acts as a proxy for `gunicorn`.
 
 For more information, see:
 <https://liupeirong.github.io/amlDockerImage/>
