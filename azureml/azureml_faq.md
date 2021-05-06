@@ -9,7 +9,67 @@
 
 ## 1. Submitting training runs
 
-### 1.1 How do I include additional files?
+### 1.1 How do I submit a training run?
+
+There are two ways to start a training run in AzureML:
+
+#### Interactively inside a Notebook
+
+In this case you typically create the `Experiment` yourself and control the logging. A minimal example looks like this:
+
+```python
+from azureml.core import Workspace, Experiment
+
+# Setup the Workspace and Experiment
+ws = Workspace.from_config()
+exp = Experiment(ws, "test_experiment")
+
+# Use start_logging() to create a new run
+with exp.start_logging() as run:
+    # Log your metrics
+    run.log("Sample size": X.shape[0])
+```
+
+#### By submitting a training script
+
+If you are using a training script, the run is created for you when you submit the script. In that case, you can use `Run.get_context()` to get a Run object for logging metrics
+
+For example, your submit code may look something like this:
+
+```python
+from azureml.core import (
+    Workspace,
+    Experiment,
+    ScriptRunConfig,
+)
+
+# Setup the Workspace and Experiment
+ws = Workspace.from_config()
+exp = Experiment(ws, "test_experiment")
+
+# Create run configuration for the local machine
+run_cfg = ScriptRunConfig(
+    script="train.py",
+    source_directory="scripts",
+)
+
+# Submit the training script
+script_run = exp.submit(run_cfg)
+```
+
+And inside your training script, you would use:
+
+```python
+# Gets the context the experiment was submitted in
+run = Run.get_context()
+
+# Log your metrics
+run.log("Sample size": X.shape[0])
+```
+
+And that allows you to log metrics to `Run` submitted by the `Experiment`.
+
+### 1.2 How do I include additional files?
 
 Place additional files in a local folder, then include them via the `source_directory` argument from `ScriptRunConfig`. For example, you could set up a `scripts` folder like so:
 
@@ -39,14 +99,14 @@ exp = Experiment(ws, "test_experiment")
 # Create the ScriptRunConfig
 # Note: The source_directory should contain your additional files
 # Note: The path to train.py is relative to the source_directory
-config = ScriptRunConfig(
+run_cfg = ScriptRunConfig(
     entry_script="train.py",
-    environment=env,
     source_directory="scripts",
+    environment=env,
 )
 
 # Submit the run
-script_run = exp.submit(config)
+script_run = exp.submit(run_cfg)
 ```
 
 If you want to use functions from `utils.py` inside your `train.py` script, simply use:
@@ -55,7 +115,7 @@ If you want to use functions from `utils.py` inside your `train.py` script, simp
 from assets.utils import some_function
 ```
 
-### 1.2 How do I install a package for training?
+### 1.3 How do I install a package for training?
 
 The `CondaDependencies` class allows you to specify which Anaconda or pip packages should be installed inside your training `Environment`:
 
@@ -83,17 +143,17 @@ env = Environment("test_environment")
 env.python.conda_dependencies = deps
 
 # Create the ScriptRunConfig
-config = ScriptRunConfig(
+run_cfg = ScriptRunConfig(
     entry_script="train.py",
-    environment=env,
     source_directory="scripts",
+    environment=env,
 )
 
 # Submit the run
-script_run = exp.submit(config)
+script_run = exp.submit(run_cfg)
 ```
 
-### 1.2 How do I install my own package?
+### 1.4 How do I install my own package?
 
 If you have created a custom package yourself, you can also include it using `CondaDependencies`. To make this work, you should first build a wheel for your package (see: ) and store it in a local path.
 
@@ -118,7 +178,7 @@ env = Environment("test_environment")
 env.python.conda_dependencies = deps
 ```
 
-See [1.2 How do I install a package for training?](#12-how-do-i-install-a-package-for-training) for submitting a run with a custom environment.
+See [1.3 How do I install a package for training?](#12-how-do-i-install-a-package-for-training) for submitting a run with a custom environment.
 
 More information:
 
@@ -130,7 +190,8 @@ More information:
 
 ### 2.1 How do I include additional files?
 
-See training run section [here](#11-how-do-i-include-additional-files).
+See training run section [here](#12-how-do-i-include-additional-files).
+Note that you need to replace `ScriptRunConfig` by `InferenceConfig` when deploying models.
 
 ## 3. Environments
 
@@ -167,6 +228,6 @@ For more information, see:
 ### 4.3 How can I set up Role-Based Access Control?
 
 More information:
+
 - [How to assign roles](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-assign-roles)
 - [Overview of all AzureML operations](https://docs.microsoft.com/en-us/azure/role-based-access-control/resource-provider-operations#microsoftmachinelearningservices)
-
