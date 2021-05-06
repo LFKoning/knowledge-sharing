@@ -1,11 +1,22 @@
 # Azure ML: FAQ
 
-## Sections
-
-1. [Submitting training runs()](#1-submitting-training-runs)
-2. [Deploying models](#2-deploying-models)
-3. [Environments](#3-environments)
-4. [Security](#4-security)
+- [Azure ML: FAQ](#azure-ml-faq)
+  - [1. Submitting training runs](#1-submitting-training-runs)
+    - [1.1 How do I submit a training run?](#11-how-do-i-submit-a-training-run)
+      - [Interactively inside a Notebook](#interactively-inside-a-notebook)
+      - [By submitting a training script](#by-submitting-a-training-script)
+    - [1.2 How do I include additional files?](#12-how-do-i-include-additional-files)
+    - [1.3 How do I install a package for training?](#13-how-do-i-install-a-package-for-training)
+    - [1.4 How do I install my own package?](#14-how-do-i-install-my-own-package)
+  - [2. Deploying models](#2-deploying-models)
+    - [2.1 How do I include additional files?](#21-how-do-i-include-additional-files)
+  - [3. Environments](#3-environments)
+    - [3.1 What are environments?](#31-what-are-environments)
+    - [3.2 What is inside the standard Docker Image?](#32-what-is-inside-the-standard-docker-image)
+  - [4. Security](#4-security)
+    - [4.1 How to secure an AzureML workspace?](#41-how-to-secure-an-azureml-workspace)
+    - [4.2 Which authentication options are supported?](#42-which-authentication-options-are-supported)
+    - [4.3 How can I set up Role-Based Access Control?](#43-how-can-i-set-up-role-based-access-control)
 
 ## 1. Submitting training runs
 
