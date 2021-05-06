@@ -208,6 +208,31 @@ Note that you need to replace `ScriptRunConfig` by `InferenceConfig` when deploy
 
 ### 3.1 What are environments?
 
+Environments are used to control the software layer around your Python code. Different "layers" can be identified in an environment:
+
+1. The operating system (OS) layer
+2. The application layer
+3. The Python layer
+
+The OS layers is the lowest level and controls your system's hardware, typically it is either Windows, Linux or MacOS. The OS layer cannot be controlled by Azure ML.
+
+The application layers sits on top of the OS layer and includes libraries and programs installed on the OS. This layer can be controlled by using Docker. Docker provides virtualization of the application layer and allows you to bundle specific applications with your Python code. You can use the `docker` section of the `Environment` to build a Docker container.
+
+Python is one application data scientists typically use. However, Python also allows you to create separate environments. For example, using Anaconda you can create a new environment with `conda create -n new_python_environment`. These environments have their own copy of the Python interpreter (`python.exe`) and their own library of packages.
+
+Most projects only need control over the Python layer. If you also need to bundle other applications with your project, you can look at Docker. Note that to use Docker, it must be available on your OS.
+
+If you are deploying to Azure Container Instances (ACI) / Azure Kubernetes Services (AKS), you obviously must create a Docker container. However, you can use one of the many standard Docker images provided by Microsoft. Use the following code to see which standard environments are availaible in your workspace:
+
+```python
+from azureml.core import Workspace, Environment
+
+ws = Workspace.from_config()
+for name, spec in Environment.list(workspace=ws).items():
+    if name.startswith("AzureML"):
+        print(name)
+```
+
 For an introduction to environments, see:
 <https://docs.microsoft.com/en-us/azure/machine-learning/concept-environments>
 
