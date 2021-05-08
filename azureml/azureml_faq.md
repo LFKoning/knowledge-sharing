@@ -1,31 +1,72 @@
 # Azure ML: FAQ
 
 - [Azure ML: FAQ](#azure-ml-faq)
-  - [1. Submitting training runs](#1-submitting-training-runs)
-    - [1.1 How do I submit a training run?](#11-how-do-i-submit-a-training-run)
+  - [1 Introduction](#1-introduction)
+  - [1.1 What is Azure Machine Learning?](#11-what-is-azure-machine-learning)
+  - [1.2 How can I use AzureML?](#12-how-can-i-use-azureml)
+  - [1.3 What are the core components of AzureML?](#13-what-are-the-core-components-of-azureml)
+  - [2 Submitting training runs](#2-submitting-training-runs)
+    - [2.1 How do I submit a training run?](#21-how-do-i-submit-a-training-run)
       - [Interactively inside a Notebook](#interactively-inside-a-notebook)
       - [By submitting a training script](#by-submitting-a-training-script)
-    - [1.2 How do I include additional files?](#12-how-do-i-include-additional-files)
-    - [1.3 How do I install a package for training?](#13-how-do-i-install-a-package-for-training)
-    - [1.4 How do I install my own package?](#14-how-do-i-install-my-own-package)
-  - [2. Deploying models](#2-deploying-models)
-    - [2.1 How do I include additional files?](#21-how-do-i-include-additional-files)
-  - [3. Environments](#3-environments)
-    - [3.1 What are environments?](#31-what-are-environments)
-    - [3.2 Do I need Docker?](#32-do-i-need-docker)
-    - [3.3 How to control environments in AzureML?](#33-how-to-control-environments-in-azureml)
+    - [2.2 How do I include additional files?](#22-how-do-i-include-additional-files)
+    - [2.3 How do I install a package for training?](#23-how-do-i-install-a-package-for-training)
+    - [2.4 How do I install my own package?](#24-how-do-i-install-my-own-package)
+  - [3. Deploying models](#3-deploying-models)
+    - [3.1 How do I include additional files?](#31-how-do-i-include-additional-files)
+  - [4 Environments](#4-environments)
+    - [4.1 What are environments?](#41-what-are-environments)
+    - [4.2 Do I need Docker?](#42-do-i-need-docker)
+    - [4.3 How to control environments in AzureML?](#43-how-to-control-environments-in-azureml)
       - [Controlling the Python environment](#controlling-the-python-environment)
       - [Controlling the Docker environment](#controlling-the-docker-environment)
-    - [3.x What do I need to create my own Docker?](#3x-what-do-i-need-to-create-my-own-docker)
-    - [3.x What is inside a standard Docker Image?](#3x-what-is-inside-a-standard-docker-image)
-  - [4. Security](#4-security)
-    - [4.1 How to secure an AzureML workspace?](#41-how-to-secure-an-azureml-workspace)
-    - [4.2 Which authentication options are supported?](#42-which-authentication-options-are-supported)
-    - [4.3 How can I set up Role-Based Access Control?](#43-how-can-i-set-up-role-based-access-control)
+    - [4.x What do I need to create my own Docker?](#4x-what-do-i-need-to-create-my-own-docker)
+    - [4.x What is inside a standard Docker Image?](#4x-what-is-inside-a-standard-docker-image)
+  - [5 Security](#5-security)
+    - [5.1 How to secure an AzureML workspace?](#51-how-to-secure-an-azureml-workspace)
+    - [5.2 Which authentication options are supported?](#52-which-authentication-options-are-supported)
+    - [5.3 How can I set up Role-Based Access Control?](#53-how-can-i-set-up-role-based-access-control)
 
-## 1. Submitting training runs
+## 1 Introduction
 
-### 1.1 How do I submit a training run?
+## 1.1 What is Azure Machine Learning?
+
+Azure Machine Learning (AzureML) is a platform for implementing end-to-end machine learning pipelines. It allows you to train and deploy models, track model performance, manage datasets, et cetera.
+
+## 1.2 How can I use AzureML?
+
+The Machine Learning Workspace is hosted on the Azure Cloud Platform. You can access it through <https://portal.azure.com/>. Find your Workspace and click the "Launch studio" button to get started.
+
+Alternatively, you can use AzureML on any device by using the Python SDK. You can install this SDK using pip: `pip install azureml-core`. The SDK allows you to connect to your Workspace in the Azure Cloud. To make this easy, you can use a `config.yaml` which contains the following information:
+
+```json
+{
+    "subscription_id": "<your subscription ID>",
+    "resource_group": "<resource group of the AzureML Workspace>",
+    "workspace_name": "<name of the AzureML Workspace>"
+}
+```
+
+You can download this file from your AzureML Workspace by clicking on your account (top right of the screen) and selecting "Download config file" from the dropdown menu.
+
+## 1.3 What are the core components of AzureML?
+
+The following are the most commonly used concepts / components of AzureML:
+
+|Component|Description|
+|---|---|
+|[Workspace](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.workspace)|Central hub to integrates all other AzureML components.|
+|[Dataset](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.dataset)|A `Dataset` is a single dataset which is either in file or tabular format.|
+|[Datastore](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.datastore)|A `Datastore` is used to store (mutliple) datasets. Typical examples are a blob storage or a SQL server.
+|[Model](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.model)|A `Model` is a trained machine learning model which can be registered in the model resigstry.|
+|[Run](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.run)|A `Run` is used to store training metric such as model accuracy.|
+|[Experiment](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.experiment)|An `Experiment` bundles multiple training `Run` objects.|
+|[Environment](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.environment)|An `Environment` speciefies the runtime environment including Python version and dependencies.|
+|[ComputeTarget](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.computetarget)|A `ComputeTarget` specifies where your code should be executed, for example on your local machine of a virtual machine.|
+
+## 2 Submitting training runs
+
+### 2.1 How do I submit a training run?
 
 There are two ways to start a training run in AzureML:
 
@@ -85,7 +126,7 @@ run.log("Sample size": X.shape[0])
 
 And that allows you to log metrics to `Run` submitted by the `Experiment`.
 
-### 1.2 How do I include additional files?
+### 2.2 How do I include additional files?
 
 Place additional files in a local folder, then include them via the `source_directory` argument from `ScriptRunConfig`. For example, you could set up a `scripts` folder like so:
 
@@ -131,7 +172,7 @@ If you want to use functions from `utils.py` inside your `train.py` script, simp
 from assets.utils import some_function
 ```
 
-### 1.3 How do I install a package for training?
+### 2.3 How do I install a package for training?
 
 The `CondaDependencies` class allows you to specify which Anaconda or pip packages should be installed inside your training `Environment`:
 
@@ -169,7 +210,7 @@ run_cfg = ScriptRunConfig(
 script_run = exp.submit(run_cfg)
 ```
 
-### 1.4 How do I install my own package?
+### 2.4 How do I install my own package?
 
 If you have created a custom package yourself, you can also include it using `CondaDependencies`. To make this work, you should first build a wheel for your package (see: ) and store it in a local path.
 
@@ -202,16 +243,16 @@ More information:
 
 - <https://medium.com/swlh/beginners-guide-to-create-python-wheel-7d45f8350a94>
 
-## 2. Deploying models
+## 3. Deploying models
 
-### 2.1 How do I include additional files?
+### 3.1 How do I include additional files?
 
 See training run section [here](#12-how-do-i-include-additional-files).
 Note that you need to replace `ScriptRunConfig` by `InferenceConfig` when deploying models.
 
-## 3. Environments
+## 4 Environments
 
-### 3.1 What are environments?
+### 4.1 What are environments?
 
 Environments are used to control the software layer around your Python code. Different "layers" can be identified in an environment:
 
@@ -228,7 +269,7 @@ Python is one application data scientists typically use. However, Python also al
 For an introduction to environments, see:
 <https://docs.microsoft.com/en-us/azure/machine-learning/concept-environments>
 
-### 3.2 Do I need Docker?
+### 4.2 Do I need Docker?
 
 Typically, you do not. For most data science projects, setting up the Python environment should suffice. Docker is only needed if your code requires applications in addition to Python.
 
@@ -245,7 +286,7 @@ for name, spec in Environment.list(workspace=ws).items():
 
 Finally, if you want to use Docker on your local system you should install it manually first. The data science virtual machines from Microsoft come with Docker pre-installed.
 
-### 3.3 How to control environments in AzureML?
+### 4.3 How to control environments in AzureML?
 
 In AzureML you can control the runtime environment by using the `Environment` class. The most relevant properties for this class are the `python` and `docker` properties.
 
@@ -315,11 +356,21 @@ env.docker.base_dockerfile = r"""
 
 See also: <https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.environment.dockersection>
 
-### 3.x What do I need to create my own Docker?
+### 4.x What do I need to create my own Docker?
+
+Minimal requirements for using AzureML:
+
+- Ubuntu >= 16.04
+- Anaconda >= 4.5
+- Python >= 3.6
+
+To deploy your model as a webservice install `azureml-defaults` >= 1.0.45.
+
+To access `Dataset` also install the Python `libfuse-dev` package.
 
 See also: <https://docs.microsoft.com/en-us/azure/machine-learning/how-to-deploy-custom-docker-image>
 
-### 3.x What is inside a standard Docker Image?
+### 4.x What is inside a standard Docker Image?
 
 The standard Docker includes the following components:
 
@@ -330,14 +381,17 @@ The standard Docker includes the following components:
 For more information, see:
 <https://liupeirong.github.io/amlDockerImage/>
 
-## 4. Security
+## 5 Security
 
-### 4.1 How to secure an AzureML workspace?
+### 5.1 How to secure an AzureML workspace?
 
 For a series of articles on securing an AzureML Workspace, see:
-<https://docs.microsoft.com/en-us/azure/machine-learning/how-to-secure-workspace-vnet>
 
-### 4.2 Which authentication options are supported?
+- [How to secure Azure ML Workspace](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-secure-workspace-vnet)
+
+- [Azure ML enterpirse security](https://docs.microsoft.com/en-us/azure/machine-learning/concept-enterprise-security)
+
+### 5.2 Which authentication options are supported?
 
 In short, the following options are available:
 
@@ -348,7 +402,7 @@ In short, the following options are available:
 For more information, see:
 <https://docs.microsoft.com/en-us/azure/machine-learning/how-to-setup-authentication>
 
-### 4.3 How can I set up Role-Based Access Control?
+### 5.3 How can I set up Role-Based Access Control?
 
 More information:
 
