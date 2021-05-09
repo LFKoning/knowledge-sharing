@@ -4,6 +4,9 @@
   - [1 Introduction](#1-introduction)
   - [1.1 What is Azure Machine Learning?](#11-what-is-azure-machine-learning)
   - [1.2 How can I use AzureML?](#12-how-can-i-use-azureml)
+    - [Using AzureML Studio](#using-azureml-studio)
+    - [Using the Python SDK](#using-the-python-sdk)
+    - [AzureML in Visual Studio Code](#azureml-in-visual-studio-code)
   - [1.3 What are the core components of AzureML?](#13-what-are-the-core-components-of-azureml)
   - [2 Submitting training runs](#2-submitting-training-runs)
     - [2.1 How do I submit a training run?](#21-how-do-i-submit-a-training-run)
@@ -35,9 +38,21 @@ Azure Machine Learning (AzureML) is a platform for implementing end-to-end machi
 
 ## 1.2 How can I use AzureML?
 
-The Machine Learning Workspace is hosted on the Azure Cloud Platform. You can access it through <https://portal.azure.com/>. Find your Workspace and click the "Launch studio" button to get started.
+The Machine Learning Workspace is hosted on the Azure Cloud Platform. To work with it, you can either use the online environment called AzureML Studio or access it from any device using the Python SDK.
 
-Alternatively, you can use AzureML on any device by using the Python SDK. You can install this SDK using pip: `pip install azureml-core`. The SDK allows you to connect to your Workspace in the Azure Cloud. To make this easy, you can use a `config.yaml` which contains the following information:
+### Using AzureML Studio
+
+The easiest way to get started with AzureML is to use the Studio from the Azure portal (<https://portal.azure.com/>). Click the "Launch studio" button in your AzureML Workspace to open the Studio.
+
+Next, you'll need to create a virtual machine (VM) to run your notebooks on; click "Compute" in the sidebar menu and go to "Compute instances". Either start an existing VM or create a new one.
+
+Finally, click "Notebooks" in the sidebar menu and start coding! Note that you can also select Jupyter Notebook or Jupyter Lab from the dropdown menu at the top.
+
+### Using the Python SDK
+
+You can work with AzureML on any device by using the Python SDK.Make sure you have a Python environment on your machine dna then install the SDK using: `python -m pip install azureml-core`.
+
+The SDK connects to your Workspace in the Azure Cloud. You can put a `config.yaml` file in your working directory to make this process easy. The file should contain the following information:
 
 ```json
 {
@@ -47,7 +62,24 @@ Alternatively, you can use AzureML on any device by using the Python SDK. You ca
 }
 ```
 
-You can download this file from your AzureML Workspace by clicking on your account (top right of the screen) and selecting "Download config file" from the dropdown menu.
+You can also download this file from your AzureML Workspace by clicking on your account (top right of the screen) and selecting "Download config file" from the dropdown menu.
+
+Once you have your environment and `config.yaml` set up, you connect to your workspace like so:
+
+```python
+from azureml.core import Workspace
+ws = Workspace.from_config()
+```
+
+The first time you use this code, a browser window will open asking you to login to your workspace.
+
+### AzureML in Visual Studio Code
+
+If you are using Visual Studio Code as your development environment, you can download and instlal the Azure Machine Learning plugin:
+
+<https://marketplace.visualstudio.com/items?itemName=ms-toolsai.vscode-ai>
+
+This plugin gives you easy access to a lot of the functionality in AzureML.
 
 ## 1.3 What are the core components of AzureML?
 
@@ -63,6 +95,8 @@ The following are the most commonly used concepts / components of AzureML:
 |[Experiment](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.experiment)|An `Experiment` bundles multiple training `Run` objects.|
 |[Environment](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.environment)|An `Environment` speciefies the runtime environment including Python version and dependencies.|
 |[ComputeTarget](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.computetarget)|A `ComputeTarget` specifies where your code should be executed, for example on your local machine of a virtual machine.|
+
+These components (and others) are all available in the Python SDK and you can also find most in the sidebar menu in the AzureML Studio.
 
 ## 2 Submitting training runs
 
