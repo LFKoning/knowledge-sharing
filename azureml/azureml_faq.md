@@ -25,10 +25,15 @@
       - [Controlling the Docker environment](#controlling-the-docker-environment)
     - [4.x What do I need to create my own Docker?](#4x-what-do-i-need-to-create-my-own-docker)
     - [4.x What is inside a standard Docker Image?](#4x-what-is-inside-a-standard-docker-image)
-  - [5 Security](#5-security)
-    - [5.1 How to secure an AzureML workspace?](#51-how-to-secure-an-azureml-workspace)
-    - [5.2 Which authentication options are supported?](#52-which-authentication-options-are-supported)
-    - [5.3 How can I set up Role-Based Access Control?](#53-how-can-i-set-up-role-based-access-control)
+  - [5 Machine Learning Pipelines](#5-machine-learning-pipelines)
+    - [5.1 What is a ML Pipeline?](#51-what-is-a-ml-pipeline)
+    - [5.2 How do I run a Pipeline?](#52-how-do-i-run-a-pipeline)
+    - [5.3 How do I transfer data between steps?](#53-how-do-i-transfer-data-between-steps)
+    - [5.4 How do I schedule Pipeline runs?](#54-how-do-i-schedule-pipeline-runs)
+  - [6 Security](#6-security)
+    - [6.1 How to secure an AzureML workspace?](#61-how-to-secure-an-azureml-workspace)
+    - [6.2 Which authentication options are supported?](#62-which-authentication-options-are-supported)
+    - [6.3 How can I set up Role-Based Access Control?](#63-how-can-i-set-up-role-based-access-control)
 
 ## 1 Introduction
 
@@ -95,6 +100,7 @@ The following are the most commonly used concepts / components of AzureML:
 |[Experiment](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.experiment)|An `Experiment` bundles multiple training `Run` objects.|
 |[Environment](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.environment)|An `Environment` speciefies the runtime environment including Python version and dependencies.|
 |[ComputeTarget](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.computetarget)|A `ComputeTarget` specifies where your code should be executed, for example on your local machine of a virtual machine.|
+|[Pipeline](https://docs.microsoft.com/en-us/python/api/azureml-pipeline-core/)|Multi-step machine learning workflow; can include both data preparation and learning tasks.
 
 These components (and others) are all available in the Python SDK and you can also find most in the sidebar menu in the AzureML Studio.
 
@@ -415,9 +421,23 @@ The standard Docker includes the following components:
 For more information, see:
 <https://liupeirong.github.io/amlDockerImage/>
 
-## 5 Security
+## 5 Machine Learning Pipelines
 
-### 5.1 How to secure an AzureML workspace?
+### 5.1 What is a ML Pipeline?
+
+### 5.2 How do I run a Pipeline?
+
+### 5.3 How do I transfer data between steps?
+
+Steps can define both input and output datasets. These inputs and outputs create an (implicit) execution order for all of the steps in your pipeline.
+
+Datasets are transfered between steps by (temporary) storing them on disk.
+
+### 5.4 How do I schedule Pipeline runs?
+
+## 6 Security
+
+### 6.1 How to secure an AzureML workspace?
 
 For a series of articles on securing an AzureML Workspace, see:
 
@@ -425,7 +445,7 @@ For a series of articles on securing an AzureML Workspace, see:
 
 - [Azure ML enterpirse security](https://docs.microsoft.com/en-us/azure/machine-learning/concept-enterprise-security)
 
-### 5.2 Which authentication options are supported?
+### 6.2 Which authentication options are supported?
 
 In short, the following options are available:
 
@@ -436,7 +456,7 @@ In short, the following options are available:
 For more information, see:
 <https://docs.microsoft.com/en-us/azure/machine-learning/how-to-setup-authentication>
 
-### 5.3 How can I set up Role-Based Access Control?
+### 6.3 How can I set up Role-Based Access Control?
 
 More information:
 
