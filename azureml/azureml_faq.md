@@ -27,9 +27,13 @@
     - [4.x What is inside a standard Docker Image?](#4x-what-is-inside-a-standard-docker-image)
   - [5 Machine Learning Pipelines](#5-machine-learning-pipelines)
     - [5.1 What is a ML Pipeline?](#51-what-is-a-ml-pipeline)
-    - [5.2 How do I run a Pipeline?](#52-how-do-i-run-a-pipeline)
+    - [5.2 How do I create a Pipeline?](#52-how-do-i-create-a-pipeline)
     - [5.3 How do I transfer data between steps?](#53-how-do-i-transfer-data-between-steps)
-    - [5.4 How do I schedule Pipeline runs?](#54-how-do-i-schedule-pipeline-runs)
+    - [5.4 How do I run a Pipeline?](#54-how-do-i-run-a-pipeline)
+      - [Manually running a Pipeline](#manually-running-a-pipeline)
+      - [Running a Pipeline on a Recurring Schedule](#running-a-pipeline-on-a-recurring-schedule)
+      - [Running a Pipeline on Data Changes](#running-a-pipeline-on-data-changes)
+    - [5.5 How do I schedule Pipeline runs?](#55-how-do-i-schedule-pipeline-runs)
   - [6 Security](#6-security)
     - [6.1 How to secure an AzureML workspace?](#61-how-to-secure-an-azureml-workspace)
     - [6.2 Which authentication options are supported?](#62-which-authentication-options-are-supported)
@@ -425,15 +429,195 @@ For more information, see:
 
 ### 5.1 What is a ML Pipeline?
 
-### 5.2 How do I run a Pipeline?
+A `Pipeline` is an independently executable workflow of a machine learning task. Multiple subtasks can be included as a series of steps within the pipeline. For example, a data preparation step and a modelling step.
+
+Core features:
+
+- Executable on a time schedule or when data changes.
+- Can include one or multiple steps.
+- Steps can be executed in parallel on different compute targets.
+- Steps can easily pass data between them.
+
+### 5.2 How do I create a Pipeline?
+
+The example below shows how to create a (very minimal) `Pipeline` consisting of two steps. Both steps run a Python script that reside in a local folder called `scripts/`.
+
+```python
+from azureml.core import Workspace, ComputeTarget
+from azureml.pipeline.core import Pipeline
+from azureml.pipeline.steps import PythonScriptStep
+
+
+# Set up Workspace
+ws = Workspace.from_config()
+
+# Get first ComputeTarget from the Workspace
+# Note: Pipelines cannot run on the local compute target.
+if not ComputeTarget.list(ws):
+  raise RuntimeError("No compute targets available in workspace.")
+compute_target = ComputeTarget.list(ws)[0]
+
+# Define the data preparation step
+prep_step = PythonScriptStep(
+  name="prepare_step",
+  script_name="prep_data.py",
+  source_directory="scripts",
+  compute_target=compute_target,
+)
+
+# Define the model training step
+train_step = PythonScriptStep(
+  name="train",
+  script_name="train_model.py",
+  source_directory="scripts"
+  compute_target=compute_target,
+)
+
+# Combine the steps into a Pipeline
+pipeline = Pipeline(
+  workspace=ws,
+  steps=[prep_step, train_step],
+)
+```
+
+This example shows the syntax for constructing a simple `Pipeline` that runs the Python scripts `prep_data.py` and `train_model.py` which both reside in a local `scripts` folder.
+
+However, by default these steps will run in parallel as there are no (data) dependencies between them. The next section shows how to configure data transfers between steps.
 
 ### 5.3 How do I transfer data between steps?
 
-Steps can define both input and output datasets. These inputs and outputs create an (implicit) execution order for all of the steps in your pipeline.
+Steps can define both input and output datasets. These in- and outputs will create an (implicit) execution order between the steps in your pipeline. Datasets are transfered between steps by (temporary) storing them on disk (in a blob storage).
 
-Datasets are transfered between steps by (temporary) storing them on disk.
+To create a temporary pipeline dataset, use the `PipelineData` class. Below is a modified version of the example from the previous section now including a data transfer:
 
-### 5.4 How do I schedule Pipeline runs?
+```python
+from azureml.core import Workspace, ComputeTarget
+from azureml.pipeline.core import Pipeline, PipelineData
+from azureml.pipeline.steps import PythonScriptStep
+
+
+# Set up Workspace
+ws = Workspace.from_config()
+
+# Get first ComputeTarget from the Workspace
+# Note: Pipelines cannot run on the local compute target.
+if not ComputeTarget.list(ws):
+  raise RuntimeError("No compute targets available in workspace.")
+compute_target = ComputeTarget.list(ws)[0]
+
+# Use a PipelineData object for transferring data between steps
+datastore = ws.get_default_datastore()
+prepped_data = PipelineData("processed_data", datastore=datastore)
+
+# Define the data preparation step
+# Note the added outputs argument
+prep_step = PythonScriptStep(
+  name="prepare_step",
+  script_name="prep_data.py",
+  source_directory="scripts",
+  compute_target=compute_target,
+  outputs=[prepped_data],
+)
+
+# Define the model training step
+# Note the added inputs argument
+train_step = PythonScriptStep(
+  name="train",
+  script_name="train_model.py",
+  source_directory="scripts"
+  compute_target=compute_target,
+  inputs=[prepped_data],
+)
+
+# Combine the steps into a Pipeline
+pipeline = Pipeline(
+  workspace=ws,
+  steps=[prep_step, train_step],
+)
+```
+
+The example is largely the same apart from 3 additions:
+
+1. A `PipelineData` object called `prepped_data` is created to transfer data.
+2. The `outputs` argument is added to the `prep_step` referencing the `prepped_data` object.
+3. The `inputs` argument is added to the `train_step` also referencing `prepped_data` object.
+
+These additions make sure `prepped_data` is transfered between the two steps. It also introduces a dependency between the steps, making sure that the `prep_step` is executed before the `train_step`.
+
+Now you may wonder what the `prep_data.py` script should look like. The main requirement for this script is to produce a dataset and store it in a predetermined location. This location is obtained at runtime from an environmental variable called `AZUREML_DATAREFERENCE_processed_data`. You can also use `prepped_data.get_env_variable_name()` to get this name.
+
+Inside `prep_data.py` you should use the environmental variable like so:
+
+```python
+import os
+import pandas as pd
+
+# Download the Titanic dataset
+download_url = "https://www.openml.org/data/get_csv/16826755/phpMYEkMl"
+titanic_df = pd.read_csv(download_url)
+
+# Use the name provided in the PipelineData object
+dataset_name = "processed_data"
+
+# Get the location of the output folder
+output_folder = os.getenv(f"AZUREML_DATAREFERENCE_{dataset_name}")
+
+# Make sure the output folder exists!
+os.makedirs(output_folder)
+
+# Write a CSV file to the dataset
+output_file = os.path.join(output_folder, "titanic_data.csv")
+titanic_df.to_csv(output_file, index=False)
+```
+
+To access the data in the `train_model.py` script, use a similar procedure:
+
+```python
+import os
+
+# Use the name provided in the PipelineData object
+dataset_name = "processed_data"
+
+# Get the location of the input folder
+input_folder = os.getenv(f"AZUREML_DATAREFERENCE_{dataset_name}")
+
+# Read in the Titanic CSV file
+input_file = os.path.join(input_folder, "titanic_data.csv")
+titanic_df = pd.read_csv(input_file)
+```
+
+The key here is to use the environmental variable to get the location of the dataset. AzureML will make sure all files in this folder are copied over to the different compute targets for each pipeline step.
+
+### 5.4 How do I run a Pipeline?
+
+You can run a  `Pipeline` manually, on a time schedule, or when the pipeline's input data changes. These scenarios are described below.
+
+#### Manually running a Pipeline
+
+To run a `Pipeline` manually, simply submit it to an experiment like so:
+
+```python
+from azureml.core import Workspace, Experiment
+
+# Set up Workspace and Experiment
+ws = Workspace.from_config()
+exp = Experiment(ws, "testing_pipelines")
+
+# Create your pipeline, see sections 5.2 and 5.3
+pipeline = Pipeline(ws, [prep_step, train_step])
+
+# Submit using your experiment
+pipeline_run = exp.submit(pipeline)
+
+# Monitor run status and stream logs (use in Notebooks)
+pipeline_run.wait_for_completion()
+```
+
+#### Running a Pipeline on a Recurring Schedule
+
+#### Running a Pipeline on Data Changes
+
+### 5.5 How do I schedule Pipeline runs?
 
 ## 6 Security
 
