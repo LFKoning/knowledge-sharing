@@ -29,11 +29,11 @@
     - [5.1 What is a ML Pipeline?](#51-what-is-a-ml-pipeline)
     - [5.2 How do I create a Pipeline?](#52-how-do-i-create-a-pipeline)
     - [5.3 How do I transfer data between steps?](#53-how-do-i-transfer-data-between-steps)
-    - [5.4 How do I run a Pipeline?](#54-how-do-i-run-a-pipeline)
-      - [Manually running a Pipeline](#manually-running-a-pipeline)
+    - [5.4 Passing Arguments to your Scripts Steps](#54-passing-arguments-to-your-scripts-steps)
+    - [5.5 How do I (manually) run a Pipeline?](#55-how-do-i-manually-run-a-pipeline)
+    - [5.6 How do I schedule Pipeline runs?](#56-how-do-i-schedule-pipeline-runs)
       - [Running a Pipeline on a Recurring Schedule](#running-a-pipeline-on-a-recurring-schedule)
       - [Running a Pipeline on Data Changes](#running-a-pipeline-on-data-changes)
-    - [5.5 How do I schedule Pipeline runs?](#55-how-do-i-schedule-pipeline-runs)
   - [6 Security](#6-security)
     - [6.1 How to secure an AzureML workspace?](#61-how-to-secure-an-azureml-workspace)
     - [6.2 Which authentication options are supported?](#62-which-authentication-options-are-supported)
@@ -433,9 +433,11 @@ A `Pipeline` is an independently executable workflow of a machine learning task.
 
 Core features:
 
-- Executable on a time schedule or when data changes.
-- Can include one or multiple steps.
-- Steps can be executed in parallel on different compute targets.
+- Pipelines can be run on a time schedule or when input data changes.
+- Pipelines can include one or more steps.
+- Steps can be executed on different compute targets.
+- Steps can use different programming languages (R / Python).
+- Steps can use different frameworks (scikit-learn / TensorFlow / Spark / DataBricks)
 - Steps can easily pass data between them.
 
 ### 5.2 How do I create a Pipeline?
@@ -588,16 +590,54 @@ titanic_df = pd.read_csv(input_file)
 
 The key here is to use the environmental variable to get the location of the dataset. AzureML will make sure all files in this folder are copied over to the different compute targets for each pipeline step.
 
-### 5.4 How do I run a Pipeline?
+A final note is that you could also pass the name of the environmental variable for `PipelineData` using an argument. The next section explains how to pass command line arguments to the Python scripts inside your `Pipeline`.
 
-You can run a  `Pipeline` manually, on a time schedule, or when the pipeline's input data changes. These scenarios are described below.
+### 5.4 Passing Arguments to your Scripts Steps
 
-#### Manually running a Pipeline
+To pass command line arguments to a `PythonScriptStep` in your `Pipeline`, simply use the `arguments` parameter like so:
+
+```python
+# Trains and validates a model using cross-validation
+train_step = PythonScriptStep(
+  name="train",
+  script_name="train_model.py",
+  source_directory="scripts"
+  compute_target=compute_target,
+  inputs=[prepped_data],
+  arguments=['--cv-splits', 5, '--test-size', 0.3],
+)
+```
+
+In this example two command line arguments are passed to the `train_model.py` script: `cv-splits` and `test-size`. To use them in your script, you can use the `argparse` module like so:
+
+```python
+import argparse
+from sklearn.model_selection import ShuffleSplit
+
+# Define the argument parser
+parser = argparse.ArgumentParser("Model training argument parser")
+parser.add_argument("--cv-splits", default=5, type=int, help="Number of CV splits to perform.")
+parser.add_argument("--test-size", default=0.3, type=float, help="Size of the test set as fraction or row count.")
+
+# Parse the command line arguments
+train_args = parser.parse_args()
+
+# Use the arguments to set up CV
+cv = ShuffleSplit(
+  n_splits=train_args.cv_splits,
+  test_size=train_args.test_size
+)
+```
+
+Of course you can also use other options like `sys.argv` or a package such as `typer` or `click`.
+
+### 5.5 How do I (manually) run a Pipeline?
 
 To run a `Pipeline` manually, simply submit it to an experiment like so:
 
 ```python
 from azureml.core import Workspace, Experiment
+from azureml.pipeline.core import Pipeline
 
 # Set up Workspace and Experiment
 ws = Workspace.from_config()
@@ -613,11 +653,88 @@ pipeline_run = exp.submit(pipeline)
 pipeline_run.wait_for_completion()
 ```
 
+### 5.6 How do I schedule Pipeline runs?
+
+You can schedule `Pipeline` runs using a recurring time schedule or on changes to the pipeline's input data. Both scenarios are described below.
+
 #### Running a Pipeline on a Recurring Schedule
+
+To run a `Pipeline` on recurring time schedule, you need to setup a `Schedule` and attach a `RecurringTimeSchedule` to it. The example below shows how to run a `Pipeline` on a weekly schedule.
+
+```python
+from azureml.core import Workspace
+from azureml.pipeline.core import Pipeline, Schedule, ScheduleRecurrence
+
+ws = Workspace.from_config()
+
+# Create your pipeline, see sections 5.2 and 5.3
+pipeline = Pipeline(ws, [prep_step, train_step])
+
+# Make sure the pipeline is published
+pipeline.publish("demand_forecast_training_pipeline")
+
+# Define a recurring time schedule; runs every Monday at 4:30.
+# Available frequencies: "Minute", "Hour", "Day", "Week", "Month"
+weekly_schedule = ScheduleRecurrence(
+  frequency="Week",
+  interval=1,
+  week_days=["Monday"],
+  time_of_day="4:30",
+)
+
+# Next create the schedule for the pipeline
+schedule = Schedule.create(
+  ws,
+  name="weekly_demand_forecast_training",
+  pipeline_id="demand_forecast_training_pipeline",
+  experiment_name="demand_forecasting",
+  recurrence=weekly_schedule,
+)
+```
+
+The first thing to note is that a `Pipeline` must be published for it to run on a schedule.
+
+Next, a `ScheduleRecurrence` object is used to specify the frequency of the pipeline runs.
+
+Finally, a `Schedule` object is used to tie everything together; the `Workspace`, `ScheduleRecurrence`, `Pipeline`, and `Experiment`.
 
 #### Running a Pipeline on Data Changes
 
-### 5.5 How do I schedule Pipeline runs?
+Rather than using a time schedule, you can also run a `Pipeline` whenever its input data changes. This mechanic is implemented by continuously monitoring changes in the files of (a path on) a `Datastore`. For now, it seems only file-based storage supports this type of scheduling.
+
+The example below shows how to implement this scheduling mechanic:
+
+```python
+from azureml.core import Workspace
+from azureml.pipeline.core import Pipeline, Schedule
+
+# Set up Workspace and get the Datastore to monitor for changes
+ws = Workspace.from_config()
+datastore = ws.get_default_datastore()
+
+# Create your pipeline, see sections 5.2 and 5.3
+pipeline = Pipeline(ws, [prep_step, train_step])
+
+# Make sure the pipeline is published
+pipeline.publish("churn_prediction_training_pipeline")
+
+# Create the schedule for the pipeline
+schedule = Schedule.create(
+  ws,
+  name="adhoc_churn_prediction_training",
+  pipeline_id="churn_prediction_training_pipeline",
+  experiment_name="churn_prediction",
+  datastore=datastore,
+  data_path_parameter_name="churn_data",
+  polling_interval=60,
+)
+```
+
+First we need to specify which `Datastore` should be monitored; in this example the default datastore from the `Workspace` is used.
+
+Next, we need to create and publish the `Pipeline` which is ran each time the data changes.
+
+Finally, we set up the schedule for monitoring the data. Note the reference to the default `Datastore` at the `datastore` argument. Optionally you can provide a specific path to monitor, in this example it is `churn_data`. Only when a file in this folder changes, then a pipeline run is triggered. With the `polling_interval` argument you can specify the time (in minutes) between checks for data changes.
 
 ## 6 Security
 
