@@ -8,36 +8,45 @@
     - [Using the Python SDK](#using-the-python-sdk)
     - [AzureML in Visual Studio Code](#azureml-in-visual-studio-code)
   - [1.3 What are the core components of AzureML?](#13-what-are-the-core-components-of-azureml)
-  - [2 Submitting training runs](#2-submitting-training-runs)
-    - [2.1 How do I submit a training run?](#21-how-do-i-submit-a-training-run)
+  - [2 Data, Datasets and Datastores](#2-data-datasets-and-datastores)
+    - [2.1 Where do I store my data?](#21-where-do-i-store-my-data)
+    - [2.2 What is a Dataset?](#22-what-is-a-dataset)
+      - [File Dataset](#file-dataset)
+      - [Tabular Dataset](#tabular-dataset)
+    - [2.3 How do I create a Dataset?](#23-how-do-i-create-a-dataset)
+    - [2.4 How do I consume a Dataset?](#24-how-do-i-consume-a-dataset)
+  - [3 Submitting training runs](#3-submitting-training-runs)
+    - [3.1 How do I submit a training run?](#31-how-do-i-submit-a-training-run)
       - [Interactively inside a Notebook](#interactively-inside-a-notebook)
       - [By submitting a training script](#by-submitting-a-training-script)
-    - [2.2 How do I include additional files?](#22-how-do-i-include-additional-files)
-    - [2.3 How do I install a package for training?](#23-how-do-i-install-a-package-for-training)
-    - [2.4 How do I install my own package?](#24-how-do-i-install-my-own-package)
-  - [3. Deploying models](#3-deploying-models)
-    - [3.1 How do I include additional files?](#31-how-do-i-include-additional-files)
-  - [4 Environments](#4-environments)
-    - [4.1 What are environments?](#41-what-are-environments)
-    - [4.2 Do I need Docker?](#42-do-i-need-docker)
-    - [4.3 How to control environments in AzureML?](#43-how-to-control-environments-in-azureml)
+    - [3.2 How do I include additional files?](#32-how-do-i-include-additional-files)
+    - [3.3 How do I install a package for training?](#33-how-do-i-install-a-package-for-training)
+    - [3.4 How do I install my own package?](#34-how-do-i-install-my-own-package)
+  - [4. Deploying models](#4-deploying-models)
+    - [4.1 How do I include additional files?](#41-how-do-i-include-additional-files)
+  - [5 Environments](#5-environments)
+    - [5.1 What are environments?](#51-what-are-environments)
+    - [5.2 Do I need Docker?](#52-do-i-need-docker)
+    - [5.3 How to control environments in AzureML?](#53-how-to-control-environments-in-azureml)
       - [Controlling the Python environment](#controlling-the-python-environment)
       - [Controlling the Docker environment](#controlling-the-docker-environment)
-    - [4.x What do I need to create my own Docker?](#4x-what-do-i-need-to-create-my-own-docker)
-    - [4.x What is inside a standard Docker Image?](#4x-what-is-inside-a-standard-docker-image)
-  - [5 Machine Learning Pipelines](#5-machine-learning-pipelines)
-    - [5.1 What is a ML Pipeline?](#51-what-is-a-ml-pipeline)
-    - [5.2 How do I create a Pipeline?](#52-how-do-i-create-a-pipeline)
-    - [5.3 How do I transfer data between steps?](#53-how-do-i-transfer-data-between-steps)
-    - [5.4 Passing Arguments to your Scripts Steps](#54-passing-arguments-to-your-scripts-steps)
-    - [5.5 How do I (manually) run a Pipeline?](#55-how-do-i-manually-run-a-pipeline)
-    - [5.6 How do I schedule Pipeline runs?](#56-how-do-i-schedule-pipeline-runs)
+    - [5.x What do I need to create my own Docker?](#5x-what-do-i-need-to-create-my-own-docker)
+    - [5.x What is inside a standard Docker Image?](#5x-what-is-inside-a-standard-docker-image)
+  - [6 Machine Learning Pipelines](#6-machine-learning-pipelines)
+    - [6.1 What is a ML Pipeline?](#61-what-is-a-ml-pipeline)
+    - [6.2 How do I create a Pipeline?](#62-how-do-i-create-a-pipeline)
+    - [6.3 How do I pass arguments to a steps?](#63-how-do-i-pass-arguments-to-a-steps)
+    - [6.4 How do I ingest data into a step?](#64-how-do-i-ingest-data-into-a-step)
+    - [6.5 How do I transfer data between steps?](#65-how-do-i-transfer-data-between-steps)
+    - [6.6 How do I write data from a step?](#66-how-do-i-write-data-from-a-step)
+    - [6.7 How do I (manually) run a Pipeline?](#67-how-do-i-manually-run-a-pipeline)
+    - [6.8 How do I schedule Pipeline runs?](#68-how-do-i-schedule-pipeline-runs)
       - [Running a Pipeline on a Recurring Schedule](#running-a-pipeline-on-a-recurring-schedule)
       - [Running a Pipeline on Data Changes](#running-a-pipeline-on-data-changes)
-  - [6 Security](#6-security)
-    - [6.1 How to secure an AzureML workspace?](#61-how-to-secure-an-azureml-workspace)
-    - [6.2 Which authentication options are supported?](#62-which-authentication-options-are-supported)
-    - [6.3 How can I set up Role-Based Access Control?](#63-how-can-i-set-up-role-based-access-control)
+  - [7 Security](#7-security)
+    - [7.1 How to secure an AzureML workspace?](#71-how-to-secure-an-azureml-workspace)
+    - [7.2 Which authentication options are supported?](#72-which-authentication-options-are-supported)
+    - [7.3 How can I set up Role-Based Access Control?](#73-how-can-i-set-up-role-based-access-control)
 
 ## 1 Introduction
 
@@ -108,9 +117,38 @@ The following are the most commonly used concepts / components of AzureML:
 
 These components (and others) are all available in the Python SDK and you can also find most in the sidebar menu in the AzureML Studio.
 
-## 2 Submitting training runs
+See also: <https://docs.microsoft.com/en-us/python/api/overview/azure/ml/?view=azure-ml-py>
 
-### 2.1 How do I submit a training run?
+## 2 Data, Datasets and Datastores
+
+### 2.1 Where do I store my data?
+
+### 2.2 What is a Dataset?
+
+#### File Dataset
+
+A `FileDataset` is a collection of files which do not have a tabular format. Typical examples are images, sound recordings, or JSON files. Because of the unstructured nature or the data, AzureML offers limited functionality apart from serving the files to your scripts.
+
+However, there are a few convenience functions that may come in handy:
+
+- `take(count)` - Takes `count` files from the set.
+- `take_sample(probability, seed)` - Randomly selects files with specified probability.
+- `random_split(percentage, seed)` - Randomly splits the dataset into 2 subsets.
+- `download(target_path, overwrite)` - Downloads files to a local path.
+
+See also: <https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.data.filedataset>
+
+#### Tabular Dataset
+
+A `TabularDataset` is a 2 dimensional dataset of one or more files. Typical examples are (a collection of) CSV or parquet files.
+
+### 2.3 How do I create a Dataset?
+
+### 2.4 How do I consume a Dataset?
+
+## 3 Submitting training runs
+
+### 3.1 How do I submit a training run?
 
 There are two ways to start a training run in AzureML:
 
@@ -170,7 +208,7 @@ run.log("Sample size": X.shape[0])
 
 And that allows you to log metrics to `Run` submitted by the `Experiment`.
 
-### 2.2 How do I include additional files?
+### 3.2 How do I include additional files?
 
 Place additional files in a local folder, then include them via the `source_directory` argument from `ScriptRunConfig`. For example, you could set up a `scripts` folder like so:
 
@@ -216,7 +254,7 @@ If you want to use functions from `utils.py` inside your `train.py` script, simp
 from assets.utils import some_function
 ```
 
-### 2.3 How do I install a package for training?
+### 3.3 How do I install a package for training?
 
 The `CondaDependencies` class allows you to specify which Anaconda or pip packages should be installed inside your training `Environment`:
 
@@ -254,7 +292,7 @@ run_cfg = ScriptRunConfig(
 script_run = exp.submit(run_cfg)
 ```
 
-### 2.4 How do I install my own package?
+### 3.4 How do I install my own package?
 
 If you have created a custom package yourself, you can also include it using `CondaDependencies`. To make this work, you should first build a wheel for your package (see: ) and store it in a local path.
 
@@ -287,16 +325,16 @@ More information:
 
 - <https://medium.com/swlh/beginners-guide-to-create-python-wheel-7d45f8350a94>
 
-## 3. Deploying models
+## 4. Deploying models
 
-### 3.1 How do I include additional files?
+### 4.1 How do I include additional files?
 
 See training run section [here](#12-how-do-i-include-additional-files).
 Note that you need to replace `ScriptRunConfig` by `InferenceConfig` when deploying models.
 
-## 4 Environments
+## 5 Environments
 
-### 4.1 What are environments?
+### 5.1 What are environments?
 
 Environments are used to control the software layer around your Python code. Different "layers" can be identified in an environment:
 
@@ -313,7 +351,7 @@ Python is one application data scientists typically use. However, Python also al
 For an introduction to environments, see:
 <https://docs.microsoft.com/en-us/azure/machine-learning/concept-environments>
 
-### 4.2 Do I need Docker?
+### 5.2 Do I need Docker?
 
 Typically, you do not. For most data science projects, setting up the Python environment should suffice. Docker is only needed if your code requires applications in addition to Python.
 
@@ -330,7 +368,7 @@ for name, spec in Environment.list(workspace=ws).items():
 
 Finally, if you want to use Docker on your local system you should install it manually first. The data science virtual machines from Microsoft come with Docker pre-installed.
 
-### 4.3 How to control environments in AzureML?
+### 5.3 How to control environments in AzureML?
 
 In AzureML you can control the runtime environment by using the `Environment` class. The most relevant properties for this class are the `python` and `docker` properties.
 
@@ -400,7 +438,7 @@ env.docker.base_dockerfile = r"""
 
 See also: <https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.environment.dockersection>
 
-### 4.x What do I need to create my own Docker?
+### 5.x What do I need to create my own Docker?
 
 Minimal requirements for using AzureML:
 
@@ -414,7 +452,7 @@ To access `Dataset` also install the Python `libfuse-dev` package.
 
 See also: <https://docs.microsoft.com/en-us/azure/machine-learning/how-to-deploy-custom-docker-image>
 
-### 4.x What is inside a standard Docker Image?
+### 5.x What is inside a standard Docker Image?
 
 The standard Docker includes the following components:
 
@@ -425,9 +463,9 @@ The standard Docker includes the following components:
 For more information, see:
 <https://liupeirong.github.io/amlDockerImage/>
 
-## 5 Machine Learning Pipelines
+## 6 Machine Learning Pipelines
 
-### 5.1 What is a ML Pipeline?
+### 6.1 What is a ML Pipeline?
 
 A `Pipeline` is an independently executable workflow of a machine learning task. Multiple subtasks can be included as a series of steps within the pipeline. For example, a data preparation step and a modelling step.
 
@@ -440,7 +478,7 @@ Core features:
 - Steps can use different frameworks (scikit-learn / TensorFlow / Spark / DataBricks)
 - Steps can easily pass data between them.
 
-### 5.2 How do I create a Pipeline?
+### 6.2 How do I create a Pipeline?
 
 The example below shows how to create a (very minimal) `Pipeline` consisting of two steps. Both steps run a Python script that reside in a local folder called `scripts/`.
 
@@ -486,113 +524,7 @@ This example shows the syntax for constructing a simple `Pipeline` that runs the
 
 However, by default these steps will run in parallel as there are no (data) dependencies between them. The next section shows how to configure data transfers between steps.
 
-### 5.3 How do I transfer data between steps?
-
-Steps can define both input and output datasets. These in- and outputs will create an (implicit) execution order between the steps in your pipeline. Datasets are transfered between steps by (temporary) storing them on disk (in a blob storage).
-
-To create a temporary pipeline dataset, use the `PipelineData` class. Below is a modified version of the example from the previous section now including a data transfer:
-
-```python
-from azureml.core import Workspace, ComputeTarget
-from azureml.pipeline.core import Pipeline, PipelineData
-from azureml.pipeline.steps import PythonScriptStep
-
-
-# Set up Workspace
-ws = Workspace.from_config()
-
-# Get first ComputeTarget from the Workspace
-# Note: Pipelines cannot run on the local compute target.
-if not ComputeTarget.list(ws):
-  raise RuntimeError("No compute targets available in workspace.")
-compute_target = ComputeTarget.list(ws)[0]
-
-# Use a PipelineData object for transferring data between steps
-datastore = ws.get_default_datastore()
-prepped_data = PipelineData("processed_data", datastore=datastore)
-
-# Define the data preparation step
-# Note the added outputs argument
-prep_step = PythonScriptStep(
-  name="prepare_step",
-  script_name="prep_data.py",
-  source_directory="scripts",
-  compute_target=compute_target,
-  outputs=[prepped_data],
-)
-
-# Define the model training step
-# Note the added inputs argument
-train_step = PythonScriptStep(
-  name="train",
-  script_name="train_model.py",
-  source_directory="scripts"
-  compute_target=compute_target,
-  inputs=[prepped_data],
-)
-
-# Combine the steps into a Pipeline
-pipeline = Pipeline(
-  workspace=ws,
-  steps=[prep_step, train_step],
-)
-```
-
-The example is largely the same apart from 3 additions:
-
-1. A `PipelineData` object called `prepped_data` is created to transfer data.
-2. The `outputs` argument is added to the `prep_step` referencing the `prepped_data` object.
-3. The `inputs` argument is added to the `train_step` also referencing `prepped_data` object.
-
-These additions make sure `prepped_data` is transfered between the two steps. It also introduces a dependency between the steps, making sure that the `prep_step` is executed before the `train_step`.
-
-Now you may wonder what the `prep_data.py` script should look like. The main requirement for this script is to produce a dataset and store it in a predetermined location. This location is obtained at runtime from an environmental variable called `AZUREML_DATAREFERENCE_processed_data`. You can also use `prepped_data.get_env_variable_name()` to get this name.
-
-Inside `prep_data.py` you should use the environmental variable like so:
-
-```python
-import os
-import pandas as pd
-
-# Download the Titanic dataset
-download_url = "https://www.openml.org/data/get_csv/16826755/phpMYEkMl"
-titanic_df = pd.read_csv(download_url)
-
-# Use the name provided in the PipelineData object
-dataset_name = "processed_data"
-
-# Get the location of the output folder
-output_folder = os.getenv(f"AZUREML_DATAREFERENCE_{dataset_name}")
-
-# Make sure the output folder exists!
-os.makedirs(output_folder)
-
-# Write a CSV file to the dataset
-output_file = os.path.join(output_folder, "titanic_data.csv")
-titanic_df.to_csv(output_file, index=False)
-```
-
-To access the data in the `train_model.py` script, use a similar procedure:
-
-```python
-import os
-
-# Use the name provided in the PipelineData object
-dataset_name = "processed_data"
-
-# Get the location of the input folder
-input_folder = os.getenv(f"AZUREML_DATAREFERENCE_{dataset_name}")
-
-# Read in the Titanic CSV file
-input_file = os.path.join(input_folder, "titanic_data.csv")
-titanic_df = pd.read_csv(input_file)
-```
-
-The key here is to use the environmental variable to get the location of the dataset. AzureML will make sure all files in this folder are copied over to the different compute targets for each pipeline step.
-
-A final note is that you could also pass the name of the environmental variable for `PipelineData` using an argument. The next section explains how to pass command line arguments to the Python scripts inside your `Pipeline`.
-
-### 5.4 Passing Arguments to your Scripts Steps
+### 6.3 How do I pass arguments to a steps?
 
 To pass command line arguments to a `PythonScriptStep` in your `Pipeline`, simply use the `arguments` parameter like so:
 
@@ -604,6 +536,7 @@ train_step = PythonScriptStep(
   source_directory="scripts"
   compute_target=compute_target,
   inputs=[prepped_data],
+  outputs=[model_scores],
   arguments=['--cv-splits', 5, '--test-size', 0.3],
 )
 ```
@@ -631,7 +564,208 @@ cv = ShuffleSplit(
 
 Of course you can also use other options like `sys.argv` or a package such as `typer` or `click`.
 
-### 5.5 How do I (manually) run a Pipeline?
+### 6.4 How do I ingest data into a step?
+
+The easiest way to ingest data into the steps of your pipeline is to use a `Dataset`.
+
+Within a `PythonScriptStep` you can access your `Workspace` directly from the `Run` object. Having access to the `Workspace` also grants you access to the datasets registered to it. Below is an example demonstrating how to retrieve a registered dataset called `churn_data`:
+
+```python
+from azureml.core import Run, Dataset
+
+# Get the active run and associated Workspace
+run = Run.get_context()
+ws = run.experiment.workspace
+
+# Use the Workspace to get a registered Dataset
+data = Dataset.get_by_name(ws, "churn_data")
+```
+
+However, a downside to this approach is that it is not clear that the `PythonScriptStep` uses the `Dataset` as input. A better approach is to provide the dataset as input like so:
+
+```python
+from azureml.core import Workspace, ComputeTarget, Dataset
+from azureml.pipeline.core import Pipeline
+from azureml.pipeline.steps import PythonScriptStep
+
+# Set up Workspace
+ws = Workspace.from_config()
+
+# Get first ComputeTarget from the Workspace
+if not ComputeTarget.list(ws):
+  raise RuntimeError("No compute targets available in workspace.")
+compute_target = ComputeTarget.list(ws)[0]
+
+# Create a (non-registered) TabularDataset object
+datastore = ws.get_default_datastore()
+churn_dataset = Dataset.Tabular.from_delimited_files(
+  path=(datastore, "path/to/churn_data.csv")
+)
+
+# Use a TabularDataset as input
+prep_step = PythonScriptStep(
+  name="prepare_step",
+  script_name="prep_data.py",
+  source_directory="scripts",
+  compute_target=compute_target,
+  inputs=[churn_dataset.as_named_input("churn_data")]
+)
+```
+
+Within the script, you can now access the dataset using this code:
+
+```python
+from azureml.core import Run
+
+# Get the Run and the associated input Dataset
+run = Run.get_context()
+churn_dataset = run.input_datasets["churn_data"]
+
+# Now do whatever you want with the data
+churn_df = churn_dataset.to_pandas_dataframe()
+```
+
+Note that we need to call `<dataset>.as_named_input("<name>")` when providing the `Dataset` as input. The name provided should match the one you use when getting the dataset using `run.input_datasets["<name>"]`.
+
+The example used a `TabularDataset`, but it is also possible to use a `FileDataset`. In that case change the `PythonScriptStep` to:
+
+```python
+# Use a FileDataset as input
+prep_step = PythonScriptStep(
+  name="prepare_step",
+  script_name="prep_data.py",
+  source_directory="scripts",
+  compute_target=compute_target,
+  inputs=[churn_dataset.as_named_input("churn_data").as_mount()]
+)
+```
+
+Note the added `.as_mount()` method call on the `FileDataset` object; this makes the files available to the `ComputeTarget` running the Python script. You can also choose `.as_download()` instead; this may increase performance at the cost of disk space.
+
+### 6.5 How do I transfer data between steps?
+
+Steps can define both input and output datasets. These in- and outputs will create an (implicit) execution order between the steps in your pipeline. Datasets are transfered between steps by (temporary) storing them on disk (in a blob storage).
+
+To create a temporary pipeline dataset, use the `PipelineData` class. Below is a modified version of the example from the previous section now including a data transfer:
+
+```python
+from azureml.core import Workspace, ComputeTarget
+from azureml.pipeline.core import Pipeline, PipelineData
+from azureml.pipeline.steps import PythonScriptStep
+
+
+# Set up Workspace
+ws = Workspace.from_config()
+
+# Get first ComputeTarget from the Workspace
+# Note: Pipelines cannot run on the local compute target.
+if not ComputeTarget.list(ws):
+  raise RuntimeError("No compute targets available in workspace.")
+compute_target = ComputeTarget.list(ws)[0]
+
+# Use a PipelineData object for transferring data between steps
+datastore = ws.get_default_datastore()
+prepped_data = PipelineData(
+  name="processed_data",
+  datastore=datastore
+)
+
+# Define the data preparation step
+# Note the added outputs argument
+prep_step = PythonScriptStep(
+  name="prepare_step",
+  script_name="prep_data.py",
+  source_directory="scripts",
+  compute_target=compute_target,
+  outputs=[prepped_data],
+  arguments=["--data-path", prepped_data],
+)
+
+# Define the model training step
+# Note the added inputs argument
+train_step = PythonScriptStep(
+  name="train",
+  script_name="train_model.py",
+  source_directory="scripts"
+  compute_target=compute_target,
+  inputs=[prepped_data]
+  arguments=["--data-path", prepped_data],
+)
+
+# Combine the steps into a Pipeline
+pipeline = Pipeline(
+  workspace=ws,
+  steps=[prep_step, train_step],
+)
+```
+
+There are 4 things to note about this example:
+
+1. A `PipelineData` object called `prepped_data` is created to transfer data.
+2. The `prepped_data` object appears in both the `outputs` argument of the `prep_step` and the `inputs` argument of the `train_step`.
+3. The `prepped_data` object is passed on via the `arguments` of both the `prep_step` and the `train_step`.
+
+Adding the `PipelineData` object to the `outputs` and `inputs` makes the data available to these steps. It also creates a dependency between the `prep_step` and the `train_step`, making sure that they are executed in the right order.
+
+Adding the `PipelineData` object to the `arguments` is just a convenient way to get the file location of the dataset. Inside your Python scripts you can use the arguments to access the data like so:
+
+```python
+import os
+import argparse
+import pandas as pd
+
+# Set up command line argument parsing
+parser = argparse.ArgumentParser("Argument Parser for a PythonScriptStep.")
+parser.add_argument(
+  "--data-path",
+  type=str,
+  required=True,
+  help="Location for the pipeline dataset."
+)
+args = parser.parse_args()
+
+# Get the location and append the filename
+data_file = os.path.join(args.data_path, "data.csv")
+
+# Read from the file
+df = pd.read_csv(data_file)
+
+# Or write to the file
+df.to_csv(data_file, index=False)
+```
+
+The `argparse` module handles the command line arguments; you create a `ArgumentParser` and then you add one or more arguments to it. In the example, the `prep_step` and `train_step` specified `--data-path` as their only argument, but you can add more arguments. Just make sure your `ArgumentParser` captures all arguments provided in the `PythonScriptStep`.
+
+After the arguments are parsed, you can simply use the path to read and write files. For demonstration purposes, the example shows code for both operations.
+
+### 6.6 How do I write data from a step?
+
+Some steps in a `Pipeline` might create data that you want to persist, preferably as a `Dataset`. The code below shows how to achieve this:
+
+```python
+# Create PipelineData object and register it
+# Note: Append .as_dataset() to convert to a Dataset object
+model_scores = PipelineData("model_scores", datastore).as_dataset()
+model_scores = model_scores.register(
+  name="model_scores",
+  description="Scores generated from your model."
+  create_new_version=True,
+)
+
+# Create the Python step with the output dataset attached
+prep_step = PythonScriptStep(
+  name="model_scoring",
+  script_name="score_model.py",
+  source_directory="scripts"
+  compute_target=compute_target,
+  outputs=[model_scores],
+  arguments=["--output-path", model_scores]
+)
+```
+
+Inside the `score_model.py` script you can use `argparse` to get the location for the output path. See the previous section for more details: [6.5 How do I transfer data between steps?](#65-how-do-i-transfer-data-between-steps)
+
+### 6.7 How do I (manually) run a Pipeline?
 
 To run a `Pipeline` manually, simply submit it to an experiment like so:
 
@@ -653,7 +787,7 @@ pipeline_run = exp.submit(pipeline)
 pipeline_run.wait_for_completion()
 ```
 
-### 5.6 How do I schedule Pipeline runs?
+### 6.8 How do I schedule Pipeline runs?
 
 You can schedule `Pipeline` runs using a recurring time schedule or on changes to the pipeline's input data. Both scenarios are described below.
 
@@ -736,9 +870,9 @@ Next, we need to create and publish the `Pipeline` which is ran each time the da
 
 Finally, we set up the schedule for monitoring the data. Note the reference to the default `Datastore` at the `datastore` argument. Optionally you can provide a specific path to monitor, in this example it is `churn_data`. Only when a file in this folder changes, then a pipeline run is triggered. With the `polling_interval` argument you can specify the time (in minutes) between checks for data changes.
 
-## 6 Security
+## 7 Security
 
-### 6.1 How to secure an AzureML workspace?
+### 7.1 How to secure an AzureML workspace?
 
 For a series of articles on securing an AzureML Workspace, see:
 
@@ -746,7 +880,7 @@ For a series of articles on securing an AzureML Workspace, see:
 
 - [Azure ML enterpirse security](https://docs.microsoft.com/en-us/azure/machine-learning/concept-enterprise-security)
 
-### 6.2 Which authentication options are supported?
+### 7.2 Which authentication options are supported?
 
 In short, the following options are available:
 
@@ -757,7 +891,7 @@ In short, the following options are available:
 For more information, see:
 <https://docs.microsoft.com/en-us/azure/machine-learning/how-to-setup-authentication>
 
-### 6.3 How can I set up Role-Based Access Control?
+### 7.3 How can I set up Role-Based Access Control?
 
 More information:
 
