@@ -14,7 +14,10 @@
       - [File Dataset](#file-dataset)
       - [Tabular Dataset](#tabular-dataset)
     - [2.3 How do I create a Dataset?](#23-how-do-i-create-a-dataset)
-    - [2.4 How do I consume a Dataset?](#24-how-do-i-consume-a-dataset)
+      - [Creating a TabularDataset](#creating-a-tabulardataset)
+      - [Creating a FileDataset](#creating-a-filedataset)
+    - [2.4 Should I register my Dataset?](#24-should-i-register-my-dataset)
+    - [2.5 How do I consume a registered Dataset?](#25-how-do-i-consume-a-registered-dataset)
   - [3 Submitting training runs](#3-submitting-training-runs)
     - [3.1 How do I submit a training run?](#31-how-do-i-submit-a-training-run)
       - [Interactively inside a Notebook](#interactively-inside-a-notebook)
@@ -123,28 +126,118 @@ See also: <https://docs.microsoft.com/en-us/python/api/overview/azure/ml/?view=a
 
 ### 2.1 Where do I store my data?
 
+Raw data is stored in a so-called `Datastore`. By default this is a blob storage attached to the AzureML workspace, but you can add other datastores. Different types of datastores are supported:
+
+- Files: Blob storage, file shares, data lakes, DataBricks file systems.
+- Databases: Azure SQL server, PostgreSQL server, MySQL server.
+
+The `Datastore` object in AzureML is a convenient way to connect to all these data sources. You can easily get the default datastore using the following code:
+
+```python
+from azureml.core import Workspace
+
+ws = Workspace.from_config()
+dstore = ws.get_default_datastore()
+```
+
+If you want to use another datastore, use the following code instead:
+
+```python
+from azureml.core import Workspace, Datastore
+
+ws = Workspace.from_config()
+dstore = Datastore(ws, "<name of your datastore>")
+```
+
+To list all the datastores available to the workspace, use:
+
+```python
+from azureml.core import Workspace
+
+ws = Workspace.from_config()
+ws.datastores
+```
+
+This will list all datastores that are connected to the Workspace. To connect a new `Datastore` to the AzureML workspace, you can either use the GUI or the Python SDK. In the GUI, go to `Datastores` in the sidebar, then click on `+ New Datastore` in the topleft corner of the screen. Then fill in the appropriate settings; select the type, location and authentication method for the datastore. If you want to use the Python SDK instead, see the information on this page: <https://docs.microsoft.com/en-us/azure/machine-learning/how-to-access-data>.
+
+Note that datastores are the only place where physical copies of your data are stored. Data may move through different AzureML compute targets, but the datastores are the only place where data is persisted. The datastore thus is the single source of truth!
+
 ### 2.2 What is a Dataset?
+
+A `Dataset` is a reference to a collection of data on a `Datastore`; it offers a convenient interface to access your data. Note that a Dataset does not contain any physical data; it is just a reference to data stored on a `Datastore`!
+
+There are two subtypes; a `FileDataset` and a `TabularDataset`:
 
 #### File Dataset
 
-A `FileDataset` is a collection of files which do not have a tabular format. Typical examples are images, sound recordings, or JSON files. Because of the unstructured nature or the data, AzureML offers limited functionality apart from serving the files to your scripts.
-
-However, there are a few convenience functions that may come in handy:
-
-- `take(count)` - Takes `count` files from the set.
-- `take_sample(probability, seed)` - Randomly selects files with specified probability.
-- `random_split(percentage, seed)` - Randomly splits the dataset into 2 subsets.
-- `download(target_path, overwrite)` - Downloads files to a local path.
+A `FileDataset` is a collection of files which do not have a tabular format. Typical examples are images, sound recordings, or XML files. Because of the unstructured nature or the data, AzureML offers limited functionality and interpreting anmd strructuring the data is left to you.
 
 See also: <https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.data.filedataset>
 
 #### Tabular Dataset
 
-A `TabularDataset` is a 2 dimensional dataset of one or more files. Typical examples are (a collection of) CSV or parquet files.
+A `TabularDataset` is a 2 dimensional (rows and columns) dataset of one or more files. Typical examples are CSV or parquet files. Because of the structured nature of the data, AzureML can easily convert the data to a more convenient format. For example, you can use the `.to_pandas_dataframe()` method to convert the `TabularDataset` to a pandas `DataFrame` object.
+
+See also: <https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.data.tabulardataset?>
 
 ### 2.3 How do I create a Dataset?
 
-### 2.4 How do I consume a Dataset?
+Both `TabularDataset` and `FileDataset` objects have their own creation methods (implemented on their own factory classes). The examples below show the most common ones.
+
+For all the details see:
+
+- [TabularDataset Factory Class](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.data.dataset_factory.tabulardatasetfactory)
+- [FileDataset Factory Class](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.data.dataset_factory.filedatasetfactory)
+
+#### Creating a TabularDataset
+
+Use the following code to create a `TabularDataset`:
+
+```python
+from azureml.core import Workspace, Dataset
+
+# Connect to Workspace and connect to default Datastore
+ws = Workspace.from_config()
+dstore = ws.get_default_datastore()
+
+# Create a new TabularDataset from files stored on the defualt Datastore
+titanic_ds = Dataset.Tabular.from_delimited_files(
+  path=(dstore, "tutorial_data/titanic.csv"),
+)
+
+# Process it further, for example, by creating a pandas DataFrame
+df = titanic_ds.to_pandas_dataframe()
+df.describe()
+```
+
+This code snippet reads `titanic.csv` from the `tutorial_data` path, which is stored on the workspace's default datastore. Note how the `Datastore` reference is included as the first element of the path tuple.
+
+If you dataset consists of all the CSV files in the `tutorial_data` folder, you can use a `glob` pattern to match the files. For example `"tutorial_data/*.csv"` would match all CSV files.
+
+#### Creating a FileDataset
+
+Creating a `FileDataset` works via similar factory methods, for example:
+
+```python
+from azureml.core import Workspace, Dataset
+
+# Connect to Workspace and connect to default Datastore
+ws = Workspace.from_config()
+dstore = ws.get_default_datastore()
+
+# Create a new FileDataset from files stored on the default Datastore
+titanic_ds = Dataset.File.from_files(
+  path=(dstore, "tutorial_data/mnist/*.png"),
+)
+```
+
+Then it is up to your script to further process the images in whichever way you see fit.
+
+### 2.4 Should I register my Dataset?
+
+You should register your `Dataset` if you want to make your `Dataset` available to other users or to other processes in your workspace. Registering a `Dataset` just stores the metadata in the workspace, allowing others to access it.
+
+### 2.5 How do I consume a registered Dataset?
 
 ## 3 Submitting training runs
 
