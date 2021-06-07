@@ -49,7 +49,8 @@
   - [7 Security](#7-security)
     - [7.1 How to secure an AzureML workspace?](#71-how-to-secure-an-azureml-workspace)
     - [7.2 Which authentication options are supported?](#72-which-authentication-options-are-supported)
-    - [7.3 How can I set up Role-Based Access Control?](#73-how-can-i-set-up-role-based-access-control)
+    - [7.3 How do I set up Role-Based Access Control?](#73-how-do-i-set-up-role-based-access-control)
+    - [7.4 Who can access data in a Datastore](#74-who-can-access-data-in-a-datastore)
 
 ## 1 Introduction
 
@@ -131,7 +132,7 @@ Raw data is stored in a so-called `Datastore`. By default this is a blob storage
 - Files: Blob storage, file shares, data lakes, DataBricks file systems.
 - Databases: Azure SQL server, PostgreSQL server, MySQL server.
 
-The `Datastore` object in AzureML is a convenient way to connect to all these data sources. You can easily get the default datastore using the following code:
+The `Datastore` object in AzureML is a convenient way to connect to all these data sources. You can easily connect to the default datastore using the following code:
 
 ```python
 from azureml.core import Workspace
@@ -158,7 +159,7 @@ ws = Workspace.from_config()
 ws.datastores
 ```
 
-This will list all datastores that are connected to the Workspace. To connect a new `Datastore` to the AzureML workspace, you can either use the GUI or the Python SDK. In the GUI, go to `Datastores` in the sidebar, then click on `+ New Datastore` in the topleft corner of the screen. Then fill in the appropriate settings; select the type, location and authentication method for the datastore. If you want to use the Python SDK instead, see the information on this page: <https://docs.microsoft.com/en-us/azure/machine-learning/how-to-access-data>.
+This will list all datastores that are connected to the Workspace. To register a new `Datastore` to the AzureML workspace, you can either use the GUI or the Python SDK. In the GUI, go to `Datastores` in the sidebar, then click on `+ New Datastore` in the topleft corner of the screen. Then fill in the appropriate settings; select the type, location and authentication method for the datastore. If you want to use the Python SDK instead, see the information on this page: <https://docs.microsoft.com/en-us/azure/machine-learning/how-to-access-data>.
 
 Note that datastores are the only place where physical copies of your data are stored. Data may move through different AzureML compute targets, but the datastores are the only place where data is persisted. The datastore thus is the single source of truth!
 
@@ -237,7 +238,50 @@ Then it is up to your script to further process the images in whichever way you 
 
 You should register your `Dataset` if you want to make your `Dataset` available to other users or to other processes in your workspace. Registering a `Dataset` just stores the metadata in the workspace, allowing others to access it.
 
+You can register a dataset with additional metadata, such as a description and a version. Here is a code example to register a dataset:
+
+```python
+# Assume we have a Dataset called titanic_ds and a Workspace called ws
+titanic_ds.register(
+  ws,
+  name="Titanic Data",
+  description="Data from the Titanic disaster",
+  create_new_version=True,
+)
+```
+
+The first thing to note is that we register the dataset to a specific workspace, making it available only to users in that space.
+
+Next, we can provide a name and (optionally) a description. This is just metadata describing the nature of the data. Note that the name should be unique; registering a dataset using an existing name will overwrite the previously registered dataset.
+
+This is where the `create_new_version` argument comes in. If you re-register a dataset under an existing name, setting this argument to `True` will increase its version number. However, the version is increased *only* when the file(s) underlying the dataset have changed. So if you register a dataset pointing to `titanic.csv` twice, AzureML will not automatically increase the version - even if the contents of `titanic.csv` have changed.
+
 ### 2.5 How do I consume a registered Dataset?
+
+To consume a registered dataset, you can simply use its name:
+
+```python
+from azureml.core import Worspace, Dataset
+
+ws = Workspace.from_config()
+
+# Get a registered Dataset named "Titanic Data"
+houses_ds = Dataset.get_by_name(ws, "Titanic Data")
+```
+
+To list all available datasets, you can either use the UI in Studio (Sidebar => Datasets) or the following Python code:
+
+```python
+from azureml.core import Worspace, Dataset
+
+ws = Workspace.from_config()
+
+# The get_all() method returns a dict of all registered datasets
+for name, ds in Dataset.get_all(ws).items():
+  print(
+    f"Dataset: {name} - Version: {ds.version} - Description: {ds.description}"
+  )
+```
 
 ## 3 Submitting training runs
 
@@ -984,9 +1028,26 @@ In short, the following options are available:
 For more information, see:
 <https://docs.microsoft.com/en-us/azure/machine-learning/how-to-setup-authentication>
 
-### 7.3 How can I set up Role-Based Access Control?
+### 7.3 How do I set up Role-Based Access Control?
 
 More information:
 
 - [How to assign roles](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-assign-roles)
 - [Overview of all AzureML operations](https://docs.microsoft.com/en-us/azure/role-based-access-control/resource-provider-operations#microsoftmachinelearningservices)
+
+### 7.4 Who can access data in a Datastore
+
+By default, the credentials to access a `Datastore` are saved upon creating it. Anyone with `Reader` level access to the `Workspace` will also have access to all associated datastores.
+
+This level of access may be to generic; you may want to restrict access to individual users or identities instead. This is called identity-based data access. Identity-based access does not store credentials within the `Datastore`, but instead checks access permissions at run time.
+
+In interactive settings (for example when running a Notebook), the Azure Active Directory (AAD) token of the user is checked against the access permissions of the datastore. For other compute targets, the managed identity associated with the compute target is used.
+
+Note that currently only the following data storages support identity-based access:
+
+- Azure Blob Storage
+- Azure Data Lake Storage Gen1
+- Azure Data Lake Storage Gen2
+- Azure SQL Database
+
+ Read more on how to set up identity-based access here: <https://docs.microsoft.com/en-us/azure/machine-learning/how-to-identity-based-data-access>
