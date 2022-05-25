@@ -28,15 +28,15 @@ def test_mean_missing_values():
 def test_mean_drop_missing_values():
     """Test mean for valid list of numbers."""
     numbers = [1, 2, 3, 4, None, None]
-    expected = 2.5
+    expected = 10 / 4
     assert mean(numbers,dropna=True) == expected
 
 
 def test_mean_no_list_error():
     """Test error when input is not list or tuple."""
-    with pytest.raises(TypeError) as error:
+    with pytest.raises(TypeError):
         mean(1)
-    assert error.match("Numbers must be provided as a list or tuple.")
+
 
 def test_mean_non_numeric_error():
     """Test error when input is non-numeric."""

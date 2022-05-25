@@ -24,16 +24,6 @@ def test_series_tolerance():
     pd.testing.assert_series_equal(float_series, expected, atol=.005)
 
 
-def test_dataframe():
-    """Test whether DataFrames are equal."""
-    df = pd.DataFrame({
-        "x": [4, 2, 3, 1],
-        "y": [1, 0, 1, 0],
-    })
-    expected = df.astype(float)
-    pd.testing.assert_frame_equal(df, expected, check_dtype=False)
-
-
 def test_dataframe_ignore_order():
     """Test whether DataFrames match ignoring row and column order."""
     df = pd.DataFrame({

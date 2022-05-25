@@ -4,6 +4,7 @@ import pytest
 from dict_tools import recursive_update
 
 
+# Turn into fixture!
 defaults = {
     "integer_value": 1,
     "dict_value": {
@@ -37,4 +38,6 @@ def test_overwrite_simple_key():
             "B": 2,
         }
     }
+
+    # Note: Fails due to previous test!
     assert recursive_update(overwrite, defaults) == expected
