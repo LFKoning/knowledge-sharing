@@ -4,16 +4,22 @@ import pytest
 from dict_tools import recursive_update
 
 
-defaults = {
-    "integer_value": 1,
-    "dict_value": {
-        "A": 1,
-        "B": 2,
-    },
-}
+# Create a fixture for use in tests.
+# Note: Fixture runs every time it appears in a test!
+@pytest.fixture
+def defaults():
+    """Generate a default dictionairy."""
+    return {
+        "integer_value": 1,
+        "dict_value": {
+            "A": 1,
+            "B": 2,
+        },
+    }
 
 
-def test_add_new_key():
+# Note: The fixture is provided as a test argument.
+def test_add_new_key(defaults):
     """Test adding a new simple key - value pair."""
     new_value = {"string_value": "ABC"}
     expected = {
@@ -27,7 +33,7 @@ def test_add_new_key():
     assert recursive_update(new_value, defaults) == expected
 
 
-def test_overwrite_simple_key():
+def test_overwrite_simple_key(defaults):
     """Test overwriting a simple key."""
     overwrite = {"integer_value": 100}
     expected = {
@@ -38,5 +44,4 @@ def test_overwrite_simple_key():
         }
     }
 
-    # Note: Fails because previous test changed defaults dict!
     assert recursive_update(overwrite, defaults) == expected

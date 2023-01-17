@@ -29,7 +29,7 @@ def test_mean_drop_missing_values():
     """Test mean for valid list of numbers."""
     numbers = [1, 2, 3, 4, None, None]
     expected = 10 / 4
-    assert mean(numbers,dropna=True) == expected
+    assert mean(numbers, dropna=True) == expected
 
 
 def test_mean_no_list_error():

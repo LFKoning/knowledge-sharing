@@ -9,3 +9,12 @@ def test_mean_positive_numbers():
 
     # Assert turns it into a test
     assert mean(numbers) == expected
+
+
+def test_mean_negative_numbers():
+    """Test mean for a list of negative numbers."""
+    numbers = [-1, -2, -3, -4]
+    expected = -10 / 4
+
+    # Assert turns it into a test
+    assert mean(numbers) == expected
