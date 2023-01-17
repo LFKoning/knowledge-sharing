@@ -5,14 +5,24 @@ from helpers import mean
 
 
 @pytest.mark.parametrize(
+
+    # Test function arguments to parametrize.
     argnames=["numbers", "expected"],
+
+    # Argument values as tuples.
     argvalues=[
         ([1, 2, 3], 2),
+        ([-1, -2, -3], -2),
+        ([1, 2, None], 1),
     ],
-     ids=[
+
+    # Descriptive names for test scenarios.
+    ids=[
         "Positive numbers",
-     ]
+        "Negative numbers",
+        "Missing values",
+    ]
 )
 def test_mean_parameters(numbers, expected):
-    """Test mean function using parameters"""
+    """Test mean function using parameters."""
     assert mean(numbers) == expected

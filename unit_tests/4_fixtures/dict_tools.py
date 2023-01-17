@@ -19,7 +19,7 @@ def recursive_update(new_values, old_values):
 
     for key in new_values:
 
-        # Known key and dicts value: recursively combine
+        # Existing key: recursively combine.
         if (
             key in old_values
             and isinstance(old_values[key], dict)
@@ -27,7 +27,7 @@ def recursive_update(new_values, old_values):
         ):
             recursive_update(old_values[key], new_values[key])
 
-        # Otherwise simply add / overwrite
+        # New key: simply add.
         else:
             old_values[key] = new_values[key]
 

@@ -18,7 +18,10 @@ def recursive_update(new, old):
     """
     keys = set(new) | set(old)
 
+    # Create a new dict.
     updated = {}
+
+    # Then copy the values into it.
     for key in keys:
         if key in new:
             if (
@@ -31,4 +34,6 @@ def recursive_update(new, old):
                 updated[key] = new[key]
         else:
             updated[key] = old[key]
+
+    # Return the updated values.
     return updated

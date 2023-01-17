@@ -43,3 +43,9 @@ def test_mean_non_numeric_error():
     with pytest.raises(ValueError) as error:
         mean(["A"])
     assert error.match("Cannot compute mean for non-numeric input.")
+
+
+@pytest.mark.xfail(raises=ValueError)
+def test_mean_non_numeric_error_xfail():
+    """Test error when input is non-numeric using xfail."""
+    mean(["A"])
