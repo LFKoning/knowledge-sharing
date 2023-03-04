@@ -8,8 +8,8 @@ The data is related with direct marketing campaigns (phone calls) of a Portugues
 
 The dataset contains the following variables:
 
-1. `age` (numeric)
-2. `job` : type of job (categorical)
+1. `age`: age in years (numeric)
+2. `job`: type of job (categorical)
 3. `marital` : marital status (categorical)
 4. `education`: level of education(categorical)
 5. `default`: has credit in default? (categorical)

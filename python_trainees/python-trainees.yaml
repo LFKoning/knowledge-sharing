@@ -1,0 +1,18 @@
+# Name for the Anaconda environment
+name: python-trainees
+
+# Project dependencies
+dependencies:
+  # Python interpreter and pip:
+  - python=3.9.16
+  - pip
+
+  # Anaconda dependencies:
+  - pandas==1.5.2
+  - matplotlib==3.6.2
+  - scikit-learn==1.2.1
+  - notebook==6.5.2
+  - pytest==7.1.2
+  - pylint==2.16.2
+  - black==22.6.0
+  
