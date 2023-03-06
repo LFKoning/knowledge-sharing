@@ -1,4 +1,6 @@
-"""Module for generating a daily sales report, including:
+"""Module for generating a daily sales report.
+
+The sales report includes these statistics:
 
   1. Number of unique customers.
   2. Total sales value.

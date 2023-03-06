@@ -1,4 +1,6 @@
-"""Module for generating a daily sales report, including:
+"""Module for generating a daily sales report.
+
+The sales report includes these statistics:
 
   1. Number of unique customers.
   2. Total sales value.
@@ -20,7 +22,7 @@ SALES_PATH = "../../0_data/sales/transactions.csv"
 
 REPORT_TEMPLATE = """
 ===============================================================
-Report for:                           {report_date:>25s}
+Report for:                          {report_date:>25s}
 ---------------------------------------------------------------
 Aantal klanten:                      {total_customers:25.0f}
 Totaal waarde:                       {total_sales:25.2f}
