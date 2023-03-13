@@ -11,16 +11,16 @@ from helpers import mean
 
     # Argument values as tuples.
     argvalues=[
-        ([1, 2, 3], 2),
-        ([-1, -2, -3], -2),
-        ([1, 2, None], 1),
+        ([ 1,    2,    3],  2),
+        ([-1,   -2,   -3], -2),
+        ([ 1,    2, None],  1),
     ],
 
     # Descriptive names for test scenarios.
     ids=[
         "Positive numbers",
         "Negative numbers",
-        "Missing values",
+        "Missing value",
     ]
 )
 def test_mean_parameters(numbers, expected):

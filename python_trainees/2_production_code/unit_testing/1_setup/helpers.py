@@ -12,7 +12,7 @@ def mean(numbers: list, dropna=False) -> float:
     count = len(numbers)
     numbers = [nr for nr in numbers if nr is not None]
 
-    # Check input is all numeric all numbers
+    # Check input is all numeric
     try:
         numbers = [float(nr) for nr in numbers]
     except ValueError:

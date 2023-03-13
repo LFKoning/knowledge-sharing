@@ -1,0 +1,25 @@
+product_id,product,package,package_unit,subcategory,category,price
+PRD-8371918656,Margarine,500.0,gram,Zuivel,Levensmiddelen,0.99
+PRD-8194439554,Halfvolle melk,1.0,liter,Zuivel,Levensmiddelen,1.19
+PRD-5182114600,Halfvolle melk,1.5,liter,Zuivel,Levensmiddelen,1.99
+PRD-8653060450,Volle melk,1.0,liter,Zuivel,Levensmiddelen,1.29
+PRD-5827931980,Magere Yoghurt,1.0,liter,Zuivel,Levensmiddelen,1.19
+PRD-8843993334,Volle Yoghurt,1.0,liter,Zuivel,Levensmiddelen,1.29
+PRD-2996275991,Volkoren spagheti,500.0,gram,Graanproducten,Levensmiddelen,2.09
+PRD-3605380219,Volkoren brood,1.0,heel,Graanproducten,Levensmiddelen,1.29
+PRD-6989027398,Volkoren brood,1.0,half,Graanproducten,Levensmiddelen,0.79
+PRD-7146890460,Wit brood,1.0,heel,Graanproducten,Levensmiddelen,0.99
+PRD-6934012489,Wit brood,1.0,half,Graanproducten,Levensmiddelen,0.69
+PRD-2495259776,Witte druiven,500.0,gram,Fruit,Levensmiddelen,2.79
+PRD-7601757841,Appels,8.0,stuks,Fruit,Levensmiddelen,2.79
+PRD-3365821904,Peren,4.0,stuks,Fruit,Levensmiddelen,2.99
+PRD-9327622206,Komkommer,1.0,stuks,Groenten,Levensmiddelen,1.39
+PRD-8518368548,Tomaten,500.0,gram,Groenten,Levensmiddelen,2.49
+PRD-9528238239,Sla krop,1.0,stuks,Groenten,Levensmiddelen,1.59
+PRD-3221082108,Sla gesneden,200.0,gram,Groenten,Levensmiddelen,1.19
+PRD-3831087526,Bier,1.0,krat,Alcoholische dranken,Levensmiddelen,14.17
+PRD-9153225765,Rode wijn,1.0,liter,Alcoholische dranken,Levensmiddelen,6.99
+PRD-1191876454,Witte wijn,1.0,liter,Alcoholische dranken,Levensmiddelen,5.29
+PRD-9272036524,Shampoo,0.3,liter,Haarproducten,Persoonlijke verzorging,6.49
+PRD-9036649921,Handgel,0.3,liter,Hygiene producten,Persoonlijke verzorging,2.99
+PRD-0909181025,Tandpasta,0.075,liter,Hygiene producten,Persoonlijke verzorging,2.75

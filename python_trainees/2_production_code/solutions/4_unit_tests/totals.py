@@ -28,9 +28,9 @@ def compute_totals(sales_data):
     customers = []
 
     for record in sales_data:
-        total_sales += record["prijs_totaal"]
-        total_products += record["aantal"]
-        if record["klant_id"] not in customers:
-            customers.append(record["klant_id"])
+        total_sales += record["total"]
+        total_products += record["quantity"]
+        if record["customer_id"] not in customers:
+            customers.append(record["customer_id"])
 
     return total_sales, total_products, len(customers)

@@ -1,4 +1,4 @@
-"""Module with functions for unit testing."""
+"""Module with example code for unit testing."""
 
 
 def compute_totals(sales_data):
@@ -28,9 +28,36 @@ def compute_totals(sales_data):
     customers = []
 
     for record in sales_data:
-        total_sales += record["prijs_totaal"]
-        total_products += record["aantal"]
-        if record["klant_id"] not in customers:
-            customers.append(record["klant_id"])
+        total_sales += record["total"]
+        total_products += record["quantity"]
+        if record["customer_id"] not in customers:
+            customers.append(record["customer_id"])
 
     return total_sales, total_products, len(customers)
+
+
+class Points2D:
+    """Class for 2D point transformations.
+
+    Parameters
+    ----------
+    *points : tuples
+        Points provided as (x, y) tuples for each 2D point.
+    """
+
+    def __init__(self, *points):
+        self._points = points
+
+    def move(self, delta_x, delta_y):
+        """Move points by x and y units."""
+        self._points = [
+            (x + delta_x, y + delta_y)
+            for (x, y) in self._points
+        ]
+
+    def scale(self, scale_x, scale_y):
+        """Scale points by x and y units."""
+        self._points = [
+            (x * scale_x, y * scale_y)
+            for (x, y) in self._points
+        ]

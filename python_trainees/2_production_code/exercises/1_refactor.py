@@ -8,16 +8,15 @@ for line in file:
     values = line.strip().split(",")
     record = {col: val for col, val in zip(header, values)}
 
-    record["aantal"] = int(record["aantal"])
-    record["prijs"] = float(record["prijs"])
-    record["prijs_totaal"] = float(record["prijs_totaal"])
-    record["verpakking"] = float(record["verpakking"])
+    record["quantity"] = int(record["quantity"])
+    record["price"] = float(record["price"])
+    record["total"] = float(record["total"])
 
     records.append(record)
 
 # Fix dates
 for record in records:
-    record["datum"] = dt.datetime.strptime(record["datum"], "%Y-%m-%d")
+    record["transaction_date"] = dt.datetime.strptime(record["transaction_date"], "%Y-%m-%d")
 
 # Set report date
 date = "2023-1-15"
@@ -26,38 +25,38 @@ date = "2023-1-15"
 ts = 0
 ti = 0
 for record in records:
-    if record["datum"] != dt.datetime.strptime(date, "%Y-%m-%d"):
+    if record["transaction_date"] != dt.datetime.strptime(date, "%Y-%m-%d"):
         continue
-    ts += record["prijs_totaal"]
-    ti += record["aantal"]
+    ts += record["total"]
+    ti += record["quantity"]
 
 # Compute number of customers
 cust = []
 tc = 0
 for record in records:
-    if record["datum"] != dt.datetime.strptime(date, "%Y-%m-%d"):
+    if record["transaction_date"] != dt.datetime.strptime(date, "%Y-%m-%d"):
         continue
-    if record["klant_id"] in cust:
+    if record["customer_id"] in cust:
         continue
     tc += 1
-    cust.append(record["klant_id"])
+    cust.append(record["customer_id"])
 
 # Sales per customer and item
 csls = {}
 psls = {}
 for record in records:
-    if record["datum"] != dt.datetime.strptime(date, "%Y-%m-%d"):
+    if record["transaction_date"] != dt.datetime.strptime(date, "%Y-%m-%d"):
         continue
 
-    if record["klant_id"] in csls:
-        csls[record["klant_id"]] += record["prijs_totaal"]
+    if record["customer_id"] in csls:
+        csls[record["customer_id"]] += record["total"]
     else:
-        csls[record["klant_id"]] = record["prijs_totaal"]
+        csls[record["customer_id"]] = record["total"]
 
-    if record["product"] in psls:
-        psls[record["product"]] += record["prijs_totaal"]
+    if record["product_id"] in psls:
+        psls[record["product_id"]] += record["total"]
     else:
-        psls[record["product"]] = record["prijs_totaal"]
+        psls[record["product_id"]] = record["total"]
 
 
 # Get max values
@@ -80,15 +79,15 @@ for p, t in psls.items():
 print("==========================================")
 print(f"Report for:                           {date}")
 print("------------------------------------------")
-print(f"Aantal klanten:                      {tc}")
-print(f"Totaal waarde:                       {round(ts, 2)}")
-print(f"Totaal producten                     {ti}")
+print(f"quantity klanten:                     {tc}")
+print(f"Totaal waarde:                        {round(ts, 2)}")
+print(f"Totaal producten                      {ti}")
 print("------------------------------------------")
-print(f"Gemiddeld bedrag per klant:          {round(ts / tc, 2)}")
-print(f"Gemiddeld producten per klant:       {round(ti / tc, 2)}")
+print(f"Gemiddeld bedrag per klant:           {round(ts / tc, 2)}")
+print(f"Gemiddeld producten per klant:        {round(ti / tc, 2)}")
 print("------------------------------------------")
-print(f"Beste klant:                         {bc}")
-print(f"Beste klant waarde:                  {round(bcv, 2)}")
-print(f"Beste product                        {bp}")
-print(f"Beste product waarde:                {round(bpv, 2)}")
+print(f"Beste klant:                          {bc}")
+print(f"Beste klant waarde:                   {round(bcv, 2)}")
+print(f"Beste product                         {bp}")
+print(f"Beste product waarde:                 {round(bpv, 2)}")
 print("==========================================")

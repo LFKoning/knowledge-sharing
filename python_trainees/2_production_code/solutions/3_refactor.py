@@ -27,17 +27,17 @@ REPORT_TEMPLATE = """
 ===============================================================
 Report for:                           {report_date:>25s}
 ---------------------------------------------------------------
-Aantal klanten:                      {total_customers:25.0f}
-Totaal waarde:                       {total_sales:25.2f}
-Totaal producten                     {total_products:25.0f}
+Aantal klanten:                       {total_customers:25.0f}
+Totaal waarde:                        {total_sales:25.2f}
+Totaal producten                      {total_products:25.0f}
 ---------------------------------------------------------------
-Gemiddeld bedrag per klant:          {average_sales:25.2f}
-Gemiddeld producten per klant:       {average_products:25.2f}
+Gemiddeld bedrag per klant:           {average_sales:25.2f}
+Gemiddeld producten per klant:        {average_products:25.2f}
 ---------------------------------------------------------------
-Beste klant:                         {best_customer:>25s}
-Beste klant waarde:                  {best_customer_value:25.2f}
-Beste product                        {best_product:>25s}
-Beste product waard                  {best_product_value:25.2f}
+Beste klant:                          {best_customer:>25s}
+Beste klant waarde:                   {best_customer_value:25.2f}
+Beste product                         {best_product:>25s}
+Beste product waard                   {best_product_value:25.2f}
 ===============================================================
 """
 
@@ -70,6 +70,8 @@ def read_sales_data(sales_path, report_date):
     report_date = dt.datetime.strptime(report_date, "%Y-%m-%d")
 
     records = []
+
+    # Error for file not found
     try:
         with open(sales_path, "r", encoding="utf-8") as sales_file:
             header = next(sales_file).strip().split(",")
@@ -80,18 +82,20 @@ def read_sales_data(sales_path, report_date):
                 record = {column: value for column, value in zip(header, values)}
 
                 # Convert and check date
-                record["datum"] = dt.datetime.strptime(record["datum"], "%Y-%m-%d")
+                record["transaction_date"] = dt.datetime.strptime(
+                    record["transaction_date"], "%Y-%m-%d"
+                )
                 if record["datum"] != report_date:
                     continue
 
                 # Numeric records are read as strings
-                for column in "aantal", "prijs", "prijs_totaal", "verpakking":
+                for column in "quantity", "price", "total":
                     record[column] = float(record[column])
 
                 records.append(record)
 
     except FileNotFoundError:
-        logger.error("Cannot find sales data file: '%s'!", sales_path)
+        logger.error("Cannot find sales data file: '%s'.", sales_path)
         sys.exit(1)
 
     logger.debug("Read %d sales transactions.", len(records))
@@ -118,10 +122,12 @@ def compute_totals(sales_data):
     customers = []
 
     for record in sales_data:
-        total_sales += record["prijs_totaal"]
-        total_products += record["aantal"]
-        if record["klant_id"] not in customers:
-            customers.append(record["klant_id"])
+
+        # Error for missing data
+        total_sales += record["total"]
+        total_products += record["quantity"]
+        if record["customer_id"] not in customers:
+            customers.append(record["customer_id"])
 
     logger.debug("Total sales: %.2f.", total_sales)
     logger.debug("Total products: %.0f.", total_products)
@@ -179,10 +185,10 @@ def main():
 
     total_sales, total_products, total_customers = compute_totals(sales_data)
     best_customer, best_customer_value = compute_best(
-        sales_data, "klant_id", "prijs_totaal"
+        sales_data, "customer_id", "total"
     )
     best_product, best_product_value = compute_best(
-        sales_data, "product", "prijs_totaal"
+        sales_data, "product_id", "total"
     )
 
     report = REPORT_TEMPLATE.format(
