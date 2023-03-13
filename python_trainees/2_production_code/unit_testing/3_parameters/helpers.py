@@ -8,18 +8,20 @@ def mean(numbers: list, dropna=False) -> float:
     if not isinstance(numbers, (list, tuple)):
         raise TypeError("Numbers must be provided as a list or tuple.")
 
-    # Count includes missing values
-    count = len(numbers)
-    numbers = [nr for nr in numbers if nr is not None]
+    # Check validity of provided numbers
+    valid = []
+    for number in numbers:
+        if number is None:
+            continue
 
-    # Check input is all numeric
-    try:
-        numbers = [float(nr) for nr in numbers]
-    except ValueError:
-        raise ValueError("Cannot compute mean for non-numeric input.")
+        try:
+            number = float(number)
+        except ValueError:
+            raise ValueError("Cannot compute mean for non-numeric input.")
 
-    # When dropping missing, update count
-    if dropna:
-        count = len(numbers)
+        valid.append(number)
 
-    return sum(numbers) / count
+    # When dropping missings, count valid only
+    count = len(valid) if dropna else len(numbers)
+
+    return sum(valid) / count
