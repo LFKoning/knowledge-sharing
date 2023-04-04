@@ -88,9 +88,9 @@ def read_sales_data(sales_path, report_date):
                 if record["datum"] != report_date:
                     continue
 
-                # Numeric records are read as strings
-                for column in "quantity", "price", "total":
-                    record[column] = float(record[column])
+            # Numeric records are read as strings
+            for column in "quantity", "line_nr", "price", "total":
+                record[column] = float(record[column])
 
                 records.append(record)
 
@@ -187,9 +187,7 @@ def main():
     best_customer, best_customer_value = compute_best(
         sales_data, "customer_id", "total"
     )
-    best_product, best_product_value = compute_best(
-        sales_data, "product_id", "total"
-    )
+    best_product, best_product_value = compute_best(sales_data, "product_id", "total")
 
     report = REPORT_TEMPLATE.format(
         report_date=REPORT_DATE,

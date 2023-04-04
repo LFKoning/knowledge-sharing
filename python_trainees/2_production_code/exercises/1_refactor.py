@@ -9,6 +9,7 @@ for line in file:
     record = {col: val for col, val in zip(header, values)}
 
     record["quantity"] = int(record["quantity"])
+    record["quantity"] = int(record["line_nr"])
     record["price"] = float(record["price"])
     record["total"] = float(record["total"])
 
@@ -16,7 +17,9 @@ for line in file:
 
 # Fix dates
 for record in records:
-    record["transaction_date"] = dt.datetime.strptime(record["transaction_date"], "%Y-%m-%d")
+    record["transaction_date"] = dt.datetime.strptime(
+        record["transaction_date"], "%Y-%m-%d"
+    )
 
 # Set report date
 date = "2023-1-15"
