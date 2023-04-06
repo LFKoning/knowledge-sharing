@@ -85,7 +85,7 @@ def read_sales_data(sales_path, report_date):
                 continue
 
             # Numeric records are read as strings
-            for column in "quantity", "price", "total":
+            for column in "quantity", "line_nr", "price", "total":
                 record[column] = float(record[column])
 
             records.append(record)

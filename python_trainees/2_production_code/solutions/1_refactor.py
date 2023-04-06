@@ -73,7 +73,7 @@ def read_sales_data(sales_path, report_date):
                 continue
 
             # Numeric records are read as strings
-            for column in "quantity", "price", "total":
+            for column in "quantity", "line_nr", "price", "total":
                 record[column] = float(record[column])
 
             records.append(record)
@@ -140,9 +140,7 @@ def main():
     best_customer, best_customer_value = compute_best(
         sales_data, "customer_id", "total"
     )
-    best_product, best_product_value = compute_best(
-        sales_data, "product_id", "total"
-    )
+    best_product, best_product_value = compute_best(sales_data, "product_id", "total")
 
     print(
         REPORT_TEMPLATE.format(
