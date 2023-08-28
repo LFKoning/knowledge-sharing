@@ -15,4 +15,5 @@ dependencies:
   - pytest==7.1.2
   - pylint==2.16.2
   - black==22.6.0
+  - spacy==3.5.3
   
