@@ -1,0 +1,16 @@
+[project]
+name = "minimal_package"
+description = "Minimal package example"
+version = "0.0.1"
+authors = [
+  {name = "John Doe", email = "jdoe@gmail.com"}
+]
+
+dependencies = [
+  "pandas",
+  "sklearn",
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
