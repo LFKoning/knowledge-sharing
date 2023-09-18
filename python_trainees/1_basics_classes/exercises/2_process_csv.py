@@ -17,8 +17,12 @@ def read_csv(input_path):
     list
         Data as a list of dicts.
     """
+    data = []
+
     # Parse CSV data into a list records in format:
     # {"name": "...", "gender": "...", "age": ...}
+
+    return data
 
 
 def anonymize_name(name):
@@ -35,7 +39,7 @@ def anonymize_name(name):
         Name masked with *.
     """
     # Example: "John Doe" becomes "J*** D**".
-
+    return name
 
 def main():
     """Read input data, compute factorials and write output data."""
