@@ -16,12 +16,11 @@ import datetime as dt
 from collections import Counter
 
 
-# Report date should be provided as YYYY-MM-DD
+# Report date should be provided as YYYY-MM-DD.
 REPORT_DATE = "2023-1-15"
 
-# Absolute path or relative to the script location
+# Absolute path or relative to the script location.
 SALES_PATH = "invalid/file/path"
-REPORT_PATH = f"{REPORT_DATE}-report.txt"
 
 REPORT_TEMPLATE = """
 ===============================================================
@@ -36,8 +35,8 @@ Gemiddeld producten per klant:        {average_products:25.2f}
 ---------------------------------------------------------------
 Beste klant:                          {best_customer:>25s}
 Beste klant waarde:                   {best_customer_value:25.2f}
-Beste product                         {best_product:>25s}
-Beste product waard                   {best_product_value:25.2f}
+Beste product:                        {best_product:>25s}
+Beste product waarde:                 {best_product_value:25.2f}
 ===============================================================
 """
 
@@ -77,18 +76,18 @@ def read_sales_data(sales_path, report_date):
             header = next(sales_file).strip().split(",")
 
             for line in sales_file:
-                # Create records with column names
+                # Create records with column names.
                 values = line.strip().split(",")
                 record = {column: value for column, value in zip(header, values)}
 
-                # Convert and check date
+                # Convert and filter by reporting date.
                 record["transaction_date"] = dt.datetime.strptime(
                     record["transaction_date"], "%Y-%m-%d"
                 )
                 if record["datum"] != report_date:
                     continue
 
-            # Numeric records are read as strings
+            # Numeric records are read as strings.
             for column in "quantity", "line_nr", "price", "total":
                 record[column] = float(record[column])
 
@@ -102,37 +101,60 @@ def read_sales_data(sales_path, report_date):
     return records
 
 
-def compute_totals(sales_data):
-    """Compute total sales, number of products sold and number of customers.
+def count_unique(sales_data, column_name):
+    """Compute unique items in a column.
 
     Parameters
     ----------
-    sales_data
+    sales_data : list
         List of sales data records (dicts).
+    column_name : str
+        Name of the column to process.
 
     Returns
     -------
-    float, float, int
-        Tuple of total sales, number of products sold, and
-        number of customers.
+    int
+        Number of unique values.
     """
-    logger.info("Computing sales totals on %d transactions.", len(sales_data))
-    total_sales = 0
-    total_products = 0
-    customers = []
+    logger.info("Computing unique values for column: %s", column_name)
 
-    for record in sales_data:
+    if column_name not in sales_data[0]:
+        msg = f"Column {column_name} not present in sales data."
+        logger.error(msg)
+        raise ValueError(msg)
 
-        # Error for missing data
-        total_sales += record["total"]
-        total_products += record["quantity"]
-        if record["customer_id"] not in customers:
-            customers.append(record["customer_id"])
+    unique = {record[column_name] for record in sales_data}
 
-    logger.debug("Total sales: %.2f.", total_sales)
-    logger.debug("Total products: %.0f.", total_products)
-    logger.debug("Total customers: %.0f.", len(customers))
-    return total_sales, total_products, len(customers)
+    logger.debug("Number of unique values: %d", len(unique))
+    return len(unique)
+
+
+def compute_total(sales_data, column_name):
+    """Compute total value for a column.
+
+    Parameters
+    ----------
+    sales_data : list
+        List of sales data records (dicts).
+    column_name : str
+        Name of the column to process.
+
+    Returns
+    -------
+    float
+        Total value of the column.
+    """
+    logger.info("Computing total value for column: %s", column_name)
+
+    try:
+        values = [record[column_name] for record in sales_data]
+    except KeyError as error:
+        msg = f"Column {column_name} not present in sales data."
+        logger.error(msg)
+        raise KeyError(msg) from error
+
+    logger.debug("Total value: %0.2f", sum(values))
+    return sum(values)
 
 
 def compute_best(sales_data, group_column, value_column):
@@ -153,29 +175,15 @@ def compute_best(sales_data, group_column, value_column):
         Best group and associated sales value.
     """
     logger.info("Computing best '%s' based on '%s'.", group_column, value_column)
+
     counter = Counter()
     for record in sales_data:
         counter.update({record[group_column]: record[value_column]})
 
     best = counter.most_common(1)[0]
     logger.debug("Best %s: %s.", group_column, best[0])
-    logger.debug("Best %s: %f.", value_column, best[1])
+    logger.debug("Best %s: %0.2f.", value_column, best[1])
     return best
-
-
-def write_report(report_path, report):
-    """Write report to provided path.
-
-    Parameters
-    ----------
-    report_path : str
-        Path to write report to.
-    report : str
-        String containing the formatted report.
-    """
-    logger.info("Writing report to: '%s'.", report_path)
-    with open(report_path, "w", encoding="utf-8") as report_file:
-        report_file.write(report)
 
 
 def main():
@@ -183,26 +191,29 @@ def main():
     logger.info("Generating sales report for %s.", REPORT_DATE)
     sales_data = read_sales_data(SALES_PATH, REPORT_DATE)
 
-    total_sales, total_products, total_customers = compute_totals(sales_data)
+    total_customers = count_unique(sales_data, "customer_id")
+    total_sales = compute_total(sales_data, "total")
+    total_products = compute_total(sales_data, "quantity")
     best_customer, best_customer_value = compute_best(
         sales_data, "customer_id", "total"
     )
     best_product, best_product_value = compute_best(sales_data, "product_id", "total")
+    logger.info("Finished generating sales report.")
 
-    report = REPORT_TEMPLATE.format(
-        report_date=REPORT_DATE,
-        total_sales=total_sales,
-        total_products=total_products,
-        total_customers=total_customers,
-        average_sales=total_sales / total_customers,
-        average_products=total_products / total_customers,
-        best_customer=best_customer,
-        best_customer_value=best_customer_value,
-        best_product=best_product,
-        best_product_value=best_product_value,
+    print(
+        REPORT_TEMPLATE.format(
+            report_date=REPORT_DATE,
+            total_sales=total_sales,
+            total_products=total_products,
+            total_customers=total_customers,
+            average_sales=total_sales / total_customers,
+            average_products=total_products / total_customers,
+            best_customer=best_customer,
+            best_customer_value=best_customer_value,
+            best_product=best_product,
+            best_product_value=best_product_value,
+        )
     )
-
-    write_report(REPORT_PATH, report)
 
 
 if __name__ == "__main__":

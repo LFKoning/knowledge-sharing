@@ -6,7 +6,10 @@ file = open("../../0_data/sales/transactions.csv", "r")
 header = next(file).strip().split(",")
 for line in file:
     values = line.strip().split(",")
-    record = {col: val for col, val in zip(header, values)}
+
+    record = {}
+    for i, c in enumerate(header):
+        record[c] = values[i]
 
     record["quantity"] = int(record["quantity"])
     record["quantity"] = int(record["line_nr"])
@@ -82,15 +85,15 @@ for p, t in psls.items():
 print("==========================================")
 print(f"Report for:                           {date}")
 print("------------------------------------------")
-print(f"quantity klanten:                     {tc}")
-print(f"Totaal waarde:                        {round(ts, 2)}")
+print(f"Aantal klanten:                       {tc}")
+print(f"Totaal waarde:                        {ts}")
 print(f"Totaal producten                      {ti}")
 print("------------------------------------------")
-print(f"Gemiddeld bedrag per klant:           {round(ts / tc, 2)}")
-print(f"Gemiddeld producten per klant:        {round(ti / tc, 2)}")
+print(f"Gemiddeld bedrag per klant:           {ts / tc}")
+print(f"Gemiddeld producten per klant:        {ti / tc}")
 print("------------------------------------------")
 print(f"Beste klant:                          {bc}")
-print(f"Beste klant waarde:                   {round(bcv, 2)}")
+print(f"Beste klant waarde:                   {bcv}")
 print(f"Beste product                         {bp}")
-print(f"Beste product waarde:                 {round(bpv, 2)}")
+print(f"Beste product waarde:                 {bpv}")
 print("==========================================")
