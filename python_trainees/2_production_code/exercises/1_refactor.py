@@ -47,7 +47,7 @@ for record in records:
     tc += 1
     cust.append(record["customer_id"])
 
-# Sales per customer and item
+# Sales per customer and product
 csls = {}
 psls = {}
 for record in records:
@@ -65,7 +65,7 @@ for record in records:
         psls[record["product_id"]] = record["total"]
 
 
-# Get max values
+# Get best sellers
 bc = ""
 bcv = 0
 for c, t in csls.items():

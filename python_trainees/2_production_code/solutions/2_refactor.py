@@ -12,7 +12,6 @@ The sales report includes these statistics:
 """
 import logging
 import datetime as dt
-from collections import Counter
 
 
 # Report date should be provided as YYYY-MM-DD.
@@ -155,14 +154,19 @@ def compute_best(sales_data, group_column, value_column):
         Best group and associated sales value.
     """
     logger.info("Computing best '%s' based on '%s'.", group_column, value_column)
-    counter = Counter()
+    totals = {}
     for record in sales_data:
-        counter.update({record[group_column]: record[value_column]})
+        if record[group_column] in totals:
+            totals[record[group_column]] += record[value_column]
+        else:
+            totals[record[group_column]] = record[value_column]
 
-    best = counter.most_common(1)[0]
-    logger.debug("Best %s: %s.", group_column, best[0])
-    logger.debug("Best %s: %0.2f.", value_column, best[1])
-    return best
+    # Get key corresponding to max value.
+    best_key = max(totals, key=lambda key: totals[key])
+
+    logger.debug("Best %s: %s.", group_column, best_key)
+    logger.debug("Best %s: %0.2f.", value_column, totals[best_key])
+    return best_key, totals[best_key]
 
 
 def main():

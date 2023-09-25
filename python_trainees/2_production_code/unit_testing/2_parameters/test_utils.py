@@ -1,7 +1,7 @@
 """Module containing unit tests for helper functions."""
 import pytest
 
-from helpers import mean
+from utils import mean
 
 
 @pytest.mark.parametrize(
@@ -16,11 +16,11 @@ from helpers import mean
         ([ 1,    2, None],  1),
     ],
 
-    # Descriptive names for test scenarios.
+    # Descriptive names for the tests.
     ids=[
         "Positive numbers",
         "Negative numbers",
-        "Missing value",
+        "Missing values",
     ]
 )
 def test_mean_parameters(numbers, expected):
