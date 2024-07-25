@@ -1,6 +1,6 @@
 """Module for processing personal data."""
 
-# Define filenames as constants
+# Define filename as constant
 INPUT_FILE = "../../0_data/persons/personal_data.csv"
 
 
