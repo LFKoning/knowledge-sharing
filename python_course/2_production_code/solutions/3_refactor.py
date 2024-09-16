@@ -16,7 +16,7 @@ import datetime as dt
 
 
 # Report date should be provided as YYYY-MM-DD.
-REPORT_DATE = "2023-1-15"
+REPORT_DATE = "2023-01-15"
 
 # Absolute path or relative to the script location.
 SALES_PATH = "invalid/file/path"
@@ -65,7 +65,6 @@ def read_sales_data(sales_path, report_date):
     """
     logger.info("Reading sales data for: %s.", report_date)
     logger.debug("Reading sales data from: '%s'.", sales_path)
-    report_date = dt.datetime.strptime(report_date, "%Y-%m-%d")
 
     records = []
 
@@ -79,11 +78,8 @@ def read_sales_data(sales_path, report_date):
                 values = line.strip().split(",")
                 record = {column: value for column, value in zip(header, values)}
 
-                # Convert and filter by reporting date.
-                record["transaction_date"] = dt.datetime.strptime(
-                    record["transaction_date"], "%Y-%m-%d"
-                )
-                if record["datum"] != report_date:
+                # Filter by reporting date.
+                if record["transaction_date"] != report_date:
                     continue
 
             # Numeric records are read as strings.

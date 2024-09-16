@@ -14,7 +14,7 @@ import datetime as dt
 
 
 # Report date should be provided as YYYY-MM-DD.
-REPORT_DATE = "2023-1-15"
+REPORT_DATE = "2023-01-15"
 
 # Absolute path or relative to the script location.
 SALES_PATH = "../../0_data/sales/transactions.csv"
@@ -53,8 +53,6 @@ def read_sales_data(sales_path, report_date):
     list
         List of sales records (dicts) for the provided date.
     """
-    report_date = dt.datetime.strptime(report_date, "%Y-%m-%d")
-
     records = []
     with open(sales_path, "r", encoding="utf-8") as sales_file:
         header = next(sales_file).strip().split(",")
@@ -64,10 +62,7 @@ def read_sales_data(sales_path, report_date):
             values = line.strip().split(",")
             record = {column: value for column, value in zip(header, values)}
 
-            # Convert and filter by reporting date.
-            record["transaction_date"] = dt.datetime.strptime(
-                record["transaction_date"], "%Y-%m-%d"
-            )
+            # Filter by reporting date.
             if record["transaction_date"] != report_date:
                 continue
 

@@ -25,7 +25,7 @@ for record in records:
     )
 
 # Set report date
-date = "2023-1-15"
+date = "2023-01-15"
 
 # Compute totals for the day
 ts = 0
