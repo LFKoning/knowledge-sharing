@@ -10,7 +10,6 @@ The sales report includes these statistics:
   6. Highest valued customer.
   7. Highest valued product.
 """
-import datetime as dt
 
 
 # Report date should be provided as YYYY-MM-DD.

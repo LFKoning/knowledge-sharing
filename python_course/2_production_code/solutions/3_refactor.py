@@ -12,7 +12,6 @@ The sales report includes these statistics:
 """
 import sys
 import logging
-import datetime as dt
 
 
 # Report date should be provided as YYYY-MM-DD.
@@ -116,7 +115,7 @@ def count_unique(sales_data, column_name):
     if column_name not in sales_data[0]:
         msg = f"Column {column_name} not present in sales data."
         logger.error(msg)
-        raise ValueError(msg)
+        raise RuntimeError(msg)
 
     unique = {record[column_name] for record in sales_data}
 
@@ -146,7 +145,7 @@ def compute_total(sales_data, column_name):
     except KeyError as error:
         msg = f"Column {column_name} not present in sales data."
         logger.error(msg)
-        raise KeyError(msg) from error
+        raise RuntimeError(msg) from error
 
     logger.debug("Total value: %0.2f", sum(values))
     return sum(values)

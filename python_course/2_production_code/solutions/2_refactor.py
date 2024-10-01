@@ -11,7 +11,6 @@ The sales report includes these statistics:
   7. Highest valued product.
 """
 import logging
-import datetime as dt
 
 
 # Report date should be provided as YYYY-MM-DD.
