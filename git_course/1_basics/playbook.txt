@@ -1,0 +1,209 @@
+# ------------------------------- #
+# commit and log                  #
+# ------------------------------- #
+
+git init
+
+echo '"""Main program module."""' > main.py
+
+git status
+
+git add -A
+
+git status
+
+git commit -m "Create main module."
+
+
+# ------------------------------- #
+# multiple commits                #
+# ------------------------------- #
+
+echo '"""Utility functions module."""' > utils.py
+
+git add -A
+
+git commit -m "Create utility module."
+
+# ------------------------------- #
+"""Main program module."""
+
+
+def main():
+	"""Main program routine."""
+	print("Hello World!")
+
+
+if __name__ == "__main__":
+	main()
+
+# ------------------------------- #
+
+git add -A
+
+git commit -m "Update main module."
+
+git log
+
+
+# ------------------------------- #
+# git diff                        #
+# ------------------------------- #
+
+
+# ------------------------------- #
+"""Utility functions module."""
+
+def mean(values):
+	"""Compute mean of a list of values."""
+	return sum(values) / len(values)
+
+# ------------------------------- #
+
+git diff utils.py
+
+git add -A
+
+git diff utils.py
+
+git diff HEAD utils.py
+
+
+# ------------------------------- #
+# .gitignore                      #
+# ------------------------------- #
+
+mkdir data
+
+git status
+
+ni data/.gitkeep
+
+ni data/real_data.csv
+
+git status
+
+echo "# Cache files.
+__pycache__/
+*.py[cod]
+
+# Notebook checkpoints.
+.ipynb_checkpoints
+
+# Data folder.
+data/**
+# !data/.gitkeep
+
+# Virtual environments.
+.env
+.venv
+env/
+ENV/
+venv/" > .gitignore
+
+
+# ------------------------------- #
+# checkout file                   #
+# ------------------------------- #
+
+git log
+
+git checkout <older>  -- main.py
+
+cat main.py
+
+git checkout HEAD main.py
+
+cat main.py
+
+
+# ------------------------------- #
+# checkout commit                 #
+# ------------------------------- #
+
+git log
+
+git checkout <older>
+
+git checkout main
+
+
+# ------------------------------- #
+# reset hard                      #
+# ------------------------------- #
+
+del *.py
+
+dir
+
+git reset --hard HEAD
+
+dir
+
+git log
+
+git reset --hard <older>
+
+dir
+
+git log
+
+git checkout <latest>
+
+git checkout main
+
+git reset --hard <latest>
+
+
+# ------------------------------- #
+# HEAD and refs                   #
+# ------------------------------- #
+
+cat .git/HEAD
+
+cat .git/refs/heads/main
+
+del utils.py
+
+git add -A
+
+git commit -m "Remove utils"
+
+cat .git/HEAD
+
+cat .git/refs/heads/main
+
+git log
+
+
+# ------------------------------- #
+# create branch                   #
+# ------------------------------- #
+
+cat .git/HEAD
+
+cat .git/refs/heads/main
+
+git checkout -b develop
+
+git branch
+
+cat .git/HEAD
+
+cat .git/refs/heads/develop
+
+mkdir src/hello_world
+mv main.py src/hello_world
+
+git add -A
+git commit -m "Refactor structure"
+
+cat .git/refs/heads/develop
+
+cat .git/refs/heads/main
+
+
+
+
+
+
