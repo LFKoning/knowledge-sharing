@@ -47,6 +47,26 @@ git log
 
 
 # ------------------------------- #
+# commit objects                  #
+# ------------------------------- #
+
+git cat-file -p <commit>
+
+git cat-file -p <tree>
+
+git cat-file -p <file>
+
+
+# ------------------------------- #
+# commit update                   #
+# ------------------------------- #
+
+git cat-file -p <commit>
+
+git cat-file -p <tree>
+
+
+# ------------------------------- #
 # git diff                        #
 # ------------------------------- #
 
@@ -203,6 +223,39 @@ cat .git/refs/heads/develop
 cat .git/refs/heads/main
 
 
+# ------------------------------- #
+# merge                           #
+# ------------------------------- #
+
+git checkout develop
+
+git log
+
+git checkout main
+
+git log
+
+git merge develop
+
+# Fix conflict
+
+git add -A
+git commit -m "Merge develop"
+
+git log
+
+git cat-files -p <merge commit>
+
+
+# ------------------------------- #
+# squash merge                    #
+# ------------------------------- #
+
+git checkout main
+
+git log
+
+git merge --squash develop
 
 
 
