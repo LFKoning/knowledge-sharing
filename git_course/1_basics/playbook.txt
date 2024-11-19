@@ -224,8 +224,10 @@ cat .git/refs/heads/main
 
 
 # ------------------------------- #
-# merge                           #
+# merge no fast forward           #
 # ------------------------------- #
+
+cd merge-no-ff
 
 git checkout develop
 
@@ -251,12 +253,65 @@ git cat-files -p <merge commit>
 # squash merge                    #
 # ------------------------------- #
 
+cd merge-squash
+
 git checkout main
 
 git log
 
 git merge --squash develop
 
+git log
 
+# TODO: next steps?
+
+
+# ------------------------------- #
+# rebase merge                    #
+# ------------------------------- #
+
+cd merge-rebase
+
+git checkout develop
+
+git log
+
+# Parent is Main commit 1.
+git cat-file -p 08f89bcb30d3f1bbe45bafc7b1bffc42a207fe07
+
+git rebase main
+
+# New commits on the develop branch.
+# Heads have not moved.
+git log
+
+# Parent is now Main commit 2.
+git cat-file -p 2d11814c77c457e2436c74d1d23697878e90f465
+
+
+
+# ------------------------------- #
+# merge conflict                  #
+# ------------------------------- #
+
+cd merge-conflict
+
+git checkout main
+
+git log
+
+# Displays conflict warning.
+git merge develop
+
+# Nothing has changed yet.
+git log
+
+# Show conflicts; marked conflicts from main and develop.
+git diff
+
+# Edit the file, fix the conflicts.
+
+git add -A
+git commit -m "Merged develop"
 
 
