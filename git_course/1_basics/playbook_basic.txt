@@ -1,3 +1,6 @@
+TODO: Add reflog somewhere
+TODO: Add git log --graph somewhere
+
 # ------------------------------- #
 # commit and log                  #
 # ------------------------------- #
