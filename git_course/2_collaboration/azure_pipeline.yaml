@@ -1,0 +1,39 @@
+trigger:
+- main
+- develop
+
+pool:
+  vmImage: ubuntu-latest
+
+strategy:
+  matrix:
+    Python310:
+      python.version: '3.10'
+    Python311:
+      python.version: '3.11'
+
+steps:
+
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '$(python.version)'
+  displayName: 'Use Python $(python.version)'
+
+- script: |
+    python -m pip install --upgrade pip
+    pip install .[dev]
+  displayName: 'Installing your package.'
+
+- script: |
+    black --check .
+  displayName: 'Check formatting with black.'
+
+- script: |
+    pylint src
+  displayName: 'Analysing the code with pylint.'
+
+
+- script: |
+    pip install pytest pytest-azurepipelines
+    pytest
+  displayName: 'Running unit tests with pytest.'
