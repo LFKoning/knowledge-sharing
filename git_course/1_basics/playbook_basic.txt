@@ -1,21 +1,26 @@
-TODO: Add reflog somewhere
-TODO: Add git log --graph somewhere
-
 # ------------------------------- #
-# commit and log                  #
+# initial commit                  #
 # ------------------------------- #
 
 git init
 
 echo '"""Main program module."""' > main.py
 
+# New items in red
 git status
 
 git add -A
 
+# New items in green
 git status
 
 git commit -m "Create main module."
+
+# Nothing to commit, tree clean 
+git status
+
+# Show the log
+git log
 
 
 # ------------------------------- #
@@ -28,24 +33,24 @@ git add -A
 
 git commit -m "Create utility module."
 
+code main.py
+
+# copy - paste into main.py
 # ------------------------------- #
-"""Main program module."""
-
-
 def main():
-	"""Main program routine."""
-	print("Hello World!")
+    """Main program routine."""
+    print("Hello World!")
 
 
 if __name__ == "__main__":
-	main()
-
+    main()
 # ------------------------------- #
 
 git add -A
 
 git commit -m "Update main module."
 
+# Now displays 3 commits.
 git log
 
 
@@ -53,43 +58,30 @@ git log
 # commit objects                  #
 # ------------------------------- #
 
-git cat-file -p <commit>
+# Look at first commit.
 
-git cat-file -p <tree>
+# Commit object points to tree.
+git cat-file -p _
 
-git cat-file -p <file>
+# Tree object points to files.
+git cat-file -p _
 
-
-# ------------------------------- #
-# commit update                   #
-# ------------------------------- #
-
-git cat-file -p <commit>
-
-git cat-file -p <tree>
+# Blob object shows file contents.
+git cat-file -p _
 
 
 # ------------------------------- #
-# git diff                        #
+# commit added file               #
 # ------------------------------- #
 
+# Look at second commit.
+git cat-file -p _
 
-# ------------------------------- #
-"""Utility functions module."""
+# Look at second tree.
+# Note that main.py uses same blob.
+git cat-file -p _
 
-def mean(values):
-	"""Compute mean of a list of values."""
-	return sum(values) / len(values)
-
-# ------------------------------- #
-
-git diff utils.py
-
-git add -A
-
-git diff utils.py
-
-git diff HEAD utils.py
+# Optional: look at update commit.
 
 
 # ------------------------------- #
@@ -98,15 +90,28 @@ git diff HEAD utils.py
 
 mkdir data
 
+# Folder does not show...
 git status
 
 ni data/.gitkeep
 
-ni data/real_data.csv
+ni data/data.csv
 
+# File make the folder appear.
 git status
 
-echo "# Cache files.
+git add -A
+
+# Shows two files.
+git status
+
+git reset
+
+code .gitignore
+
+# copy - paste into .gitignore
+# ------------------------------- #
+# Cache files.
 __pycache__/
 *.py[cod]
 
@@ -122,7 +127,62 @@ data/**
 .venv
 env/
 ENV/
-venv/" > .gitignore
+venv/
+# ------------------------------- #
+
+# Data folder is now ignored entirely.
+git status
+
+# Uncomment # !data/.gitkeep
+# Shows data/.gitkeep again.
+git status
+
+git add -A
+git commit -m "Add .gitignore and data folder"
+
+
+# ------------------------------- #
+# git diff                        #
+# ------------------------------- #
+
+code utils.py
+
+# copy - paste into utils.py
+# ------------------------------- #
+def mean(values):
+    """Compute mean of a list of values."""
+    return sum(values) / len(values)
+# ------------------------------- #
+
+# Show local changes.
+git diff utils.py
+
+git add -A
+
+# Added to index, no changes.
+git diff utils.py
+
+# Compare to last commit directly.
+git diff HEAD utils.py
+
+git commit -m "Add mean to utils"
+
+code utils.py
+
+# copy - paste into utils.py
+# ------------------------------- #
+def abs_mean(values):
+    """Compute mean of a list of values."""
+    values = [abs(v) for v in values]
+    return sum(values) / len(values)
+# ------------------------------- #
+
+git add -A
+
+git commit -m "Add abs_mean to utils"
+
+# Compare main to first commit.
+git diff _ _ utils.py
 
 
 # ------------------------------- #
@@ -131,12 +191,22 @@ venv/" > .gitignore
 
 git log
 
-git checkout <older>  -- main.py
-
+# Updated version of main.
 cat main.py
 
+# Checkout main.py from first commit.
+git checkout _  main.py
+
+# Original version of main.
+cat main.py
+
+# Show differences with HEAD.
+git diff HEAD main.py
+
+# Checkout main.py from HEAD.
 git checkout HEAD main.py
 
+# Back to updated main.
 cat main.py
 
 
@@ -146,84 +216,152 @@ cat main.py
 
 git log
 
-git checkout <older>
+# Moves HEAD to the oldest commit!
+git checkout _
 
+# No longer seeing main...
+git log
+
+# No longer working on main...
+git status
+
+# Oldest version of main.
+cat main.py
+
+# Only untracked data.csv in data/
+dir data/
+
+# Can go back when no changes made.
 git checkout main
+
+# HEAD is pointing to main.
+git log
+
+# Everything is back...
+dir
 
 
 # ------------------------------- #
 # reset hard                      #
 # ------------------------------- #
 
+# Deleted all Python files... woops!
 del *.py
 
 dir
 
+# Hard reset to restore working directory.
 git reset --hard HEAD
 
 dir
 
-git log
-
-git reset --hard <older>
+# Hard reset to first commit.
+git reset --hard _
 
 dir
 
+# HEAD and main set to old commit.
 git log
 
-git checkout <latest>
+# Use reflog to reset back to the last commit.
+git reflog
 
-git checkout main
+git log -g
 
-git reset --hard <latest>
+# Checkout the last commit.
+git reset --hard _
+
+# Pfew, all good...
+git log
 
 
 # ------------------------------- #
 # HEAD and refs                   #
 # ------------------------------- #
 
+# Points to refs/heads/main.
 cat .git/HEAD
 
+# Points to last commit.
 cat .git/refs/heads/main
 
-del utils.py
+ni README.md
 
 git add -A
 
-git commit -m "Remove utils"
+git commit -m "Add README"
 
-cat .git/HEAD
-
+# Points to the new commit.
+# Heads are dynamically updated labels.
 cat .git/refs/heads/main
 
-git log
+# No change here.
+cat .git/HEAD
 
 
 # ------------------------------- #
 # create branch                   #
 # ------------------------------- #
 
+# Points to main.
 cat .git/HEAD
 
-cat .git/refs/heads/main
-
+# Creates a new branch.
 git checkout -b develop
 
-git branch
-
+# Now points to develop.
 cat .git/HEAD
 
-cat .git/refs/heads/develop
-
-mkdir src/hello_world
-mv main.py src/hello_world
-
-git add -A
-git commit -m "Refactor structure"
-
+# Points to same commit as main!
+# Only HEAD has changed.
 cat .git/refs/heads/develop
 
 cat .git/refs/heads/main
+
+# Create a new commit.
+echo "# Hello World" > README.md
+git add -A
+git commit -m "Update README.md"
+
+# Develop has moved on.
+cat .git/refs/heads/develop
+
+# Main has not.
+cat .git/refs/heads/main
+
+
+
+# ------------------------------- #
+# merge fast forward           #
+# ------------------------------- #
+
+cd merge-ff
+
+# Two commits on develop after first main commit.
+git log
+
+# Show the files.
+dir
+cat develop.txt
+
+# Switch to main branch
+git checkout main
+
+# No commits after the first, can fast forward.
+git log
+
+# Only main.txt
+dir
+
+# Note that git says it fast forwarded.
+git merge develop
+
+# Check the log for main.
+# Main and develop piont to the same commit.
+git log
+
+# Main now has develop.txt too.
+dir
 
 
 # ------------------------------- #
@@ -232,41 +370,26 @@ cat .git/refs/heads/main
 
 cd merge-no-ff
 
-git checkout develop
-
+# Show commits on develop branch.
 git log
 
+# Switch to main branch.
 git checkout main
 
+# Second commit sits between develop commits.
 git log
 
+# Merge develop into main.
 git merge develop
 
-# Fix conflict
-
-git add -A
-git commit -m "Merge develop"
-
+# Got an extra merge commit!
 git log
 
+# Double parent on the merge commit!
 git cat-files -p <merge commit>
 
-
-# ------------------------------- #
-# squash merge                    #
-# ------------------------------- #
-
-cd merge-squash
-
-git checkout main
-
-git log
-
-git merge --squash develop
-
-git log
-
-# TODO: next steps?
+# Show as a graph.
+git log --graph
 
 
 # ------------------------------- #
@@ -275,22 +398,70 @@ git log
 
 cd merge-rebase
 
-git checkout develop
-
+# Again 2 commits.
 git log
 
-# Parent is Main commit 1.
-git cat-file -p 08f89bcb30d3f1bbe45bafc7b1bffc42a207fe07
+# Switch to main.
+git checkout main
 
-git rebase main
-
-# New commits on the develop branch.
-# Heads have not moved.
+# Commit in between develop commits.
 git log
 
-# Parent is now Main commit 2.
-git cat-file -p 2d11814c77c457e2436c74d1d23697878e90f465
+# Rebase develop on current main.
+# Switches branch to develop!
+git rebase main develop
 
+# Show log.
+# Develop commits now follow main commits.
+# Rewrite created new commits (check hashes).
+git log
+
+# Switch back to main.
+git checkout main
+
+# Perform fast forward merge.
+git merge
+
+# Commits now both on main and develop.
+# No merge commit was created!
+git log
+
+# Graph shows single line.
+git log --graph
+
+
+# ------------------------------- #
+# squash merge                    #
+# ------------------------------- #
+
+cd merge-squash
+
+# Two commits on develop.
+git log
+
+# Switch to main.
+git checkout main
+
+# Two commits on main.
+git log
+
+# Squash merge.
+git merge --squash develop
+
+# Nothing changed; merged but not committed...
+git log
+
+# Git commit
+git status
+git add -A
+git commit -m "Merge develop"
+
+# Check commit on main.
+git log
+
+# Check log on develop.
+# Branches have become incompatible!
+git log develop
 
 
 # ------------------------------- #
