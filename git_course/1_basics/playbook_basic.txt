@@ -470,22 +470,32 @@ git log develop
 
 cd merge-conflict
 
-git checkout main
-
 git log
 
 # Displays conflict warning.
 git merge develop
 
-# Nothing has changed yet.
+# No new commits yet.
 git log
 
-# Show conflicts; marked conflicts from main and develop.
-git diff
+# View conflicting files under unmerged paths.
+git status
 
-# Edit the file, fix the conflicts.
+# Can always abort the merge
+git merge --abort
+
+git status
+
+git merge develop
+
+# Show conflicted file.
+cat main.txt
+
+# Edit the file, fix any conflicts.
+code main.txt
 
 git add -A
-git commit -m "Merged develop"
+git commit -m "Merge develop"
 
+git log --graph
 
