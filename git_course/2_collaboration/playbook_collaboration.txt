@@ -1,0 +1,330 @@
+# ------------------------------- #
+# git clone                       #
+# ------------------------------- #
+
+# Go to https://www.github.com
+
+# Click [Sign in] top right.
+
+# Click [Create repository] in left menu.
+
+# Fill in [pig-latin] as name.
+
+# Add a description.
+
+# Select [Public] for the course.
+
+# Deselect [Add README].
+
+# Select [None] for .gitignore.
+
+# Set licens to [None].
+
+# Click [Create repository]
+
+
+# ------------------------------- #
+# git clone                       #
+# ------------------------------- #
+
+git clone https://www.github.com/LFKoning/git-cursus
+
+cd git-cursus
+
+dir
+
+# On the main branch.
+# Note the origin references.
+git log
+
+# Remote origin matches clone URL.
+# Note fetch and push are separate.
+git remote -v
+
+
+# ------------------------------- #
+# git remote management           #
+# ------------------------------- #
+
+mkdir pig-latin
+
+cd pig-latin
+
+# Unzip pig-latin.zip into the folder
+
+# Initialize and commit.
+git init
+
+git add -A
+
+git commit -m "Initial commit"
+
+# Use the repository created earlier.
+# Using origin as name is standard.
+git remote add origin https://www.github.com/LFKoning/pig-latin.git
+
+# Show remote was added succesfully.
+git remote -v
+
+# Push and set up tracking on origin/main.
+git push --set-upstream origin main
+
+# Can add another remote.
+git remote add backup https://www.github.com/LFKoning/backup-repo.git
+
+# Show both remotes.
+git remote -v
+
+# Push to the other remote
+git push backup
+
+# To change a remote URL.
+git remote set-url backup https://www.github.com/LFKoning/does-not-exist
+
+git remote -v
+
+# Fails... does not exist
+git push backup
+
+# To delete a remote.
+git remote remove backup
+
+git remote -v
+
+
+# ------------------------------- #
+# git branch tracking             #
+# ------------------------------- #
+
+# Only have main branch
+git branch -a
+
+# Create a new local branch
+git checkout -b test-tracking
+
+# No upstream branch to track...
+git push
+
+# Show local and remote branches.
+git branch -a
+
+# Show tracking info using -vv.
+git branch -vv
+
+# Push and set tracking to origin/test-tracking.
+git push --set-upstream origin test-tracking
+
+# Show local and remote branches.
+git branch -a
+
+# Show tracking info using -vv.
+git branch -vv
+
+# Change tracking manually.
+# Note the remote is in the path spec.
+git branch --set-upstream-to origin/main
+
+git branch -vv
+
+
+# ------------------------------- #
+# delete branch                   #
+# ------------------------------- #
+
+# Switch to main branch.
+git checkout main
+
+git branch -a
+
+# Delete a local branch.
+git branch -d test-tracking
+
+# Local gone, but not remote.
+git branch -a
+
+# Remote requires a push.
+git push origin --delete test-tracking
+
+git branch -a
+
+
+# ------------------------------- #
+# git fetch & pull                #
+# ------------------------------- #
+
+# Edit README in GitHub, commit remote change.
+# Set commit message to "Update README remote"
+
+# Create a local change.
+code README.md
+
+git diff README.md
+
+# Compare against origin, changes not visible.
+git log main..origin/main
+
+# Behind one commit, can fast forward.
+# No impact on working directory!
+git fetch
+
+# Show missing local commits.
+git log main..origin/main
+
+# Cannot pull, uncommitted local changes.
+git pull
+
+# Commit the changes.
+git add -A
+git commit -m "Update README local"
+
+# Note that brances have diverged!
+git status
+
+# Creates a conflict.
+git pull
+
+git status
+
+# Fix conflict as per usual.
+code README.md
+
+git add -A
+git commit -m "Fix conflicts"
+git push
+
+
+# ------------------------------- #
+# GH: make pull request           #
+# ------------------------------- #
+
+# Create a new branch
+git checkout -b feature/personalize
+
+# Fill in all names and e-mail addresses.
+code pyproject.toml
+
+# Fill in names, e-mail addresses and URLs.
+code README.md
+
+# Commit your work.
+git add -A
+git commmit -m "Add personal info"
+
+# Create the remote branch.
+git push --set-upstream origin feature/personalize
+
+# Click the Pull Request link.
+# Go to repository on GitHub > Pull Requests > Create.
+
+# Fill in Title and Description.
+
+# Show reviewers option.
+
+# Create draft pull request.
+
+# Go to [Settings] > [Collaborators]
+
+# Invite the trainee left of you.
+
+# Check inbox top left screen.
+
+# Accept the invitation.
+
+# Add trainee as reviewer to PR draft.
+
+# Click [Ready to review].
+
+
+# ------------------------------- #
+# GH: review pull request         #
+# ------------------------------- #
+
+# Go to Repository > Pull Requests > Add your review
+
+# Check the code under [Files Changed]
+
+# Use [+] to add inline comments to the code.
+
+# Optional: Use [Viewed] check box to complete a file.
+
+# Use [Review changes] to finalize the review.
+
+# Write an overal assessment of the changes.
+
+# Choose to approve or request changes.
+
+# Submit review.
+
+
+# ------------------------------- #
+# GH: create workflow             #
+# ------------------------------- #
+
+# Go to Repository > Actions
+
+# Click [Configure] on [Python Package].
+
+# Check file name: /.github/workflows/<name>.yaml
+
+# Check properties:
+
+	# name; should match the file name.
+
+	# on; which actions and branches trigger the Workflow
+
+	# jobs; define actions.
+
+	# runs-on; OS to run on, prefer Linux
+
+	# strategy > matrix > python-version; Python versions to test.
+
+	# steps; actions to perform.
+
+	# steps > uses: pre-defined action -> see marketplace.
+
+	# steps > run: run a shell script.
+
+# Copy-paste in github_pipeline.yaml
+
+# Commit the changes.
+
+# Go to Repository > Actions.
+
+# Look at the Workflow run.
+
+
+# ------------------------------- #
+# GH: create ruleset              #
+# ------------------------------- #
+
+# Go to Repository > Settings > Rules > Rulesets.
+
+# Click [New ruleset] > [New branch ruleset].
+
+# Name: ProtectMain.
+
+# Set to [Active].
+
+# Target branches: Add main branch.
+
+# Require Pull Request before merging.
+
+	# Required approvals: 1.
+
+	# Allowed merge methods.
+
+# Require status checks to pass [Add checks].
+
+	# Select [code_quality] x2
+
+# Hit [Create] button (and authenticate).
+
+# Go back to open Pull Request.
+
+# Note the extra checks.
+
+# Close and Reopen to run the checks.
+
+
+
+
