@@ -1,5 +1,5 @@
 # ------------------------------- #
-# git clone                       #
+# GH: create repo                 #
 # ------------------------------- #
 
 # Go to https://www.github.com
@@ -194,7 +194,7 @@ git push
 
 
 # ------------------------------- #
-# GH: make pull request           #
+# GH: create PR                   #
 # ------------------------------- #
 
 # Create a new branch
@@ -236,7 +236,7 @@ git push --set-upstream origin feature/personalize
 
 
 # ------------------------------- #
-# GH: review pull request         #
+# GH: review PR                   #
 # ------------------------------- #
 
 # Go to Repository > Pull Requests > Add your review
@@ -324,6 +324,198 @@ git push --set-upstream origin feature/personalize
 # Note the extra checks.
 
 # Close and Reopen to run the checks.
+
+
+# ------------------------------- #
+# GH: create issues               #
+# ------------------------------- #
+
+# Go to Repository > Issues
+
+# Click [New issue]
+
+# Fill in [Title]: Add personal information.
+
+# Fill in [Description]: Add personal info to pyproject.toml / README.md
+
+# Assign to self.
+
+# Select [enhancement] as label.
+
+# Click [Create].
+
+# Click on Repositry > Issues for overview.
+
+
+# ------------------------------- #
+# GH: create project              #
+# ------------------------------- #
+
+# Go to Repository > Projects
+
+# Click [+ New project]
+
+# Select [Team Planning].
+
+# Go to [:] Settings and check project settings.
+
+# Click [+ Add item] > [+] > [Add item from repository]
+
+# Select [Add personal information] from the pig-latin repo.
+
+# Open the issue from the board.
+
+# Note the new options under [Project].
+
+
+# ------------------------------- #
+# AD: create project + repo       #
+# ------------------------------- #
+
+# Go to https://dev.azure.com/lukas-koning/
+
+# Click [Create Project] from home screen.
+
+# Fill in name and description.
+
+# Select [Public]
+
+# Select [git] for version control
+
+# Select [Agile] for process.
+
+# Go to [Repos].
+
+# Note default repo named after project.
+
+# Select [+ New repository] from the drop down up top.
+
+# Fill in a name.
+
+# Deselect [Add a README].
+
+# Select [Add a .gitignore: None].
+
+
+# ------------------------------- #
+# AD: pull requests               #
+# ------------------------------- #
+
+# Go to Repos > Pull requests.
+
+# Select [Create a pull request] or [New pull request]
+
+# Fill in Title and Description.
+
+# Select optional reviewers / add required reviewers.
+
+# Can link a work item.
+
+# Check changes under [Files].
+
+# Hit [Create]
+
+# At the overview: Note the comment options.
+
+# At the files overview: Note inline comments.
+
+# Note the approval options at the top.
+
+# Click [Approve].
+
+# Press the [Complete] button.
+
+# Note the different merge options.
+
+
+# ------------------------------- #
+# AD: pipelines                   #
+# ------------------------------- #
+
+# Go to Pipelines.
+
+# Click [Create Pipeline].
+
+# Select [Azure Repos Git] for code location.
+
+# Select [pig-latin] as repository.
+
+# Select [Python Package] as template.
+
+# Edit the YAML and click [Save and Run].
+
+# Go to Pipelines > Recent.
+
+# Click the last run of the pig-latin pipeline.
+
+# Look at Summary and Tests.
+
+# Click a job for details.
+
+# Look at the output from a few steps.
+
+
+# ------------------------------- #
+# AD: branch policies             #
+# ------------------------------- #
+
+# Go to Repos > Branches
+
+# Click on [:] after the main branch.
+
+# Select [Branch policies].
+
+# Or go to Project settings > Repositories > pig-latin > Policies > Branch policies
+
+# Note: clicking on feature allows setting feature/* policy.
+
+# Set number of required reviewers.
+
+# Select [Allow requestors to approve their own work]
+
+# Under [Build Validation] select the [pig-latin] pipeline.
+
+# Check back on the Pull Request.
+
+
+# ------------------------------- #
+# AD: manage tasks                #
+# ------------------------------- #
+
+
+# Go to Board > Work Items.
+
+# Filter by [Recently updated] / [Assigned to me]
+
+# Click [+ New Work Item] > Show different types.
+
+# Go to [Backlogs] > Show hierarchy in types.
+
+# Open a user story.
+
+# Show [State] options.
+
+# Describe [Acceptance criteria].
+
+# Use [Planning] to specify [Story points] and [Priority].
+
+# Under [Related Work] use [Add Link] and select [New Item].
+
+# Select [Child] and [Task] and set a [Title].
+
+# Fill in details and [Save and Close]
+
+# Go to Boards: This is the Kanban-style board.
+
+# Go to Sprints: This is the iterative planning board.
+
+
+
+
+
+
+
+
 
 
 
