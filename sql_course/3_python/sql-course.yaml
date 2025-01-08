@@ -1,0 +1,14 @@
+# Name for the Anaconda environment
+name: sql-course
+
+# Project dependencies
+dependencies:
+  # Python interpreter and pip:
+  - python=3.11
+  - pip
+
+  # pip dependencies:
+  - pip:
+    - notebook==7.2.1
+    - pandas==2.2.3
+    - sqlalchemy==2.0.36
