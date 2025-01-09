@@ -12,3 +12,4 @@ dependencies:
     - notebook==7.2.1
     - pandas==2.2.3
     - sqlalchemy==2.0.36
+    - sqlmodel==0.0.22
