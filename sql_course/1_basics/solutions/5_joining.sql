@@ -1,15 +1,15 @@
--- 1. RIGHT JOIN KoppelA en KoppelB.
--- KoppelB bepaalt welke rijen meekomen.
+-- 1. LEFT JOIN KoppelA en KoppelB.
+-- KoppelA bepaalt welke rijen in het resultaat komen.
 SELECT *
 FROM KoppelA
-RIGHT JOIN KoppelB USING (Id);
+LEFT JOIN KoppelB USING (Id);
 
 
--- 2. LEFT JOIN KoppelB en KoppelA.
--- Zelfde set rijen als RIGHT JOIN hierboven.
+-- 2. RIGHT JOIN KoppelB en KoppelA.
+-- Merk op: zelfde rijen als LEFT JOIN hierboven.
 SELECT *
 FROM KoppelB
-LEFT JOIN KoppelA USING (Id);
+RIGHT JOIN KoppelA USING (Id);
 
 
 -- 3. INNER JOIN KoppelA en KoppelB.

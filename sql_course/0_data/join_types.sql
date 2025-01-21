@@ -3,35 +3,31 @@
 DROP TABLE IF EXISTS KoppelA;
 DROP TABLE IF EXISTS KoppelB;
 
+
+-- Create the tables.
 CREATE TABLE KoppelA (
     Id INTEGER,
-    Tekst TEXT
+    Beschrijving TEXT
 );
-
-
-INSERT INTO KoppelA (Id, Tekst) 
-VALUES
-    (1, 'ID 1 in A'),
-    (2, 'ID 2 in A'),
-    (4, 'ID 4 in A'),
-    (4, 'ID 4 duplicaat in A'),
-    (5, 'ID 5 in A'),
-    (6, 'ID 6 in A'),
-    (6, 'ID 6 duplicaat in A')
-;
 
 CREATE TABLE KoppelB (
     Id INTEGER,
-    Tekst TEXT
+    Beschrijving TEXT
 );
 
-INSERT INTO KoppelB (Id, Tekst) 
+
+-- Insert the records.
+INSERT INTO KoppelA (Id, Beschrijving)
 VALUES
-    (1, 'ID 1 in B'),
-    (3, 'ID 3 in B'),
-    (4, 'ID 4 in B'),
-    (5, 'ID 5 in B'),
-    (5, 'ID 5 duplicaat in B'),
-    (6, 'ID 6 in B'),
-    (6, 'ID 6 duplicaat in B')
+    (1, 'ID 1 in beide tabellen'),
+    (2, 'ID 2 alleen in KoppelA'),
+    (4, 'ID 4 in KoppelA')
+;
+
+INSERT INTO KoppelB (Id, Beschrijving)
+VALUES
+    (1, 'ID 1 in beide tabellen'),
+    (3, 'ID 3 alleen in KoppelB'),
+    (4, 'ID 4 - 1 in KoppelB'),
+    (4, 'ID 4 - 2 in KoppelB')
 ;

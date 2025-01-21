@@ -1,37 +1,42 @@
-WITH
-InclusiefBTW AS (
-	-- Bereken omzet inclusief BTW.
-	SELECT
-		BestelDatum,
-		Aantal,
-		CASE
-			WHEN BTWTarief = 'laag' THEN
-				Aantal * PrijsExclusief * 1.09
-			ELSE
-				Aantal * PrijsExclusief * 1.21
-		END AS OmzetInclusief
-	FROM Transacties
-),
-DagTotalen AS (
-	-- Aggregeer op BestelDatum.
-	SELECT
-		BestelDatum,
-		SUM(Aantal) AS DagAantal,
-		SUM(OmzetInclusief) AS DagOmzet
-	FROM InclusiefBTW
-	GROUP BY BestelDatum
+-- 1. Aantal en omzet per dag.
+SELECT
+  DATE(DatumTijd) AS Datum,
+  SUM(Aantal) AS DagTotaal,
+  SUM(Aantal * Prijs) AS DagOmzet
+FROM Transacties
+GROUP BY DATE(DatumTijd);
+
+
+-- 2. Verschil met vorige dag.
+WITH DagTabel AS (
+  SELECT
+    DATE(DatumTijd) AS Datum,
+    SUM(Aantal) AS DagTotaal,
+    SUM(Aantal * Prijs) AS DagOmzet
+  FROM Transacties
+  GROUP BY DATE(DatumTijd)
 )
 SELECT
-	-- Dagelijkse ruwe waardes.
-	BestelDatum,
-	DagAantal,
-	DagOmzet,
-	
-	-- Verschil met vorige dag.
-	DagAantal - LAG(DagAantal, 1) OVER(ORDER BY BestelDatum) AS AantalVerschil,
-	DagOmzet - LAG(DagOmzet, 1) OVER(ORDER BY BestelDatum) AS OmzetVerschil,
-	
-	-- Voortschrijdend gemiddelde over 7 dagen.
-	AVG(DagOmzet) OVER(ORDER BY BestelDatum ROWS BETWEEN 7 PRECEDING AND CURRENT ROW) AS OmzetGemiddelde
-	
-FROM DagTotalen;
+  *,
+  DagTotaal - LAG(DagTotaal, 1) OVER (ORDER BY Datum)  AS VerschilTotaal,
+  DagOmzet - LAG(DagOmzet, 1) OVER (ORDER BY Datum) AS VerschilOmzet,
+FROM DagTabel;
+
+
+
+-- 3. Voortschrijdend gemiddelde toevoegen.
+WITH DagTabel AS (
+  SELECT
+    DATE(DatumTijd) AS Datum,
+    SUM(Aantal) AS DagTotaal,
+    SUM(Aantal * Prijs) AS DagOmzet
+  FROM Transacties
+  GROUP BY DATE(DatumTijd)
+)
+SELECT
+  *,
+  AVG(DagOmzet) OVER(
+    ORDER BY Datum
+	ROWS BETWEEN 3 PRECEDING AND CURRENT ROW
+  ) AS Gemiddeld3Dagen
+FROM DagTabel;
