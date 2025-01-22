@@ -19,7 +19,7 @@ WITH DagTabel AS (
 SELECT
   *,
   DagTotaal - LAG(DagTotaal, 1) OVER (ORDER BY Datum)  AS VerschilTotaal,
-  DagOmzet - LAG(DagOmzet, 1) OVER (ORDER BY Datum) AS VerschilOmzet,
+  DagOmzet - LAG(DagOmzet, 1) OVER (ORDER BY Datum) AS VerschilOmzet
 FROM DagTabel;
 
 
