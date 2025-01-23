@@ -23,6 +23,10 @@ SET
 ;
 
 
+-- 4. Check eerst de selectie...
+SELECT * FROM Klanten
+WHERE Leeftijd IS NULL;
+
 -- 4. Verwijder klanten zonder leeftijd.
 DELETE FROM Klanten
 WHERE Leeftijd IS NULL;
