@@ -18,5 +18,5 @@ VALUES
   ('Henk', 'Knol', 54),
   ('Ingrid', 'Jansen', 1979),
   ('mark', 'VOS', 23),
-  ('mike ', 'de Ruiter', NULL),
+  ('mike ', 'de Ruiter', NULL)
 ;
