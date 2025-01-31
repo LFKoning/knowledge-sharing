@@ -21,6 +21,7 @@ SELECT
 	kln.KlantId,
 	kln.Naam,
 	STRFTIME('%Y-%m', trn.DatumTijd) AS Maand,
+	COUNT(*) AS AantalTransacties,
 	SUM(trn.Omzet) AS Omzet
 FROM vwTransacties trn
 LEFT JOIN Klanten as kln
