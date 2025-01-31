@@ -1,5 +1,4 @@
 -- 1. Query op willekeurig product ID.
--- Noteer de tijd in ms.
 SELECT * FROM Transacties
 WHERE ProductId = 'PRD-00408'
 ;
@@ -23,20 +22,14 @@ WHERE ProductId = 'PRD-00408'
 ;
 
 
--- 4. Merk op dat de query sneller is!
-SELECT * FROM Transacties
-WHERE ProductId = 'PRD-00408'
-;
-
-
--- 5. Werkt ook met LIKE.
+-- 5. Werkt niet met LIKE...
 EXPLAIN QUERY PLAN
 SELECT * FROM Transacties
-WHERE ProductId = '%408%'
+WHERE ProductId LIKE 'PRD-004%'
 ;
 
 
--- 5. Maar niet met een transformatie...
+-- 5. Ook niet met een transformatie...
 EXPLAIN QUERY PLAN
 SELECT * FROM Transacties
 WHERE LOWER(ProductId) = 'prd-00408'
