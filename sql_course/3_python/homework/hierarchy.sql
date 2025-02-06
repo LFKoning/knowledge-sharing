@@ -19,17 +19,6 @@ VALUES
 ;
 
 
-WITH RECURSIVE Hierarchie AS (
-    VALUES(3)
-    UNION
-    SELECT CategorieId FROM org, works_for_alice
-     WHERE org.boss=works_for_alice.n
-  )
-SELECT avg(height) FROM org
- WHERE org.name IN works_for_alice;
-
-
-
 -- Recursieve query.
 WITH RECURSIVE
 	Hierarchie AS (
