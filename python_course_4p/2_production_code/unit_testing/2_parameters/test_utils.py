@@ -1,0 +1,28 @@
+"""Module containing unit tests for helper functions."""
+import pytest
+
+from utils import mean
+
+
+@pytest.mark.parametrize(
+
+    # Test function arguments to parametrize.
+    argnames=["numbers", "expected"],
+
+    # Argument values as tuples.
+    argvalues=[
+        ([ 1,    2,    3],  2),
+        ([-1,   -2,   -3], -2),
+        ([ 1,    2, None],  1),
+    ],
+
+    # Descriptive names for the tests.
+    ids=[
+        "Positive numbers",
+        "Negative numbers",
+        "Missing values",
+    ]
+)
+def test_mean_parameters(numbers, expected):
+    """Test mean function using parameters."""
+    assert mean(numbers) == expected
