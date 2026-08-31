@@ -1,25 +1,38 @@
 # ------------------------------- #
+# create repository               #
+# ------------------------------- #
+
+# Show content of the .git folder.
+git init
+
+# ------------------------------- #
 # initial commit                  #
 # ------------------------------- #
 
-git init
+echo shopping > todo.txt
 
-echo '"""Main program module."""' > main.py
+echo notes > temp.txt
 
-# New items in red
+# New items in red.
 git status
 
 git add -A
 
-# New items in green
+# Staged items in green.
 git status
 
-git commit -m "Create main module."
+# Remove temp.txt from commit.
+git reset temp.txt
 
-# Nothing to commit, tree clean 
+# Note temp.txt is untracked.
 git status
 
-# Show the log
+git commit -m "Add to do."
+
+# Commited todo.txt, temp.txt untracked. 
+git status
+
+# Show commit in log.
 git log
 
 
@@ -27,30 +40,17 @@ git log
 # multiple commits                #
 # ------------------------------- #
 
-echo '"""Utility functions module."""' > utils.py
+echo pizza > shop.txt
 
-git add -A
+git status
 
-git commit -m "Create utility module."
+git add shop.txt
 
-code main.py
+git status
 
-# copy - paste into main.py
-# ------------------------------- #
-def main():
-    """Main program routine."""
-    print("Hello World!")
+git commit -m "Add shopping list."
 
-
-if __name__ == "__main__":
-    main()
-# ------------------------------- #
-
-git add -A
-
-git commit -m "Update main module."
-
-# Now displays 3 commits.
+# Now displays 2 commits.
 git log
 
 
@@ -78,136 +78,112 @@ git cat-file -p _
 git cat-file -p _
 
 # Look at second tree.
-# Note that main.py uses same blob.
+# Note that todo.txt uses same blob.
 git cat-file -p _
-
-# Optional: look at update commit.
 
 
 # ------------------------------- #
 # .gitignore                      #
 # ------------------------------- #
 
-mkdir data
-
-# Folder does not show...
+# Untracked temp.txt.
 git status
 
-ni data/.gitkeep
+# Create .gitignore
+echo temp.txt > .gitignore
 
-ni data/data.csv
+# Verify existence
+dir
 
-# File make the folder appear.
+# Untracked .gitignore, but not temp.txt.
 git status
+
+# Commit .gitignore
 
 git add -A
-
-# Shows two files.
-git status
-
-git reset
-
-code .gitignore
-
-# copy - paste into .gitignore
-# ------------------------------- #
-# Cache files.
-__pycache__/
-*.py[cod]
-
-# Notebook checkpoints.
-.ipynb_checkpoints
-
-# Data folder.
-data/**
-# !data/.gitkeep
-
-# Virtual environments.
-.env
-.venv
-env/
-ENV/
-venv/
-# ------------------------------- #
-
-# Data folder is now ignored entirely.
-git status
-
-# Uncomment # !data/.gitkeep
-# Shows data/.gitkeep again.
-git status
-
-git add -A
-git commit -m "Add .gitignore and data folder"
+git commit -m "Add .gitignore"
 
 
 # ------------------------------- #
 # git diff                        #
 # ------------------------------- #
 
-code utils.py
+echo cleaning >> todo.txt
 
-# copy - paste into utils.py
-# ------------------------------- #
-def mean(values):
-    """Compute mean of a list of values."""
-    return sum(values) / len(values)
-# ------------------------------- #
+git status
 
-# Show local changes.
-git diff utils.py
+# Show local changes to index.
+git diff todo.txt
 
+# Add to index.
 git add -A
 
-# Added to index, no changes.
-git diff utils.py
+# Added to index, no differences.
+git diff todo.txt
 
 # Compare to last commit directly.
-git diff HEAD utils.py
+git diff HEAD todo.txt
 
-git commit -m "Add mean to utils"
+git commit -m "Add cleaning."
 
-code utils.py
-
-# copy - paste into utils.py
-# ------------------------------- #
-def abs_mean(values):
-    """Compute mean of a list of values."""
-    values = [abs(v) for v in values]
-    return sum(values) / len(values)
-# ------------------------------- #
-
-git add -A
-
-git commit -m "Add abs_mean to utils"
-
-# Compare main to first commit.
-git diff _ _ utils.py
+# Compare todo.txt to first commit.
+git diff _ _ todo.txt
 
 
 # ------------------------------- #
 # checkout file                   #
 # ------------------------------- #
 
+# Update shop.txt
+echo beer >> shop.txt
+
+# Differs from HEAD index.
+git diff HEAD shop.txt
+
+# Revert to last commit.
+git checkout HEAD shop.txt
+
+# Changes are gone.
+git diff shop.txt
+
+
+# ------------------------------- #
+# reset hard                      #
+# ------------------------------- #
+
+# Delete all text files... woops!
+del *.txt
+
+dir
+
+# Hard reset to restore working directory.
+git reset --hard HEAD
+
+# Note: temp.txt is lost forever...
+dir
+
 git log
 
-# Updated version of main.
-cat main.py
+# Hard reset to first commit
+git reset --hard _
 
-# Checkout main.py from first commit.
-git checkout _  main.py
+# Only todo.txt
+dir
 
-# Original version of main.
-cat main.py
+# HEAD and main set to first commit.
+git log
 
-# Show differences with HEAD.
-git diff HEAD main.py
+# Use reflog to get back to the final commit.
+git reflog
 
-# Checkout main.py from HEAD.
-git checkout HEAD main.py
+# Checkout the final commit.
+git reset --hard _
 
-# Back to updated main.
-cat main.py
+# All files are back!
+dir
+
+# Pfew, all good...
+git log
 
 
 # ------------------------------- #
@@ -219,60 +195,21 @@ git log
 # Moves HEAD to the oldest commit!
 git checkout _
 
-# No longer seeing main...
+# Detached HEAD, no longer on main.
 git log
 
-# No longer working on main...
-git status
-
 # Oldest version of main.
-cat main.py
-
-# Only untracked data.csv in data/
-dir data/
+cat todo.txt
 
 # Can go back when no changes made.
 git checkout main
 
-# HEAD is pointing to main.
+# HEAD points to main again.
 git log
 
 # Everything is back...
 dir
 
-
-# ------------------------------- #
-# reset hard                      #
-# ------------------------------- #
-
-# Deleted all Python files... woops!
-del *.py
-
-dir
-
-# Hard reset to restore working directory.
-git reset --hard HEAD
-
-dir
-
-# Hard reset to first commit.
-git reset --hard _
-
-dir
-
-# HEAD and main set to old commit.
-git log
-
-# Use reflog to reset back to the last commit.
-git reflog
-
-git log -g
-
-# Checkout the last commit.
-git reset --hard _
-
-# Pfew, all good...
-git log
 
 
 # ------------------------------- #
@@ -285,23 +222,28 @@ cat .git/HEAD
 # Points to last commit.
 cat .git/refs/heads/main
 
-ni README.md
+# Hash corresponds to latest commit.
+git log
+
+echo "beer" >> shop.txt
 
 git add -A
 
-git commit -m "Add README"
+git commit -m "Add beer"
+
+git log
 
 # Points to the new commit.
 # Heads are dynamically updated labels.
 cat .git/refs/heads/main
 
-# No change here.
-cat .git/HEAD
-
 
 # ------------------------------- #
 # create branch                   #
 # ------------------------------- #
+
+# Working on main branch.
+git status
 
 # Points to main.
 cat .git/HEAD
@@ -309,19 +251,24 @@ cat .git/HEAD
 # Creates a new branch.
 git checkout -b develop
 
+# Working on develop
+git status
+
 # Now points to develop.
 cat .git/HEAD
 
 # Points to same commit as main!
 # Only HEAD has changed.
 cat .git/refs/heads/develop
-
 cat .git/refs/heads/main
 
 # Create a new commit.
-echo "# Hello World" > README.md
+echo apples >> shop.txt
 git add -A
-git commit -m "Update README.md"
+git commit -m "Add apples"
+
+# Shows main and develop.
+git log
 
 # Develop has moved on.
 cat .git/refs/heads/develop
@@ -340,18 +287,11 @@ cd merge-ff
 # Two commits on develop after first main commit.
 git log
 
-# Show the files.
-dir
-cat develop.txt
-
 # Switch to main branch
 git checkout main
 
 # No commits after the first, can fast forward.
 git log
-
-# Only main.txt
-dir
 
 # Note that git says it fast forwarded.
 git merge develop
@@ -359,9 +299,6 @@ git merge develop
 # Check the log for main.
 # Main and develop piont to the same commit.
 git log
-
-# Main now has develop.txt too.
-dir
 
 
 # ------------------------------- #
@@ -386,7 +323,7 @@ git merge develop
 git log
 
 # Double parent on the merge commit!
-git cat-files -p <merge commit>
+git cat-file -p <merge commit>
 
 # Show as a graph.
 git log --graph
@@ -398,7 +335,7 @@ git log --graph
 
 cd merge-rebase
 
-# Again 2 commits.
+# Again 2 commits on develop.
 git log
 
 # Switch to main.
@@ -419,8 +356,11 @@ git log
 # Switch back to main.
 git checkout main
 
+# Still only 2 commits.
+git log
+
 # Perform fast forward merge.
-git merge
+git merge develop
 
 # Commits now both on main and develop.
 # No merge commit was created!
@@ -458,6 +398,9 @@ git commit -m "Merge develop"
 
 # Check commit on main.
 git log
+
+# Squash added all changes from develop.
+git diff <Main 2>
 
 # Check log on develop.
 # Branches have become incompatible!
