@@ -61,7 +61,7 @@ git commit -m "Initial commit"
 
 # Use the repository created earlier.
 # Using origin as name is standard.
-git remote add origin https://www.github.com/LFKoning/pig-latin.git
+git remote add origin https://github.com/LFKoning/pig-latin.git
 
 # Show remote was added succesfully.
 git remote -v
@@ -70,20 +70,20 @@ git remote -v
 git push --set-upstream origin main
 
 # Can add another remote.
-git remote add backup https://www.github.com/LFKoning/backup-repo.git
+git remote add backup https://github.com/LFKoning/backup-repo.git
 
 # Show both remotes.
 git remote -v
 
-# Push to the other remote
+# Push to backup remote
+# Fails... does not exist
 git push backup
 
 # To change a remote URL.
-git remote set-url backup https://www.github.com/LFKoning/does-not-exist
+git remote set-url backup https://github.com/LFKoning/pig-latin.git
 
 git remote -v
 
-# Fails... does not exist
 git push backup
 
 # To delete a remote.
@@ -96,7 +96,7 @@ git remote -v
 # git branch tracking             #
 # ------------------------------- #
 
-# Only have main branch
+# Only main branch
 git branch -a
 
 # Create a new local branch
