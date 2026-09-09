@@ -1,6 +1,6 @@
 /* Generate dummy customer data */
 
--- Clean up old versions.
+-- Drop table if it exists.
 DROP TABLE IF EXISTS Klanten;
 
 -- Create the table.

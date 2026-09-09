@@ -1,25 +1,34 @@
--- 1. LEFT JOIN KoppelA en KoppelB.
--- KoppelA bepaalt welke rijen in het resultaat komen.
-SELECT *
-FROM KoppelA
-LEFT JOIN KoppelB USING (Id);
+-- 1. LEFT JOIN TabelA en TabelB.
+-- TabelA bepaalt welke rijen in het resultaat komen.
+SELECT 
+	TabelA.*,
+	TabelB.*
+FROM TabelA
+LEFT JOIN TabelB USING (Id);
 
 
--- 2. RIGHT JOIN KoppelB en KoppelA.
+-- 2. RIGHT JOIN TabelB en TabelA.
 -- Merk op: zelfde rijen als LEFT JOIN hierboven.
-SELECT *
-FROM KoppelB
-RIGHT JOIN KoppelA USING (Id);
+SELECT
+	TabelA.*,
+	TabelB.*
+FROM TabelB
+RIGHT JOIN TabelA USING (Id);
 
 
--- 3. INNER JOIN KoppelA en KoppelB.
+-- 3. INNER JOIN TabelA en TabelB.
 -- Alleen gedeelde IDs in het resultaat.
-SELECT *
-FROM KoppelA
-INNER JOIN KoppelB USING (Id);
+SELECT
+	TabelA.*,
+	TabelB.*
+FROM TabelA
+INNER JOIN TabelB USING (Id);
 
--- 4. Standaard JOIN KoppelA en KoppelB.
+
+-- 4. Standaard JOIN TabelA en TabelB.
 -- Komt overeen met de INNER JOIN hierboven.
-SELECT *
-FROM KoppelA
-JOIN KoppelB USING (Id);
+SELECT
+	TabelA.*,
+	TabelB.*
+FROM TabelA
+JOIN TabelB USING (Id);

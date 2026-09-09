@@ -11,6 +11,7 @@ SELECT
   *,
   CONCAT(TransactieId, '-', RegelNummer) AS LineId
 FROM Transacties
+ORDER BY TransactieId, RegelNummer
 ;
 
 
@@ -22,7 +23,7 @@ FROM Transacties
 ;
 
 
--- 4. Haal dag van de week ui de DatumTijd kolom.
+-- 4. Haal dag van de week uit de DatumTijd kolom.
 SELECT
   *,
   STRFTIME('%u', DatumTijd) AS WeekDag

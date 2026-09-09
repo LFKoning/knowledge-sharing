@@ -29,6 +29,6 @@ LIMIT 10
 -- 3. Alle transacties van de beste klant.
 SELECT *
 FROM Transacties
-WHERE KlantId = 'CST-77700'
+WHERE KlantId = 'CST-'
 ORDER BY DatumTijd, RegelNummer
 ;

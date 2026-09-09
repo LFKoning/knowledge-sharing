@@ -1,0 +1,10 @@
+[project]
+name = "dummy-data-generators"
+version = "0.1.0"
+
+requires-python = ">=3.13"
+
+dependencies = [
+    "faker>=40.38.0",
+    "pandas>=3.0.5",
+]

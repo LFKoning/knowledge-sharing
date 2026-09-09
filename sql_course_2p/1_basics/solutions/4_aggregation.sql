@@ -4,7 +4,8 @@ SELECT
   SUM(Aantal) AS DagTotaal,
   SUM(Aantal * Prijs) AS DagOmzet
 FROM Transacties
-GROUP BY DATE(DatumTijd);
+GROUP BY DATE(DatumTijd)
+;
 
 
 -- 2. Verschil met vorige dag.
@@ -20,15 +21,14 @@ SELECT
   *,
   DagTotaal - LAG(DagTotaal, 1) OVER (ORDER BY Datum)  AS VerschilTotaal,
   DagOmzet - LAG(DagOmzet, 1) OVER (ORDER BY Datum) AS VerschilOmzet
-FROM DagTabel;
-
+FROM DagTabel
+;
 
 
 -- 3. Voortschrijdend gemiddelde toevoegen.
 WITH DagTabel AS (
   SELECT
     DATE(DatumTijd) AS Datum,
-    SUM(Aantal) AS DagTotaal,
     SUM(Aantal * Prijs) AS DagOmzet
   FROM Transacties
   GROUP BY DATE(DatumTijd)
@@ -39,4 +39,5 @@ SELECT
     ORDER BY Datum
 	  ROWS BETWEEN 3 PRECEDING AND CURRENT ROW
   ) AS Gemiddeld3Dagen
-FROM DagTabel;
+FROM DagTabel
+;

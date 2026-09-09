@@ -1,0 +1,25 @@
+Naam,Verpakking,VerpakkingEenheid,Subcategorie,Categorie,Prijs
+Margarine,500.0,gram,Zuivel,Levensmiddelen,0.99
+Halfvolle melk,1.0,liter,Zuivel,Levensmiddelen,1.19
+Halfvolle melk,1.5,liter,Zuivel,Levensmiddelen,1.99
+Volle melk,1.0,liter,Zuivel,Levensmiddelen,1.29
+Magere Yoghurt,1.0,liter,Zuivel,Levensmiddelen,1.19
+Volle Yoghurt,1.0,liter,Zuivel,Levensmiddelen,1.29
+Volkoren spagheti,500.0,gram,Graanproducten,Levensmiddelen,2.09
+Volkoren brood,1.0,heel,Graanproducten,Levensmiddelen,1.29
+Volkoren brood,1.0,half,Graanproducten,Levensmiddelen,0.79
+Wit brood,1.0,heel,Graanproducten,Levensmiddelen,0.99
+Wit brood,1.0,half,Graanproducten,Levensmiddelen,0.69
+Witte druiven,500.0,gram,Fruit,Levensmiddelen,2.79
+Appels,8.0,stuks,Fruit,Levensmiddelen,2.79
+Peren,4.0,stuks,Fruit,Levensmiddelen,2.99
+Komkommer,1.0,stuks,Groenten,Levensmiddelen,1.39
+Tomaten,500.0,gram,Groenten,Levensmiddelen,2.49
+Sla krop,1.0,stuks,Groenten,Levensmiddelen,1.59
+Sla gesneden,200.0,gram,Groenten,Levensmiddelen,1.19
+Bier,1.0,krat,Alcoholische dranken,Levensmiddelen,14.17
+Rode wijn,1.0,liter,Alcoholische dranken,Levensmiddelen,6.99
+Witte wijn,1.0,liter,Alcoholische dranken,Levensmiddelen,5.29
+Shampoo,300.0,milliliter,Haarproducten,Persoonlijke verzorging,6.49
+Handgel,100.0,milliliter,Hygiene producten,Persoonlijke verzorging,2.99
+Tandpasta,75.0,milliliter,Hygiene producten,Persoonlijke verzorging,2.75

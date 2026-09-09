@@ -5,6 +5,7 @@ SELECT
   TIME(DatumTijd) AS Tijd,
   Aantal * Prijs AS Omzet
 FROM Transacties
+;
 
 
 -- 2. Gebruik de query als CTE.

@@ -1,33 +1,34 @@
-/* Script for generating data for exercises with JOIN types. */
+/* Generate data for JOIN type exercises. */
 
-DROP TABLE IF EXISTS KoppelA;
-DROP TABLE IF EXISTS KoppelB;
+-- Drop tables if they exist.
+DROP TABLE IF EXISTS TabelA;
+DROP TABLE IF EXISTS TabelB;
 
 
 -- Create the tables.
-CREATE TABLE KoppelA (
+CREATE TABLE TabelA (
     Id INTEGER,
     Beschrijving TEXT
 );
 
-CREATE TABLE KoppelB (
+CREATE TABLE TabelB (
     Id INTEGER,
     Beschrijving TEXT
 );
 
 
 -- Insert the records.
-INSERT INTO KoppelA (Id, Beschrijving)
+INSERT INTO TabelA (Id, Beschrijving)
 VALUES
-    (1, 'ID 1 in beide tabellen'),
-    (2, 'ID 2 alleen in KoppelA'),
-    (4, 'ID 4 in KoppelA')
+    (1, 'ID 1 in TabelA'),
+    (2, 'ID 2 uniek in TabelA'),
+    (4, 'ID 4 in TabelA')
 ;
 
-INSERT INTO KoppelB (Id, Beschrijving)
+INSERT INTO TabelB (Id, Beschrijving)
 VALUES
-    (1, 'ID 1 in beide tabellen'),
-    (3, 'ID 3 alleen in KoppelB'),
-    (4, 'ID 4 - 1 in KoppelB'),
-    (4, 'ID 4 - 2 in KoppelB')
+    (1, 'ID 1 in TabelB'),
+    (3, 'ID 3 uniek in TabelB'),
+    (4, 'ID 4 dubbel in TabelB'),
+    (4, 'ID 4 dubbel in TabelB')
 ;
