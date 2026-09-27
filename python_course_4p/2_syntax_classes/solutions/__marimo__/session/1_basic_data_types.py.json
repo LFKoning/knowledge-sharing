@@ -1,0 +1,160 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.25.0",
+    "script_metadata_hash": null
+  },
+  "cells": [
+    {
+      "id": "Hbol",
+      "code_hash": "eb2b07c2966787f2d99cc679d30d837f",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "e45b4aea0a34bba1cd9b016447f0c258",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": "c9875adab351800bc837978523294191",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "Convert float 3.7 to int:  3\n",
+          "mimetype": "text/plain"
+        }
+      ]
+    },
+    {
+      "id": "bkHC",
+      "code_hash": "ac1a909fdb1e6472f0af0d329245fa0e",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "Convert string '3.7' to float:  3.7\n",
+          "mimetype": "text/plain"
+        }
+      ]
+    },
+    {
+      "id": "lEQa",
+      "code_hash": "4c3cd4244d3f6b72ae4fa9fac41eced1",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "exception",
+          "evalue": "invalid literal for int() with base 10: '3.7'",
+          "traceback": null
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "<span class=\"codehilite\"><div class=\"highlight\"><pre><span></span><span class=\"gt\">Traceback (most recent call last):</span>\n  File <span class=\"nb\">\"C:\\Users\\lfkon\\AppData\\Local\\Temp\\marimo_12060\\__marimo__cell_lEQa_.py\"</span>, line <span class=\"m\">3</span>, in <span class=\"n\">&lt;module&gt;</span>\n<span class=\"w\">    </span><span class=\"nb\">print</span><span class=\"p\">(</span><span class=\"sa\">f</span><span class=\"s2\">\"Convert string </span><span class=\"si\">{</span><span class=\"n\">s</span><span class=\"si\">!r}</span><span class=\"s2\"> to int: \"</span><span class=\"p\">,</span> <span class=\"nb\">int</span><span class=\"p\">(</span><span class=\"n\">s</span><span class=\"p\">))</span>\n<span class=\"w\">                                            </span><span class=\"pm\">~~~^^^</span>\n<span class=\"gr\">ValueError</span>: <span class=\"n\">invalid literal for int() with base 10: '3.7'</span>\n</pre></div>\n</span>",
+          "mimetype": "application/vnd.marimo+traceback"
+        }
+      ]
+    },
+    {
+      "id": "PKri",
+      "code_hash": "0c741a2b8cda7a422b5113e6d5ed96ac",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<pre class='text-xs'>&#x27;123123123&#x27;</pre>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Xref",
+      "code_hash": "c984c84c894e39f59f43db64b90bc948",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "application/json": "[1, 2, 3, 1, 2, 3, 1, 2, 3]"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "SFPL",
+      "code_hash": "0dab065d8ca0c585d76df2dca4a84c5c",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "application/json": "[[0, 0, 0], [0, 0, 0], [0, 0, 0]]"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "BYtC",
+      "code_hash": "5bea33c442d580f042b38962605af74e",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "application/json": "[[1, 0, 0], [1, 0, 0], [1, 0, 0]]"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "hNFs",
+      "code_hash": null,
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    }
+  ]
+}
