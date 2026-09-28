@@ -2,16 +2,16 @@
 # create repository               #
 # ------------------------------- #
 
-# Show content of the .git folder.
+# Show contents of the .git folder.
 git init
 
 # ------------------------------- #
-# initial commit                  #
+# initial commits                 #
 # ------------------------------- #
 
 echo shopping > todo.txt
 
-echo notes > temp.txt
+echo testje > temp.txt
 
 # New items in red.
 git status
@@ -35,11 +35,7 @@ git status
 # Show commit in log.
 git log
 
-
-# ------------------------------- #
-# multiple commits                #
-# ------------------------------- #
-
+# Second commit
 echo pizza > shop.txt
 
 git status
@@ -151,7 +147,7 @@ git diff shop.txt
 # reset hard                      #
 # ------------------------------- #
 
-# Delete all text files... woops!
+# Deleted all text files... woops!
 del *.txt
 
 dir
@@ -211,7 +207,6 @@ git log
 dir
 
 
-
 # ------------------------------- #
 # HEAD and refs                   #
 # ------------------------------- #
@@ -239,7 +234,7 @@ cat .git/refs/heads/main
 
 
 # ------------------------------- #
-# create branch                   #
+# new branch                      #
 # ------------------------------- #
 
 # Working on main branch.
@@ -313,16 +308,16 @@ git log
 # Switch to main branch.
 git checkout main
 
-# Second commit sits between develop commits.
+# Second commit sits between develop 1 and 2.
 git log
 
 # Merge develop into main.
 git merge develop
 
-# Got an extra merge commit!
+# Got an extra merge commit.
 git log
 
-# Double parent on the merge commit!
+# Double parent on the merge commit.
 git cat-file -p <merge commit>
 
 # Show as a graph.
@@ -394,7 +389,7 @@ git log
 # Git commit
 git status
 git add -A
-git commit -m "Merge develop"
+git commit -m "Squash merge develop"
 
 # Check commit on main.
 git log
