@@ -274,7 +274,7 @@ cat .git/refs/heads/main
 
 
 # ------------------------------- #
-# merge fast forward           #
+# merge fast forward              #
 # ------------------------------- #
 
 cd merge-ff
@@ -436,4 +436,3 @@ git add -A
 git commit -m "Merge develop"
 
 git log --graph
-
