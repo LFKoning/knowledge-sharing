@@ -158,31 +158,6 @@ git branch -a
 # GH: create PR                   #
 # ------------------------------- #
 
-# Create a new branch
-git checkout -b feature/personalize
-
-# Fill in all names and e-mail addresses.
-code pyproject.toml
-
-# Fill in names, e-mail addresses and URLs.
-code README.md
-
-# Commit your work.
-git add -A
-git commmit -m "Add personal info"
-
-# Create the remote branch.
-git push --set-upstream origin feature/personalize
-
-# Click the Pull Request link.
-# Go to repository on GitHub > Pull Requests > Create.
-
-# Fill in Title and Description.
-
-# Show reviewers option.
-
-# Create draft pull request.
-
 # Go to [Settings] > [Collaborators]
 
 # Invite the trainee left of you.
@@ -191,7 +166,25 @@ git push --set-upstream origin feature/personalize
 
 # Accept the invitation.
 
-# Add trainee as reviewer to PR draft.
+# Create a new branch
+git checkout -b feature/add-author
+
+# Add trainee left as author.
+code pyproject.toml
+
+# Commit your work.
+git add -A
+git commmit -m "Add second author"
+
+# Push to remote branch.
+git push --set-upstream origin feature/add-author
+
+# Click the Pull Request link.
+# Go to repository on GitHub > Pull Requests > Create.
+
+# Fill in Title and Description.
+
+# Add trainee as reviewer to the PR.
 
 # Click [Ready to review].
 
