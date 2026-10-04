@@ -1,4 +1,48 @@
 # ------------------------------- #
+# fetch & pull                    #
+# ------------------------------- #
+
+# Clone the pig latin repo.
+git clone https://github.com/LFKoning/pig-latin
+
+# Personalize pyproject.toml.
+# Add author name and e-mail.
+code pyproject.toml
+
+# Commit the change.
+git add -A
+git commit -m "Personalize project"
+
+# Personalize on remote Github repo.
+
+# Check local main is personalized.
+git log
+
+# Check origin/main; still shows only initial commit.
+git log origin/main
+
+# Fetch changes from the remote.
+# No impact on working directory!
+git fetch
+
+# Note the remote personalization appeared.
+git log origin/main
+
+# Pull the changes into the working directory.
+# Creates a merge conflict!
+git pull
+
+# Note that brances have diverged!
+git status
+
+# Fix conflict as per usual.
+code pyproject.toml
+
+git add -A
+git commit -m "Fix personalization"
+
+
+# ------------------------------- #
 # GH: create repo                 #
 # ------------------------------- #
 
@@ -24,89 +68,52 @@
 
 
 # ------------------------------- #
-# git clone                       #
+# remote add                      #
 # ------------------------------- #
-
-git clone https://www.github.com/LFKoning/git-cursus
-
-cd git-cursus
-
-dir
-
-# On the main branch.
-# Note the origin references.
-git log
-
-# Remote origin matches clone URL.
-# Note fetch and push are separate.
-git remote -v
-
-
-# ------------------------------- #
-# git remote management           #
-# ------------------------------- #
-
-mkdir pig-latin
-
-cd pig-latin
-
-# Unzip pig-latin.zip into the folder
-
-# Initialize and commit.
-git init
-
-git add -A
-
-git commit -m "Initial commit"
 
 # Use the repository created earlier.
 # Using origin as name is standard.
-git remote add origin https://github.com/LFKoning/pig-latin.git
+git remote add personal https://github.com/LFKoning/personal
 
 # Show remote was added succesfully.
 git remote -v
 
 # Push and set up tracking on origin/main.
-git push --set-upstream origin main
+git push personal
 
 # Can add another remote.
-git remote add backup https://github.com/LFKoning/backup-repo.git
+git remote set-url origin https://github.com/LFKoning/personal
 
 # Show both remotes.
 git remote -v
 
-# Push to backup remote
-# Fails... does not exist
-git push backup
+# Update README.md repo URLs.
+code README.md
 
-# To change a remote URL.
-git remote set-url backup https://github.com/LFKoning/pig-latin.git
-
-git remote -v
-
-git push backup
+# Now we can just use push.
+git push
 
 # To delete a remote.
-git remote remove backup
+git remote remove personal
 
 git remote -v
 
 
 # ------------------------------- #
-# git branch tracking             #
+# branch tracking                 #
 # ------------------------------- #
 
 # Only main branch
-git branch -a
+git branch
 
 # Create a new local branch
 git checkout -b test-tracking
 
+# Show new branch.
+git branch
+
 # No upstream branch to track...
 git push
-
-# Show local and remote branches.
-git branch -a
 
 # Show tracking info using -vv.
 git branch -vv
@@ -114,17 +121,15 @@ git branch -vv
 # Push and set tracking to origin/test-tracking.
 git push --set-upstream origin test-tracking
 
-# Show local and remote branches.
-git branch -a
-
-# Show tracking info using -vv.
+# Show updated tracking info.
 git branch -vv
 
-# Change tracking manually.
-# Note the remote is in the path spec.
-git branch --set-upstream-to origin/main
+# Show local and remote with tracking info.
+git branch -avv
 
-git branch -vv
+# Remote info is under .git/refs/remotes
+dir .\.git\refs\remotes\
+dir .\.git\refs\remotes\origin
 
 
 # ------------------------------- #
@@ -139,58 +144,14 @@ git branch -a
 # Delete a local branch.
 git branch -d test-tracking
 
-# Local gone, but not remote.
+# Local branch gone, but not remote.
 git branch -a
 
 # Remote requires a push.
 git push origin --delete test-tracking
 
+# Verify it is gone.
 git branch -a
-
-
-# ------------------------------- #
-# git fetch & pull                #
-# ------------------------------- #
-
-# Edit README in GitHub, commit remote change.
-# Set commit message to "Update README remote"
-
-# Create a local change.
-code README.md
-
-git diff README.md
-
-# Compare against origin, changes not visible.
-git log main..origin/main
-
-# Behind one commit, can fast forward.
-# No impact on working directory!
-git fetch
-
-# Show missing local commits.
-git log main..origin/main
-
-# Cannot pull, uncommitted local changes.
-git pull
-
-# Commit the changes.
-git add -A
-git commit -m "Update README local"
-
-# Note that brances have diverged!
-git status
-
-# Creates a conflict.
-git pull
-
-git status
-
-# Fix conflict as per usual.
-code README.md
-
-git add -A
-git commit -m "Fix conflicts"
-git push
 
 
 # ------------------------------- #
