@@ -7,6 +7,9 @@ import unicodedata
 import pandas as pd
 from faker import Faker
 
+RANDOM_SEED = 42
+random.seed(RANDOM_SEED)
+
 
 class SalesGenerator:
     """Class for generating dummy sales data.
@@ -29,6 +32,7 @@ class SalesGenerator:
 
     def __init__(self, n_years: int = 5, final_year: int = -1) -> None:
         self.faker = Faker("nl_NL")
+        self.faker.seed_instance(RANDOM_SEED)
 
         final_year = dt.datetime.now(dt.UTC).year + final_year
         first_year = final_year - n_years
@@ -89,21 +93,22 @@ class SalesGenerator:
 
             count = max(0, int(random.gauss(n_daily, 2)))
             for _ in range(count):
-                customer_id = customer_df.sample(1).iloc[0, 0]
+                customer_id = random.choice(customer_df["KlantId"])
                 transaction_id = self.faker.unique.bothify(text="TX-######")
                 datetime = day + dt.timedelta(
                     seconds=random.randrange(9 * 3600, 18 * 3600)
                 )
 
                 for line_nr in range(random.randint(1, 5)):
-                    product = product_df.sample(1)
+                    product_id = random.choice(product_df["ProductId"])
+                    product = product_df[product_df["ProductId"] == product_id]
                     transaction = {
                         "TransactieId": transaction_id,
                         "KlantId": customer_id,
-                        "ProductId": product["ProductId"].iloc[0],
+                        "ProductId": product_id,
                         "DatumTijd": datetime.strftime("%Y-%m-%d %H:%M:%S"),
                         "RegelNummer": line_nr + 1,
-                        "Aantal": round(random.lognormvariate(0.3, 0.4)),
+                        "Aantal": round(random.lognormvariate(0.3, 0.4)) + 1,
                         "Prijs": product["Prijs"].iloc[0],
                     }
 

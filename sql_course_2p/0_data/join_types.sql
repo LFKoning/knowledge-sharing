@@ -7,28 +7,28 @@ DROP TABLE IF EXISTS TabelB;
 
 -- Create the tables.
 CREATE TABLE TabelA (
-    Id INTEGER,
-    Beschrijving TEXT
+    IdA INTEGER,
+    DescA TEXT
 );
 
 CREATE TABLE TabelB (
-    Id INTEGER,
-    Beschrijving TEXT
+    IdB INTEGER,
+    DescB TEXT
 );
 
 
 -- Insert the records.
-INSERT INTO TabelA (Id, Beschrijving)
+INSERT INTO TabelA (IdA, DescA)
 VALUES
-    (1, 'ID 1 in TabelA'),
-    (2, 'ID 2 uniek in TabelA'),
-    (4, 'ID 4 in TabelA')
+    (1, 'Tabel A: ID 1'),
+    (2, 'Tabel A: ID 2 (uniek)'),
+    (4, 'Tabel A: ID 4')
 ;
 
-INSERT INTO TabelB (Id, Beschrijving)
+INSERT INTO TabelB (IdB, DescB)
 VALUES
-    (1, 'ID 1 in TabelB'),
-    (3, 'ID 3 uniek in TabelB'),
-    (4, 'ID 4 dubbel in TabelB'),
-    (4, 'ID 4 dubbel in TabelB')
+    (1, 'Tabel B: ID 1'),
+    (3, 'Tabel B: ID 3 (uniek)'),
+    (4, 'Tabel B: ID 4 (dubbel)'),
+    (4, 'Tabel B: ID 4 (dubbel)')
 ;

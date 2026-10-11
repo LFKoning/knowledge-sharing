@@ -1,3 +1,4 @@
+-- Speler categorieën.
 INSERT INTO SpelerCategorie (Omschrijving)
 VALUES
 	('Beginner'),
@@ -6,6 +7,7 @@ VALUES
 ;
 
 
+-- Contributie bedragen per jaar.
 INSERT INTO Contributie (Jaar, Bedrag)
 VALUES
 	(2022, 165.99),
@@ -14,6 +16,7 @@ VALUES
 ;
 
 
+-- Toernooi informatie.
 INSERT INTO Toernooien (Omschrijving, Jaar, Bedrag)
 VALUES
 	('Voorjaarstoernooi', 2022, 5.99),
@@ -24,7 +27,9 @@ VALUES
 	('De grote finale', 2024, 10.99)
 ;
 
-INSERT INTO BetalingStatusCode (Omschrijving)
+
+-- Statuscodes voor betalingen.
+INSERT INTO BetalingStatusCodes (Omschrijving)
 VALUES
 	('Open'),
 	('Herinnering'),
@@ -33,6 +38,7 @@ VALUES
 ;
 
 
+-- Leden van de sportclub.
 INSERT INTO Leden
 	(CategorieId, Voornaam, Achternaam, Geboortedatum)
 VALUES
@@ -45,6 +51,7 @@ VALUES
 ;
 
 
+-- Toernooi inschrijvingen; lid, toernooi en uitslag.
 INSERT INTO ToernooiInschrijving
 	(LedenId, ToernooiId, Uitslag)
 VALUES
@@ -66,7 +73,7 @@ VALUES
 ;
 
 
--- Contributie betalingen.
+-- Betalingen voor contributies.
 INSERT INTO Betalingen
 	(LedenId, ContributieId, ToernooiId)
 VALUES
@@ -83,7 +90,7 @@ VALUES
 ;
 
 
--- Toernooi inschrijvingen.
+-- Betalingen voor toernooi inschrijvingen.
 INSERT INTO Betalingen
 	(LedenId, ContributieId, ToernooiId)
 VALUES
@@ -105,9 +112,9 @@ VALUES
 ;
 
 
--- Betalingen contributies.
+-- Betaal status contributies.
 INSERT INTO BetalingStatus
-	(BetalingId, Datum, Status)
+	(BetalingId, Datum, StatusCodeId)
 VALUES
 	-- 2022 contributies.
 	(1, '2021-11-15 00:00:00', 1),
@@ -143,9 +150,9 @@ VALUES
 ;
 
 
--- Betalingen toernooi inschrijvingen
+-- Betaal status toernooi inschrijvingen
 INSERT INTO BetalingStatus
-	(BetalingId, Datum, Status)
+	(BetalingId, Datum, StatusCodeId)
 VALUES
 	(10, '2022-01-15 12:00:00', 3),
 	(11, '2022-01-15 12:00:00', 3),

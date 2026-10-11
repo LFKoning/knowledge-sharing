@@ -1,3 +1,6 @@
+-- Open 0_data/sales_data.db.
+
+
 -- 1. Bouw eerst de gevraagde query op.
 SELECT
   *,

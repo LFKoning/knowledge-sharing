@@ -1,34 +1,38 @@
+-- Open 0_data/join_types.db.
+
+
 -- 1. LEFT JOIN TabelA en TabelB.
 -- TabelA bepaalt welke rijen in het resultaat komen.
-SELECT 
-	TabelA.*,
-	TabelB.*
-FROM TabelA
-LEFT JOIN TabelB USING (Id);
+SELECT *
+FROM
+  TabelA TA
+LEFT JOIN TabelB TB 
+  ON TA.IdA = TB.IdB
+;
 
 
 -- 2. RIGHT JOIN TabelB en TabelA.
 -- Merk op: zelfde rijen als LEFT JOIN hierboven.
-SELECT
-	TabelA.*,
-	TabelB.*
-FROM TabelB
-RIGHT JOIN TabelA USING (Id);
+SELECT *
+FROM TabelB TB
+RIGHT JOIN TabelA TA
+  ON TA.IdA = TB.IdB
+;
 
 
 -- 3. INNER JOIN TabelA en TabelB.
 -- Alleen gedeelde IDs in het resultaat.
-SELECT
-	TabelA.*,
-	TabelB.*
-FROM TabelA
-INNER JOIN TabelB USING (Id);
+SELECT *
+FROM TabelA TA
+INNER JOIN TabelB TB
+  ON TA.IdA = TB.IdB
+;
 
 
 -- 4. Standaard JOIN TabelA en TabelB.
 -- Komt overeen met de INNER JOIN hierboven.
-SELECT
-	TabelA.*,
-	TabelB.*
-FROM TabelA
-JOIN TabelB USING (Id);
+SELECT *
+FROM TabelA TA
+JOIN TabelB TB
+  ON TA.IdA = TB.IdB
+;
