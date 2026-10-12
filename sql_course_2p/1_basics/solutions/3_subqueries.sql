@@ -1,7 +1,7 @@
 -- Open 0_data/sales_data.db.
 
 
--- 1. Bouw eerst de gevraagde query op.
+-- 1. Bouw eerst de gevraagde subquery op.
 SELECT
   *,
   DATE(DatumTijd) AS Datum,
@@ -11,7 +11,7 @@ FROM Transacties
 ;
 
 
--- 2. Gebruik de query als CTE.
+-- 2. Gebruik de subquery als CTE.
 WITH AnalyseTabel AS (
   SELECT
     *,
