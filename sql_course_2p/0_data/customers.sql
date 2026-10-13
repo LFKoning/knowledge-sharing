@@ -15,8 +15,8 @@ CREATE TABLE Klanten (
 INSERT INTO Klanten
   (Naam, Achternaam, Leeftijd)
 VALUES
-  ('Henk', 'Knol', 54),
-  ('Ingrid', 'Jansen', 1979),
+  ('Henk', '  Knol', 54),
+  ('Ingrid', '   Jansen   ', 1979),
   ('mark', 'VOS', 23),
   ('mike ', 'de Ruiter', NULL)
 ;
