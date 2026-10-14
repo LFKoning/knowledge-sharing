@@ -8,14 +8,12 @@ CREATE TABLE SpelerCategorie (
 	Omschrijving	TEXT NOT NULL
 );
 
-
 -- Contributie bedrag per jaar.
 CREATE TABLE Contributie (
 	ContributieId	INTEGER PRIMARY KEY,
 	Jaar			INTEGER NOT NULL,
 	Bedrag			REAL NOT NULL
 );
-
 
 -- Toernooien.
 CREATE TABLE Toernooien (
@@ -25,9 +23,8 @@ CREATE TABLE Toernooien (
 	Bedrag			REAL NOT NULL
 );
 
-
 -- BetalingStatusCode.
-CREATE TABLE BetalingStatusCodes (
+CREATE TABLE BetaalStatusCodes (
 	StatusCodeId	INTEGER PRIMARY KEY,
 	Omschrijving	TEXT
 );
@@ -37,20 +34,18 @@ CREATE TABLE BetalingStatusCodes (
   Maak daarna alle tabellen met verwijzende sleutels.
 =====================================================*/
 
--- Leden tabel, verwijzing naar categorie.
+-- Leden tabel, verwijzing naar SpelerCategorie.
 CREATE TABLE Leden (
 	LedenId			INTEGER PRIMARY KEY,
 	CategorieId		INTEGER NOT NULL,
 	Voornaam		TEXT NOT NULL,
 	Achternaam		TEXT NOT NULL,
-	Geboortedatum	DATE,
 
 	UNIQUE(Voornaam, Achternaam),
 
 	FOREIGN KEY(CategorieId)
 	  REFERENCES SpelerCategorie(CategorieId)
 );
-
 
 -- Toernooi inschrijvingen, verwijzingen naar Toernooien en Leden.
 CREATE TABLE ToernooiInschrijving (
@@ -68,40 +63,36 @@ CREATE TABLE ToernooiInschrijving (
 	  REFERENCES Leden(LedenId)
 );
 
-
--- Betalingen, verwijzingen naar Toernooien en Leden.
-CREATE TABLE Betalingen (
-	BetalingId		INTEGER PRIMARY KEY,
+-- Contributiebetalingen, verwijzingen naar Leden, Contributie en BetalingStatusCodes.
+CREATE TABLE BetaalStatusContributie (
+	StatusId		INTEGER PRIMARY KEY,
 	LedenId			INTEGER NOT NULL,
-	ContributieId	INTEGER DEFAULT NULL,
-	ToernooiId		INTEGER DEFAULT NULL,
+	ContributieId	INTEGER NOT NULL,
+	StatusCodeId	INTEGER NOT NULL,
+	StatusDatum		DATETIME NOT NULL,
 
 	FOREIGN KEY(LedenId)
 	  REFERENCES Leden(LedenId),
 
 	FOREIGN KEY(ContributieId)
 	  REFERENCES Contributie(ContributieId),
-
-	FOREIGN KEY(ToernooiId)
-	  REFERENCES Toernooien(ToernooiId),
-
-	CHECK (
-		ContributieId IS NOT NULL
-		OR ToernooiId IS NOT NULL
-	)
+	
+	FOREIGN KEY(StatusCodeId)
+	  REFERENCES BetaalStatusCodes(StatusCodeId)
 );
 
 
--- BetalingStatus, verwijzingen naar Toernooien en Leden.
-CREATE TABLE BetalingStatus (
+-- Toernooibetalingen, verwijzingen naar ToernooiInschrijving en BetalingStatusCodes.
+CREATE TABLE BetaalStatusInschrijving (
 	StatusId		INTEGER PRIMARY KEY,
-	BetalingId		INTEGER NOT NULL,
+	InschrijvingId	INTEGER NOT NULL,
 	StatusCodeId	INTEGER NOT NULL,
-	Datum			DATETIME NOT NULL,
-
-	FOREIGN KEY(BetalingId)
-	  REFERENCES Betalingen(BetalingId),
+	StatusDatum		DATETIME NOT NULL,
+	
+	FOREIGN KEY(InschrijvingId)
+	  REFERENCES ToernooiInschrijving(InschrijvingId),
 
 	FOREIGN KEY(StatusCodeId)
-	  REFERENCES BetalingStatusCodes(StatusCodeId)
+	  REFERENCES BetaalStatusCodes(StatusCodeId)
+
 );
