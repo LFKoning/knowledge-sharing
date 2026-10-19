@@ -1,6 +1,7 @@
 """Module for generating dummy SQLite databases."""
 
 import sqlite3
+from pathlib import Path
 
 from sales_generator import SalesGenerator
 
@@ -9,6 +10,9 @@ N_YEARS = 5
 FINAL_YEAR = -1
 N_CUSTOMERS = 250
 DAILY_TRANSACTIONS = 10
+
+# Data folder
+DATA_PATH = "../0_data"
 
 # Database files.
 SALES_DB = "sales_data.db"
@@ -20,7 +24,8 @@ def generate_sales() -> None:
     """Generate a dummy database with sales data."""
 
     # Set up SQLite and Faker.
-    db = sqlite3.connect(SALES_DB)
+    sales_path = Path(DATA_PATH) / Path(SALES_DB)
+    db = sqlite3.connect(sales_path)
     cursor = db.cursor()
 
     # Initialize database tables.
@@ -49,7 +54,8 @@ def generate_sales() -> None:
 
 def generate_joins() -> None:
     """Generate a dummy database for join types."""
-    db = sqlite3.connect(JOINS_DB)
+    joins_path = Path(DATA_PATH) / Path(JOINS_DB)
+    db = sqlite3.connect(joins_path)
     cursor = db.cursor()
 
     with open("join_types.sql", "r", encoding="utf-8") as joins_sql:
@@ -61,7 +67,8 @@ def generate_joins() -> None:
 
 def generate_customers() -> None:
     """Generate a dummy database with customer data."""
-    db = sqlite3.connect(CUSTOMER_DB)
+    customer_path = Path(DATA_PATH) / Path(CUSTOMER_DB)
+    db = sqlite3.connect(customer_path)
     cursor = db.cursor()
 
     with open("customers.sql", "r", encoding="utf-8") as customers_sql:
@@ -73,6 +80,9 @@ def generate_customers() -> None:
 
 def main() -> None:
     """Main program routine."""
+
+    print("Creating data folder...")
+    Path(DATA_PATH).mkdir(parents=True, exist_ok=True)
 
     print("Generating sales database...")
     generate_sales()

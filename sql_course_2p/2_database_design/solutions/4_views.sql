@@ -1,4 +1,4 @@
--- 1. View geaggregeerd per transactie.
+-- 1. View aantal en omzet per transactie.
 -- Noot: KlantId en DatumTijd heb je later nodig.
 CREATE VIEW vwTransacties AS
 SELECT
@@ -15,7 +15,7 @@ GROUP BY
 ;
 
 
--- 2. View geaggregeerd per klant en maand.
+-- 2. View transacties en omzet per klant en maand.
 CREATE VIEW vwKlantMaandelijks AS
 SELECT
 	kln.KlantId,
@@ -32,7 +32,7 @@ GROUP BY
 ;
 
 
--- 3. View geaggregeerd op klant.
+-- 3. View omzet per klant.
 CREATE VIEW vwKlantOmzet AS
 SELECT
 	trn.KlantId,

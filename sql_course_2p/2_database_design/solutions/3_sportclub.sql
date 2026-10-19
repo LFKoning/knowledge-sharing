@@ -8,14 +8,14 @@ CREATE TABLE SpelerCategorie (
 	Omschrijving	TEXT NOT NULL
 );
 
--- Contributie bedrag per jaar.
+-- Specificatie jaarlijkse contributie.
 CREATE TABLE Contributie (
 	ContributieId	INTEGER PRIMARY KEY,
 	Jaar			INTEGER NOT NULL,
 	Bedrag			REAL NOT NULL
 );
 
--- Toernooien.
+-- Specificatie toernooien.
 CREATE TABLE Toernooien (
 	ToernooiId		INTEGER PRIMARY KEY,
 	Omschrijving	TEXT NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE Toernooien (
 	Bedrag			REAL NOT NULL
 );
 
--- BetalingStatusCode.
+-- Status codes van betalingen.
 CREATE TABLE BetaalStatusCodes (
 	StatusCodeId	INTEGER PRIMARY KEY,
 	Omschrijving	TEXT
@@ -63,7 +63,7 @@ CREATE TABLE ToernooiInschrijving (
 	  REFERENCES Leden(LedenId)
 );
 
--- Contributiebetalingen, verwijzingen naar Leden, Contributie en BetalingStatusCodes.
+-- Contributiebetalingen, verwijzingen naar Leden, Contributie en BetaalStatusCodes.
 CREATE TABLE BetaalStatusContributie (
 	StatusId		INTEGER PRIMARY KEY,
 	LedenId			INTEGER NOT NULL,
@@ -82,7 +82,7 @@ CREATE TABLE BetaalStatusContributie (
 );
 
 
--- Toernooibetalingen, verwijzingen naar ToernooiInschrijving en BetalingStatusCodes.
+-- Toernooibetalingen, verwijzingen naar ToernooiInschrijving en BetaalStatusCodes.
 CREATE TABLE BetaalStatusInschrijving (
 	StatusId		INTEGER PRIMARY KEY,
 	InschrijvingId	INTEGER NOT NULL,
