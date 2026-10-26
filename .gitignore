@@ -1,3 +1,9 @@
+# Omit uv.lock
+uv.lock
+
+# Marimo cache files
+__marimo__/
+
 # Powerpoint temporary files
 ~$*
 

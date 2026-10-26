@@ -1,0 +1,10 @@
+[project]
+name = "P4-demos"
+description="Demos for Python part 4"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.162.0",
+    "marimo>=0.25.2",
+    "requests>=2.34.2",
+]
