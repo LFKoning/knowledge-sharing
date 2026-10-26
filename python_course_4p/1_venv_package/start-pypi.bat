@@ -1,5 +1,11 @@
-:: To publish a package use:
-:: uv publish --publish-url http://localhost:8080 --check-url http://localhost:8080/simple  -p "" -u ""
+@echo off
+echo ----------------------------------------------------------------------------------------------------
+echo To publish a package use:
+echo uv publish --publish-url http://localhost:8080 --check-url http://localhost:8080/simple  -p "" -u ""
+echo ----------------------------------------------------------------------------------------------------
+echo To install from the index use:
+echo uv pip install --index http://localhost:8080 package
+echo ----------------------------------------------------------------------------------------------------
 
 mkdir packages
 uv venv --python=3.13 --clear
