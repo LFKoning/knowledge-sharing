@@ -1,0 +1,196 @@
+# ------------------------------- #
+# D: python venv                  #
+# ------------------------------- #
+
+# Check where python command is.
+get-command python
+
+# Create virtual environment.
+uv run python -m venv .venv
+
+# Activate the environment.
+./.venv/Scripts/actviate
+
+# Check command again.
+get-command python
+
+# Python version, same as one used to create.
+uv run python --version
+python --version
+
+# Use pip as usual.
+pip install pandas
+
+# Deactivate environment.
+deactivate
+
+
+# ------------------------------- #
+# E1: uv venv                     #
+# ------------------------------- #
+
+mkdir exploratie
+
+cd exploratie
+
+uv venv --python=3.13
+
+uv pip install marimo
+
+uv run marimo edit notebook.py
+
+
+# ------------------------------- #
+# E2: uv project                  #
+# ------------------------------- #
+
+uv init --no-package test-project
+
+cd test-project
+
+# Adds latest version.
+uv add pandas
+
+# Show installed.
+uv pip list
+
+# Also added to pyproject.toml.
+cat pyproject.toml
+
+uv add pandas==2.3.1
+
+# Downgraded installed verion.
+uv pip list
+
+# Also changed pyproject.toml.
+cat pyproject.toml
+
+uv add marimo
+
+# Start notebook and import sklearn.
+uv run marimo edit notebook.py
+
+# Show scikit-learn was added to the project.
+cat pyproject.toml
+
+
+# ------------------------------- #
+# D: uv sync                      #
+# ------------------------------- #
+
+# Use project from previous exercise.
+
+# Show date and size of uv.lock
+dir
+
+# Add updates the lock file.
+uv add requests.
+
+# New date and size on lock file.
+dir
+
+# Environment and lock file in sync.
+uv sync --check
+
+# Add dependency manually.
+uv pip black
+
+# Out of sync.
+uv sync --check
+
+# Synchornize the environment.
+uv sync
+
+
+# ------------------------------- #
+# E3: uv package                  #
+# ------------------------------- #
+
+uv init --package my-math
+
+cd my-math
+
+code .
+
+# Create math.py, copy-past mean function
+
+def mean(numbers) :
+  return sum(numbers) / len(numbers)
+
+
+# Install in second environment.
+
+cd ..
+
+mkdir develop
+
+uv venv --python=3.13
+
+uv pip install ../my-math
+
+# Make change to mean function, does not carry over...
+
+uv pip install --editable ../my-math
+
+# Show changes carry over.
+
+
+# ------------------------------- #
+# E4: uv package                  #
+# ------------------------------- #
+
+cd my-math
+
+uv build
+
+# Show tar.gz has the source code only.
+
+# Fire up start-pypi.bat
+
+# Publish version 0.1.0.
+uv publish --publish-url http://localhost:8080 --check-url http://localhost:8080/simple  -p "" -u ""
+
+# Bump the version.
+uv version --bump minor
+
+# Publish version 0.2.0.
+uv publish --publish-url http://localhost:8080 --check-url http://localhost:8080/simple  -p "" -u ""
+
+# Create another venv and install.
+uv pip install --index http://localhost:8080 my-math
+
+
+# ------------------------------- #
+# D: Tour VS code                 #
+# ------------------------------- #
+
+# Open my-math package folder.
+
+- Show interface.
+- Show plug-ins; required Python.
+- Show bottom bar; environment, errors, git branch.
+- Show git integration.
+- Show / describe debugger for later.
+
+
+# ------------------------------- #
+# D: Tour Marimo                  #
+# ------------------------------- #
+
+# Open demo_notebook.py.
+uvx marimo edit demo_notebook.py
+
+# Install packages.
+
+# Run the code.
+
+# Show variable explorer.
+
+# Display dependency graph.
+
+# Make an interactive slider:
+
+power = mo.ui.slider(-5, 5, 1, label="Set power of X: ")
+power
+
+# Go to App view.
