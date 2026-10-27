@@ -1,12 +1,14 @@
 import marimo
 
-__generated_with = "0.25.0"
+__generated_with = "0.25.2"
 app = marimo.App()
 
 
-@app.cell
-def _():
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
     # Exercises 1 : Solutions
+    """)
     return
 
 
@@ -34,15 +36,15 @@ def _(s):
 @app.cell
 def _(s):
     # str => int: ValueError on invalid values.
-    # Note: Does not result in 3 like int(3.7) does.
+    # Note: Does not work like int(3.7).
     print(f"Convert string {s!r} to int: ", int(s))
     return
 
 
 @app.cell
 def _():
-    # String multiplication just repeats the string.
-    # Note: Does not try to convert "123" to numeric.
+    # String multiplication repeats the string.
+    # Note: Does force conversion of "123" to numeric.
     "123" * 3
     return
 
@@ -50,7 +52,7 @@ def _():
 @app.cell
 def _():
     # List multiplication.
-    # Note: Does not multiply the elements!
+    # Note: Does not multiply elementwise!
     [1, 2, 3] * 3
     return
 
@@ -73,7 +75,9 @@ def _(zeroes):
 
 @app.cell
 def _():
-    return
+    import marimo as mo
+
+    return (mo,)
 
 
 if __name__ == "__main__":

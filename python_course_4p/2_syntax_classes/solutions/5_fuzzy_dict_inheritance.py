@@ -1,12 +1,14 @@
 import marimo
 
-__generated_with = "0.25.0"
+__generated_with = "0.25.2"
 app = marimo.App()
 
 
-@app.cell
-def _():
-    # Exercises 5 : Solutions
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## Exercises 5 : Solutions
+    """)
     return
 
 
@@ -47,14 +49,14 @@ def _(fd):
 
 @app.cell
 def _(fd):
-    # Inhrited keys() method from UserDict
+    # Inherited keys() method from UserDict.
     fd.keys()
     return
 
 
 @app.cell
 def _(fd):
-    # But... not entirely fuzzy :-(
+    # But... not entirely fuzzy yet :-(
     print("Lower case: ", "naam" in fd)
     print("Upper case: ", "NAAM" in fd)
     return
@@ -62,7 +64,7 @@ def _(fd):
 
 @app.cell
 def _(UserDict):
-    class FuzzyDict_1(UserDict):
+    class TrulyFuzzyDict(UserDict):
         """Dict-class that is case insensitive."""
 
         def __getitem__(self, key):
@@ -80,13 +82,13 @@ def _(UserDict):
             key = key.lower().strip()
             return super().__contains__(key)
 
-    return (FuzzyDict_1,)
+    return (TrulyFuzzyDict,)
 
 
 @app.cell
-def _(FuzzyDict_1):
+def _(TrulyFuzzyDict):
     # Create an empty FuzzyDict instance.
-    fd_1 = FuzzyDict_1()
+    fd_1 = TrulyFuzzyDict()
     fd_1['NAAM'] = 'Henk'
     return (fd_1,)
 
@@ -100,11 +102,18 @@ def _(fd_1):
 
 
 @app.cell
-def _(FuzzyDict_1):
+def _(TrulyFuzzyDict):
     # Alternative construction method, inherited from UserDict
     # Note: All keys lower cased, constructor uses custom __setitem__.
-    FuzzyDict_1({'A': 1, 'b  ': 2, ' C': 3})
+    TrulyFuzzyDict({'A': 1, 'b  ': 2, ' C': 3})
     return
+
+
+@app.cell
+def _():
+    import marimo as mo
+
+    return (mo,)
 
 
 if __name__ == "__main__":

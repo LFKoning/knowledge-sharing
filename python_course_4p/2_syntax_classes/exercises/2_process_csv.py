@@ -1,7 +1,7 @@
 """Module for processing personal data."""
 
 # Define filename as constant
-INPUT_FILE = "../../0_data/persons/personal_data.csv"
+INPUT_FILE = "personal_data.csv"
 
 
 def read_csv(input_path):
@@ -25,13 +25,13 @@ def read_csv(input_path):
     return data
 
 
-def anonymize_name(name):
+def mask_name(name):
     """Anonymize names by masking them with *.
 
     Parameters
     ----------
     name : str
-        Name to anonymize.
+        Name to mask.
 
     Returns
     -------
@@ -53,7 +53,7 @@ def main():
 
     print(f"Anonymizing names for {len(data)} persons.")
     for person in data:
-        person["name"] = anonymize_name(person["name"])
+        person["name"] = mask_name(person["name"])
 
     print(data)
 

@@ -1,12 +1,14 @@
 import marimo
 
-__generated_with = "0.25.0"
+__generated_with = "0.25.2"
 app = marimo.App(width="medium")
 
 
-@app.cell
-def _():
-    # Exercises 4
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## Exercises 4
+    """)
     return
 
 
@@ -54,6 +56,13 @@ def _(fuzzydict):
     # Should return "John Doe"
     fuzzydict["NAME"]
     return
+
+
+@app.cell
+def _():
+    import marimo as mo
+
+    return (mo,)
 
 
 if __name__ == "__main__":
