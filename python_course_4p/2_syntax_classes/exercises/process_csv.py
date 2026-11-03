@@ -19,8 +19,16 @@ def read_csv(input_path):
     """
     data = []
 
-    # Parse CSV data into a list of dicts using this format:
+    # Read the lines from the input_path.
+
+    # Treat first line as column names.
+
+    # Treat the remaining lines as data records.
+
+    # Convert the records into a dict:
     # {"name": "...", "gender": "...", "age": ...}
+
+    # Append the records to the data list.
 
     return data
 

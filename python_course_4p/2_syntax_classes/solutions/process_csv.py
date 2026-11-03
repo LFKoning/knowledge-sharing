@@ -20,22 +20,30 @@ def read_csv(input_path):
     data = []
     with open(input_path, "r", encoding="utf-8") as data_file:
 
-        # Use first line as header.
-        # Note: Need strip() for EOL (\n) character.
-        header = next(data_file).strip().split(",")
+        # Initialize column_names
+        column_names = None
 
         for line in data_file:
             # Read a record, split values.
+            # Note: Need strip() for the EOL (\n) character.
             record = line.strip().split(",")
+
+            # No column names? Must be the first line!
+            if not column_names:
+                # Store the column names
+                column_names = record
+
+                # Move on to the next line.
+                continue
 
             # Create dict linking header and record values.
             dict_record = {}
-            for idx, field in enumerate(header):
+            for idx, field in enumerate(column_names):
                 dict_record[field] = record[idx]
 
             # Alternative:
-            # Use zip to create (header, value) tuples then cast to dict.
-            # dict_record = dict(zip(header, record))
+            # Use zip to create (name, value) tuples then cast to dict.
+            # dict_record = dict(zip(column_names, record))
 
             data.append(dict_record)
 
@@ -79,7 +87,6 @@ def main():
         person["name"] = anonymize_name(person["name"])
 
     print(data)
-
 
 
 if __name__ == "__main__":
