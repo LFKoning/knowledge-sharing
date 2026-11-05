@@ -21,12 +21,12 @@ class FuzzyDict:
 
     def __getitem__(self, key):
         """Get a key from the data."""
-        key = key.lower().strip()
+        key = key.lower()
         return self.data[key]
 
     def __setitem__(self, key, value):
         """Set a key in the data."""
-        key = key.lower().strip()
+        key = key.lower()
         self.data[key] = value
 
     def __str__(self):
