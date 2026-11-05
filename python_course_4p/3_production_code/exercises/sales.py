@@ -2,7 +2,7 @@ import datetime as dt
 
 # Read data
 records = []
-file = open("../../0_data/sales/transactions.csv", "r")
+file = open("transactions.csv", "r")
 header = next(file).strip().split(",")
 for line in file:
     values = line.strip().split(",")

@@ -6,7 +6,12 @@ import os
 
 
 def main(file_path):
-    """Main program routine."""
+    """Main program routine.
+    
+    Parameters
+    file_path
+        Path to a CSV file.
+    """
     if not os.path.exists(file_path):
         print(f"Cannot find file: {flie_path}!")
         sys.exit()

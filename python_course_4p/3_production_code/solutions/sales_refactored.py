@@ -16,7 +16,7 @@ The sales report includes these statistics:
 REPORT_DATE = "2023-01-15"
 
 # Absolute path or relative to the script location.
-SALES_PATH = "../../0_data/sales/transactions.csv"
+SALES_PATH = "../exercises/transactions.csv"
 
 REPORT_TEMPLATE = """
 ===============================================================

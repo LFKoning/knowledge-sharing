@@ -16,6 +16,23 @@ TODO_FOLDER.mkdir(parents=True, exist_ok=True)
 app = FastAPI()
 
 
+def _read_item(file_path: Path) -> ToDoItem:
+    """Read a To Do item from a JSON file."""
+    with open(file_path, "r", encoding="utf8") as json_file:
+        return ToDoItem.model_validate_json(json_file.read())
+
+
+def _write_item(todo_item: ToDoItem) -> None:
+    """Store a To Do item as JSON file."""
+    # Construct the file name from the item ID.
+    filename = f"{todo_item.item_id}.json"
+
+    # Store item as JSON file.
+    with open(TODO_FOLDER / filename, "w", encoding="utf8") as json_file:
+        # Write the ToDoItem as JSON.
+        json_file.write(todo_item.model_dump_json())
+
+
 @app.get("/add")
 def add_item(description: Annotated[str, Query(min_length=3, max_length=250)]) -> str:
     """Create a new To Do item."""
@@ -26,15 +43,7 @@ def add_item(description: Annotated[str, Query(min_length=3, max_length=250)]) -
     except ValidationError:
         raise HTTPException(status_code=422, detail="Invalid description provided")
 
-    # Construct the file name from the item ID.
-    filename = f"{todo_item.item_id}.json"
-
-    # Store item as JSON file.
-    with open(TODO_FOLDER / filename, "w", encoding="utf8") as json_file:
-
-        # Write the ToDoItem as JSON.
-        json_file.write(todo_item.model_dump_json())
-
+    _write_item(todo_item)
     return f"Created TO DO item: {description}"
 
 
@@ -45,9 +54,7 @@ def list_items() -> list[ToDoItem]:
     todo_items = []
     file_paths = TODO_FOLDER.glob("*.json")
     for file_path in file_paths:
-        with open(file_path, "r", encoding="utf8") as json_file:
-            todo_item = ToDoItem.model_validate_json(json_file.read())
-            todo_items.append(todo_item)
+        todo_items.append(_read_item(file_path))
 
     return todo_items
 
@@ -55,7 +62,12 @@ def list_items() -> list[ToDoItem]:
 @app.get("/update")
 def update_item(item_id: str, status: ToDoStatus) -> str:
     """Set the status of an existing To Do item."""
+    file_path = TODO_FOLDER / f"{item_id}.json"
+    todo_item = _read_item(file_path)
+    todo_item.status = status
+    _write_item(todo_item)
 
+    return "Set status to {status} for TO DO item: {item_id}"
 
 @app.get("/delete")
 def delete_item(item_id: str) -> str:

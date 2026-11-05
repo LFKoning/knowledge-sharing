@@ -10,14 +10,14 @@ The sales report includes these statistics:
   6. Highest valued customer.
   7. Highest valued product.
 """
-import sys
-import logging
 
+import sys
 
 # Report date should be provided as YYYY-MM-DD.
 REPORT_DATE = "2023-01-15"
 
 # Absolute path or relative to the script location.
+# SALES_PATH = "../exercises/transactions.csv"
 SALES_PATH = "invalid/file/path"
 
 REPORT_TEMPLATE = """
@@ -38,14 +38,6 @@ Beste product waarde:                 {best_product_value:25.2f}
 ===============================================================
 """
 
-# Create a logger and configure logging
-logger = logging.getLogger("SalesReporter")
-logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(asctime)s - %(levelname)-8s - %(name)s - %(message)s",
-    datefmt="%d-%m-%Y %H:%M:S",
-)
-
 
 def read_sales_data(sales_path, report_date):
     """Read sales data from the prodived path.
@@ -62,9 +54,6 @@ def read_sales_data(sales_path, report_date):
     list
         List of sales records (dicts) for the provided date.
     """
-    logger.info("Reading sales data for: %s.", report_date)
-    logger.debug("Reading sales data from: '%s'.", sales_path)
-
     records = []
 
     # Error for file not found
@@ -88,10 +77,9 @@ def read_sales_data(sales_path, report_date):
                 records.append(record)
 
     except FileNotFoundError:
-        logger.error("Cannot find sales data file: '%s'.", sales_path)
+        print(f"Cannot find sales data file: {sales_path}")
         sys.exit(1)
 
-    logger.debug("Read %d sales transactions.", len(records))
     return records
 
 
@@ -110,16 +98,13 @@ def count_unique(sales_data, column_name):
     int
         Number of unique values.
     """
-    logger.info("Computing unique values for column: %s", column_name)
+    try:
+        unique = {record[column_name] for record in sales_data}
+    except KeyError as error:
+        raise RuntimeError(
+            f"Missing required column {column_name} in the sales data."
+        ) from error
 
-    if column_name not in sales_data[0]:
-        msg = f"Column {column_name} not present in sales data."
-        logger.error(msg)
-        raise RuntimeError(msg)
-
-    unique = {record[column_name] for record in sales_data}
-
-    logger.debug("Number of unique values: %d", len(unique))
     return len(unique)
 
 
@@ -138,16 +123,13 @@ def compute_total(sales_data, column_name):
     float
         Total value of the column.
     """
-    logger.info("Computing total value for column: %s", column_name)
-
     try:
         values = [record[column_name] for record in sales_data]
     except KeyError as error:
-        msg = f"Column {column_name} not present in sales data."
-        logger.error(msg)
-        raise RuntimeError(msg) from error
+        raise RuntimeError(
+            f"Missing required column {column_name} in the sales data."
+        ) from error
 
-    logger.debug("Total value: %0.2f", sum(values))
     return sum(values)
 
 
@@ -168,7 +150,6 @@ def compute_best(sales_data, group_column, value_column):
     str, float
         Best group and associated sales value.
     """
-    logger.info("Computing best '%s' based on '%s'.", group_column, value_column)
     totals = {}
     for record in sales_data:
         if record[group_column] in totals:
@@ -179,14 +160,11 @@ def compute_best(sales_data, group_column, value_column):
     # Get key corresponding to max value.
     best_key = max(totals, key=lambda key: totals[key])
 
-    logger.debug("Best %s: %s.", group_column, best_key)
-    logger.debug("Best %s: %0.2f.", value_column, totals[best_key])
     return best_key, totals[best_key]
 
 
 def main():
     """Main program routine."""
-    logger.info("Generating sales report for %s.", REPORT_DATE)
     sales_data = read_sales_data(SALES_PATH, REPORT_DATE)
 
     total_customers = count_unique(sales_data, "customer_id")
@@ -196,7 +174,6 @@ def main():
         sales_data, "customer_id", "total"
     )
     best_product, best_product_value = compute_best(sales_data, "product_id", "total")
-    logger.info("Finished generating sales report.")
 
     print(
         REPORT_TEMPLATE.format(

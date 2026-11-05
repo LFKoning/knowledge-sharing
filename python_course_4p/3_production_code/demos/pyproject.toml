@@ -1,0 +1,23 @@
+[project]
+name = "demos"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "pylint>=4.1.3",
+    "ruff>=0.17.3",
+]
+
+[tool.ruff]
+exclude = ["tests/"]
+line-length = 88
+indent-width = 4
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.ruff.lint]
+extend-select = ["D"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"

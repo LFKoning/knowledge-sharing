@@ -1,32 +1,31 @@
 """Module for utility functions."""
 
-def mean(values, dropna=False):
+
+def mean(values, fillna=0):
     """Compute mean for a list of numeric values.
 
     Parameters
     ----------
     values : list
         List of numeric values.
-    dropna : bool, default=False
+    fillna : int or float, default=0
         Omit missing values in copmputing the mean.
 
     Returns
     -------
     float
-        Mean value for the provided values.
+        Mean of the provided numbers.
 
     Raises
     ------
     TypeError
         Raised when values are not numeric.
     ValueError
-        Raised when list is empty.
+        Raised when values is empty.
     """
+    filled = [fillna if v is None else v for v in values]
     try:
-        filtered = [v for v in values if v is not None]
-        if dropna:
-            return sum(filtered) / len(filtered)
-        return sum(filtered) / len(values)
+        return sum(filled) / len(filled)
 
     except TypeError as error:
         raise TypeError("List contains non-numeric values.") from error

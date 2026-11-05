@@ -10,14 +10,15 @@ The sales report includes these statistics:
   6. Highest valued customer.
   7. Highest valued product.
 """
-import logging
 
+import sys
+import logging
 
 # Report date should be provided as YYYY-MM-DD.
 REPORT_DATE = "2023-01-15"
 
 # Absolute path or relative to the script location.
-SALES_PATH = "../../0_data/sales/transactions.csv"
+SALES_PATH = "../exercises/transactions.csv"
 
 REPORT_TEMPLATE = """
 ===============================================================
@@ -65,23 +66,30 @@ def read_sales_data(sales_path, report_date):
     logger.debug("Reading sales data from: '%s'.", sales_path)
 
     records = []
-    with open(sales_path, "r", encoding="utf-8") as sales_file:
-        header = next(sales_file).strip().split(",")
 
-        for line in sales_file:
-            # Create records with column names.
-            values = line.strip().split(",")
-            record = {column: value for column, value in zip(header, values)}
+    # Error for file not found
+    try:
+        with open(sales_path, "r", encoding="utf-8") as sales_file:
+            header = next(sales_file).strip().split(",")
 
-            # Filter by reporting date.
-            if record["transaction_date"] != report_date:
-                continue
+            for line in sales_file:
+                # Create records with column names.
+                values = line.strip().split(",")
+                record = {column: value for column, value in zip(header, values)}
+
+                # Filter by reporting date.
+                if record["transaction_date"] != report_date:
+                    continue
 
             # Numeric records are read as strings.
             for column in "quantity", "line_nr", "price", "total":
                 record[column] = float(record[column])
 
-            records.append(record)
+                records.append(record)
+
+    except FileNotFoundError:
+        logger.error("Cannot find sales data file: %s.", sales_path)
+        sys.exit(1)
 
     logger.debug("Read %d sales transactions.", len(records))
     return records
@@ -103,7 +111,13 @@ def count_unique(sales_data, column_name):
         Number of unique values.
     """
     logger.info("Computing unique values for column: %s", column_name)
-    unique = {record[column_name] for record in sales_data}
+
+    try:
+        unique = {record[column_name] for record in sales_data}
+    except KeyError as error:
+        msg = f"Column {column_name} not present in sales data."
+        logger.error(msg)
+        raise RuntimeError(msg) from error
 
     logger.debug("Number of unique values: %d", len(unique))
     return len(unique)
@@ -125,7 +139,13 @@ def compute_total(sales_data, column_name):
         Total value of the column.
     """
     logger.info("Computing total value for column: %s", column_name)
-    values = [record[column_name] for record in sales_data]
+
+    try:
+        values = [record[column_name] for record in sales_data]
+    except KeyError as error:
+        msg = f"Column {column_name} not present in sales data."
+        logger.error(msg)
+        raise RuntimeError(msg) from error
 
     logger.debug("Total value: %0.2f", sum(values))
     return sum(values)
