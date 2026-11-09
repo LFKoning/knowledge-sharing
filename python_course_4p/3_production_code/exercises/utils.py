@@ -9,7 +9,7 @@ def mean(values, fillna=0):
     values : list
         List of numeric values.
     fillna : int or float, default=0
-        Omit missing values in copmputing the mean.
+        Replace None values with this number, defaults to 0.
 
     Returns
     -------

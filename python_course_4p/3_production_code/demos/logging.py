@@ -57,16 +57,16 @@ def _(mo):
 @app.cell
 def _():
     # Define a logging format using formatting strings.
-    log_fmt = "%(asctime)s | %(levelname)-8s | %(name)-10s | %(message)-40s"
-    return (log_fmt,)
+    root_fmt = "%(asctime)s | %(levelname)-8s | %(name)-10s | %(message)-40s"
+    return (root_fmt,)
 
 
 @app.cell
-def _(log_fmt, logging):
+def _(logging, root_fmt):
     # Apply a format to the root logger using basicConfig.
     # Note: Use datefmt argument to set format for asctime.
     logging.basicConfig(
-        format=log_fmt,
+        format=root_fmt,
         datefmt="%d-%m-%Y %H:%M:%S",
         level=logging.INFO,
     )
@@ -83,8 +83,8 @@ def _(logging):
 
 @app.cell
 def _(test_logger):
-    # Logging through custom test_logger.
-    # Note: Identical, because output goes through the root logger.
+    # Logging through test_logger.
+    # Note: Output goes through root, but logger name changed.
     test_logger.info("First message from TestLogger.")
     test_logger.warning("Second message for TestLogger.")
     return
@@ -132,68 +132,44 @@ def _(logging):
 
 @app.cell
 def _(logging, test_logger):
-    # Create a StreamHandler and add it to test_logger.
-    test_handler = logging.StreamHandler()
-    test_logger.addHandler(test_handler)
+    # Create a FileHandler for our test_logger.
+    file_handler = logging.FileHandler("test_logger.csv")
+    test_logger.addHandler(file_handler)
 
     # Note that test_logger now has its own handler.
     test_logger.handlers
-    return (test_handler,)
+    return (file_handler,)
 
 
 @app.cell
 def _(test_logger):
-    # Log a message using test_logger.
-    # Note: Output from both root and test_logger.
+    # Log a message using TestLogger.
+    # Note: Output from root and file from TestLogger.
     test_logger.info("Message from TestLogger")
     return
 
 
 @app.cell
 def _(logging):
-    # Create a Formatter using a CSV format.
-    csv_format = "%(asctime)s,%(levelname)s,%(name)s,%(message)s"
-    csv_formatter = logging.Formatter(csv_format, datefmt="%d-%m-%Y %H:%M:%S")
+    # Create a Formatter for a proper CSV format.
+    csv_formatter = logging.Formatter(
+        fmt="%(asctime)s,%(levelname)s,%(name)s,%(message)s",
+        datefmt="%d-%m-%Y %H:%M:%S"
+    )
     return (csv_formatter,)
 
 
 @app.cell
-def _(csv_formatter, test_handler):
-    # Set handler of test_logger to csv_formatter.
-    test_handler.setFormatter(csv_formatter)
+def _(csv_formatter, file_handler):
+    # Set file_handler from test_logger to the CSV format.
+    file_handler.setFormatter(csv_formatter)
     return
 
 
 @app.cell
 def _(test_logger):
     # Log using the new format.
-    test_logger.info("Message from TestLogger")
-    return
-
-
-@app.cell
-def _(csv_formatter, logging):
-    # Create a FileHandler using the CSV Formatter.
-    file_handler = logging.FileHandler("test_logger.csv")
-    file_handler.setFormatter(csv_formatter)
-    return (file_handler,)
-
-
-@app.cell
-def _(file_handler, test_logger):
-    # Add the file_handler to test_logger.
-    test_logger.addHandler(file_handler)
-
-    # Note: test_logger now has 2 handlers.
-    test_logger.handlers
-    return
-
-
-@app.cell
-def _(test_logger):
-    # Log a few messages.
-    test_logger.info("Info message from TestLogger.")
-    test_logger.warning("Warning message from TestLogger")
+    test_logger.info("Another message from TestLogger")
     return
 
 
