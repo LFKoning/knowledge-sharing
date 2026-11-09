@@ -8,10 +8,10 @@ class FuzzyDict(UserDict):
 
     def __getitem__(self, key):
         """Get a key from the data."""
-        key = key.lower().strip()
+        key = key.lower()
         return super().__getitem__(key)
 
     def __setitem__(self, key, value):
         """Set a key in the data."""
-        key = key.lower().strip()
+        key = key.lower()
         super().__setitem__(key, value)

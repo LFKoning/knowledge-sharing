@@ -1,4 +1,5 @@
 """Unit tests for the ValueCounter class."""
+
 import pytest
 from counter import ValueCounter
 
@@ -10,6 +11,7 @@ def counter():
     vc.update(["a", "a", "a", "b", "c", "c"])
     return vc
 
+
 def test_update(counter):
     """Test updating counter frequencies."""
     counter.update(["a", "d"])
@@ -18,19 +20,19 @@ def test_update(counter):
 
 def test_top(counter):
     """Test top without providing n."""
-    assert counter.top() == [("a", 3)]
+    assert counter.top() == {"a": 3}
 
 
 def test_top_3(counter):
     """Test top with n set to 3."""
-    assert counter.top(3) == [("a", 3), ("c", 2), ("b", 1)]
+    assert counter.top(3) == {"a": 3, "c": 2, "b": 1}
 
 
 def test_bottom(counter):
     """Test bottom without providing n."""
-    assert counter.bottom() == [("b", 1)]
+    assert counter.bottom() == {"b": 1}
 
 
 def test_bottom_3(counter):
     """Test bottom with n set to 3."""
-    assert counter.bottom(3) == [("b", 1), ("c", 2), ("a", 3)]
+    assert counter.bottom(3) == {"b": 1, "c": 2, "a": 3}

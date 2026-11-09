@@ -56,7 +56,7 @@ def read_sales_data(sales_path, report_date):
     """
     records = []
 
-    # Error for file not found
+    # Add try ... except arount reading the file.
     try:
         with open(sales_path, "r", encoding="utf-8") as sales_file:
             header = next(sales_file).strip().split(",")
@@ -76,6 +76,7 @@ def read_sales_data(sales_path, report_date):
 
                 records.append(record)
 
+    # Print message when file not found
     except FileNotFoundError:
         print(f"Cannot find sales data file: {sales_path}")
         sys.exit(1)
@@ -100,6 +101,7 @@ def count_unique(sales_data, column_name):
     """
     try:
         unique = {record[column_name] for record in sales_data}
+
     except KeyError as error:
         raise RuntimeError(
             f"Missing required column {column_name} in the sales data."
@@ -125,6 +127,7 @@ def compute_total(sales_data, column_name):
     """
     try:
         values = [record[column_name] for record in sales_data]
+
     except KeyError as error:
         raise RuntimeError(
             f"Missing required column {column_name} in the sales data."

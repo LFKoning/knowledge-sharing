@@ -2,7 +2,17 @@
 
 
 class ValueCounter:
-    """Keeps counts of value frequencies."""
+    """Class for keeping track of value frequencies.
+
+    Examples
+    --------
+    >>> counter = ValueCounter()
+    >>> counter.update(["a", "a", "a", "b", "b", "c"])
+    >>> print(counter.top())
+    {"a": 3}
+    >>> print(counter.bottom(2))
+    {"c": 1, "b": 2}
+    """
 
     def __init__(self):
         self._counts = {}
@@ -13,7 +23,7 @@ class ValueCounter:
         Parameters
         ----------
         values : list
-            List of values to track frequenceis for.
+            List of values to track frequencies for.
         """
         for value in values:
             if value in self._counts:
@@ -22,7 +32,7 @@ class ValueCounter:
                 self._counts[value] = 1
 
     def top(self, n=1):
-        """Return the most frequent values.
+        """Return the most frequent values as dict.
 
         Parameters
         ----------
@@ -34,14 +44,12 @@ class ValueCounter:
         list of tuples
             List of tuples of value and correspondg frequency.
         """
-        result = []
+        # Reverse sort counts by frequency.
         sorted_keys = sorted(self._counts, key=lambda k: self._counts[k], reverse=True)
-        for key in sorted_keys[:n]:
-            result.append((key, self._counts[key]))
-        return result
+        return {key: self._counts[key] for key in sorted_keys[:n]}
 
     def bottom(self, n=1):
-        """Return the least frequent values.
+        """Return the least frequent values as dict.
 
         Parameters
         ----------
@@ -51,25 +59,6 @@ class ValueCounter:
         list of tuples
             List of tuples of value and correspondg frequency.
         """
-        result = []
+        # Sort counts by frequency.
         sorted_keys = sorted(self._counts, key=lambda k: self._counts[k])
-        for key in sorted_keys[:n]:
-            result.append((key, self._counts[key]))
-        return result
-
-    def reset(self, key=None):
-        """Reset frequency counters.
-
-        Parameters
-        ----------
-        key : any, optional
-            Key to reset frequency counts for.
-            If omitted, reset all frequency counts.
-        """
-        if key is not None:
-            if key not in self._counts:
-                raise KeyError(f"Key {key} not found in frequency counts.")
-            self._counts[key] = 0
-
-        else:
-            self._counts = {}
+        return {key: self._counts[key] for key in sorted_keys[:n]}

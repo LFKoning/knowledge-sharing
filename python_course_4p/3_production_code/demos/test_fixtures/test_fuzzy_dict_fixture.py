@@ -7,9 +7,9 @@ from fuzzy_dict import FuzzyDict
 @pytest.fixture
 def fuzzy_dict():
     """Create a FuzzyDict for testing."""
-    fd = FuzzyDict()
-    fd["test"] = "test value"
-    return fd
+    fdict = FuzzyDict()
+    fdict["test"] = "test value"
+    return fdict
 
 
 def test_update_key(fuzzy_dict):
