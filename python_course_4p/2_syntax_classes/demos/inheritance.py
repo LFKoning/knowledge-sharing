@@ -49,7 +49,7 @@ class CSVReader(TextReader):
 @app.cell
 def _():
     # Construct TextReader object.
-    text_reader = TextReader("exercises/personal_data.csv")
+    text_reader = TextReader("../exercises/personal_data.csv")
     return (text_reader,)
 
 
@@ -57,7 +57,7 @@ def _():
 def _():
     # Construct CSVReader object.
     # Note: Calls constructor of TextReader using super().
-    csv_reader = CSVReader("exercises/personal_data.csv", ",")
+    csv_reader = CSVReader("../exercises/personal_data.csv", ",")
     return (csv_reader,)
 
 
