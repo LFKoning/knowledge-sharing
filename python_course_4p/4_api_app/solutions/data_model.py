@@ -6,15 +6,15 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-ToDoStatus = Literal["Active", "Done"]
+ToDoStatus = Literal["Active", "Completed"]
 
 ToDoPriority = Literal["High", "Medium", "Low"]
 
 
-class ToDoItem(BaseModel):
-    """Basemodel for handling to do items."""
+class ToDoTask(BaseModel):
+    """Basemodel for tasks."""
 
-    item_id: str = Field(default_factory=lambda: str(uuid4()))
+    task_id: str = Field(default_factory=lambda: str(uuid4()))
     description: str = Field(min_length=3, max_length=250)
     priority: ToDoPriority = "Medium"
     status: ToDoStatus = "Active"

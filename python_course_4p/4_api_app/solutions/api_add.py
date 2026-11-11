@@ -6,7 +6,7 @@ from typing import Annotated
 from fastapi import FastAPI, HTTPException, Query
 from pydantic import ValidationError
 
-from data_model import ToDoItem
+from data_model import ToDoTask, ToDoPriority
 
 # Folder to store JSON files in.
 TODO_FOLDER = Path("todo_items/")
@@ -16,14 +16,14 @@ app = FastAPI()
 
 
 @app.get("/add")
-def add_item(description: Annotated[str, Query(min_length=3, max_length=250)]) -> str:
+def add_item(description: str, priority: ToDoPriority) -> str:
     """Create a new To Do item."""
 
-    # Create a new ToDoItem from a description.
+    # Create a new ToDoTask from the description and priority.
     try:
-        todo_item = ToDoItem(description=description)
+        todo_item = ToDoTask(description=description, priority=priority)
     except ValidationError:
-        raise HTTPException(status_code=422, detail="Invalid description provided")
+        raise HTTPException(status_code=422, detail="Invalid description provided.")
 
     # Construct the file name from the item ID.
     filename = f"{todo_item.item_id}.json"
