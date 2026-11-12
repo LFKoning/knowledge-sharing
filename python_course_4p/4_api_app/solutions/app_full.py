@@ -21,7 +21,7 @@ def load_tasks():
 
 
 def add_task(task_description, task_priority):
-    """Add a new task."""
+    """Add a new task with provided description and priority."""
     requests.get(
         f"{API_URL}/add",
         params={"description": task_description, "priority": task_priority},
@@ -33,7 +33,7 @@ def add_task(task_description, task_priority):
 
 
 def complete_task(task_id):
-    """Set task status to complete."""
+    """Complete task with the provided task_id."""
     requests.get(
         f"{API_URL}/update",
         params={"task_id": task_id, "status": "Completed"},
@@ -42,7 +42,7 @@ def complete_task(task_id):
 
 
 def delete_task(task_id):
-    """Delete an existing task."""
+    """Delete task with the provided task_id."""
     requests.get(
         f"{API_URL}/delete",
         params={"task_id": task_id},

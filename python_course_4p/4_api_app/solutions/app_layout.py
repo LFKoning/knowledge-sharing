@@ -18,7 +18,7 @@ column_add, column_active, column_completed = st.columns(3, gap="large")
 with column_add:
 
     # Header: Add Task.
-    st.header("Add Task")
+    st.header("New Task")
 
 # Center column:
 with column_active:

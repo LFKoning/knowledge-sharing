@@ -15,7 +15,7 @@ st.divider()
 
 # Left column:
 
-    # Header: Add Task.
+    # Header: New Task.
 
 
 # Center column:
@@ -32,7 +32,7 @@ st.divider()
 
         # Right column:
 
-            # Create subheader: [X]
+            # Create subheader: >>
 
 
 # Right column:
