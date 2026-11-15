@@ -6,17 +6,11 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-ToDoStatus = Literal["Active", "Done"]
 
-ToDoPriority = Literal["High", "Medium", "Low"]
+# Create a ToDoTask BaseModel with attributes:
 
-
-class ToDoItem(BaseModel):
-    """Basemodel for handling to do items."""
-
-    item_id: str = Field(default_factory=lambda: str(uuid4()))
-    description: str = Field(min_length=3, max_length=250)
-    priority: ToDoPriority = "Medium"
-    status: ToDoStatus = "Active"
-    created_date: str = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    completed_date: str | None = None
+# - task_id         Unique ID string from using uuid4().
+# - description     Obligatory description as string.
+# - priority        Priority with options: "High", "Medium", or "Low".
+# - status          Status with options "Active", or "Completed".
+# - created_date    Current datetime formatted as string.

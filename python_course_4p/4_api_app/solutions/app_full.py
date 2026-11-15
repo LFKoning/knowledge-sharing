@@ -7,7 +7,13 @@ API_URL = "http://localhost:8000"
 
 
 def load_tasks():
-    """Return list of tasks from the API."""
+    """Return list of tasks from the API.
+    
+    Returns
+    -------
+    list
+        List of tasks dicts.
+    """
     response = requests.get(f"{API_URL}/list", timeout=5)
     if response.status_code != 200:
         st.error("Failed to fetch To Do tasks from the API.")
@@ -49,8 +55,8 @@ def delete_task(task_id):
         timeout=5,
     )
 
-
-TODO_taskS = load_tasks()
+# Holds the list of tasks, active and complete.
+TASK_LIST = load_tasks()
 
 # Page settings and title.
 st.set_page_config(page_title="TO DO List", layout="wide")
@@ -81,7 +87,7 @@ with column_add:
 # Left column: Display active tasks.
 with column_active:
     st.subheader("Active Tasks")
-    for task in TODO_taskS:
+    for task in TASK_LIST:
         if task["status"] == "Active":
             with st.container(border=True):
                 left, right = st.columns([10, 1])
@@ -100,7 +106,7 @@ with column_active:
 # Right column: Display completed tasks.
 with column_completed:
     st.subheader("Completed Tasks")
-    for task in TODO_taskS:
+    for task in TASK_LIST:
         if task["status"] == "Completed":
             with st.container(border=True):
                 left, right = st.columns([10, 1])

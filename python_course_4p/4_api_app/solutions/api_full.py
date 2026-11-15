@@ -1,24 +1,23 @@
 """Managing a To Do list with FastAPI."""
 
 import os
-import datetime as dt
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException
-from pydantic import ValidationError
+from fastapi import FastAPI
 
 from data_model import ToDoTask, ToDoStatus, ToDoPriority
 
 # Folder to store JSON files in.
-TODO_FOLDER = Path("todo_tasks/")
+TODO_FOLDER = Path("todo_list/")
 TODO_FOLDER.mkdir(parents=True, exist_ok=True)
 
 app = FastAPI()
 
 
 def load_task(task_path: Path) -> ToDoTask:
-    """Load ToDoTask from a JSON-file."""
+    """Load a ToDoTask from a JSON file."""
     with open(task_path, "r", encoding="utf8") as task_file:
+
         # Read JSON content from file.
         task_json = task_file.read()
 
@@ -27,7 +26,8 @@ def load_task(task_path: Path) -> ToDoTask:
 
 
 def store_task(todo_task: ToDoTask) -> None:
-    """Store ToDoTask as a JSON-file."""
+    """Store a ToDoTask as a JSON file."""
+
     # Construct the file path from the task ID.
     task_path = TODO_FOLDER / f"{todo_task.task_id}.json"
 
@@ -44,16 +44,7 @@ def add_task(
     priority: ToDoPriority,
 ) -> str:
     """Create a new task."""
-
-    # Create a ToDoTask from the provided description and priority.
-    try:
-        task = ToDoTask(description=description, priority=priority)
-    except ValidationError as error:
-        raise HTTPException(
-            status_code=422, detail="Invalid description or priority provided"
-        ) from error
-
-    # Store the task to disk.
+    task = ToDoTask(description=description, priority=priority)
     store_task(task)
 
     return f"Created task: {description}"
@@ -64,34 +55,37 @@ def add_task(
 def list_tasks() -> list[ToDoTask]:
     """Return a list of all tasks."""
 
-    # Get a list of all JSON-files in the TODO_FOLDER.
+    # List all JSON-files in the TODO_FOLDER using glob().
     task_paths = TODO_FOLDER.glob("*.json")
 
     # Load all JSON-files into the tasks list.
-    tasks = []
+    task_list = []
     for task_path in task_paths:
+
         # Load the JSON-file as ToDoTask.
         task = load_task(task_path)
 
         # Append ToDoTask to the list.
-        tasks.append(task)
+        task_list.append(task)
 
-    # Return the tasks list.
-    return tasks
+    # Return the task list.
+    return task_list
 
 
 @app.get("/update")
 def update_task(task_id: str, status: ToDoStatus) -> str:
     """Set the status of an existing task."""
-    # Read the task from disk.
-    file_path = TODO_FOLDER / f"{task_id}.json"
-    task = load_task(file_path)
 
-    # Change status and completed datetime.
+    # Construct the file path from the provided task ID.
+    task_path = TODO_FOLDER / f"{task_id}.json"
+
+    # Load the task from disk.
+    task = load_task(task_path)
+
+    # Change the task status.
     task.status = status
-    task.completed_date = dt.datetime.now()
 
-    # Store updated task to disk.
+    # Store the updated task to disk.
     store_task(task)
 
     return f"Set status to {status} for task: {task_id}"
@@ -100,12 +94,15 @@ def update_task(task_id: str, status: ToDoStatus) -> str:
 @app.get("/delete")
 def delete_task(task_id: str) -> str:
     """Delete an existing task."""
+
+    # Construct the file path from the provided task ID.
+    task_path = TODO_FOLDER / f"{task_id}.json"
+
     # Get a list of all existing tasks.
-    file_paths = TODO_FOLDER.glob("*.json")
+    task_paths = TODO_FOLDER.glob("*.json")
 
     # Check if task exists, delete if so.
-    file_path = TODO_FOLDER / f"{task_id}.json"
-    if file_path in file_paths:
-        os.remove(file_path)
+    if task_path in task_paths:
+        os.remove(task_path)
 
     return f"Deleted task: {task_id}"
