@@ -2,15 +2,15 @@
 
 import streamlit as st
 
-# Page configuration
+# Page configuration.
 st.set_page_config(page_title="TO DO list", layout="wider")
 
-# Add title element
+# Add title element.
 
 # Divider line.
 st.divider()
 
-# Create 3 column layout
+# Create 3 column layout.
 
 
 # Left column:

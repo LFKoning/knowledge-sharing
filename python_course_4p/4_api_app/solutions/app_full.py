@@ -68,55 +68,106 @@ st.divider()
 column_add, column_active, column_completed = st.columns(3, gap="large")
 
 
-# Left column: Form to add new tasks.
+# Left column:
 with column_add:
-    st.subheader("Add New Task")
+
+    # Header: New Task.
+    st.header("New Task")
+
+    # Form for adding tasks.
     with st.form("add_task_form", clear_on_submit=True):
 
+        # Text input for description.
         description = st.text_input("Description")
-        priority = st.selectbox("Priority", options=["High", "Medium", "Low"], index=1)
-        submit = st.form_submit_button("Add task")
 
+        # Selectbox for priority (High, Medium, Low).
+        priority = st.selectbox("Priority", options=["High", "Medium", "Low"], index=1)
+
+        # Submit button labeled Add Task.
+        submit = st.form_submit_button("Add Task")
+
+        # On submit:
         if submit:
+
+            # Check for a valid description.
             if description:
+
+                # Call the add_task function.
                 add_task(description, priority)
+
             else:
+
+                # Display error when no description is provided.
                 st.error("Please enter a description.")
 
 
-# Left column: Display active tasks.
+# Center column:
 with column_active:
-    st.subheader("Active Tasks")
+
+    # Header: Active Tasks.
+    st.header("Active Tasks")
+
+    # For loop for tasks in TASK_LIST.
     for task in TASK_LIST:
+
+        # Filter active tasks only.
         if task["status"] == "Active":
+
+            # Container with border for a task.
             with st.container(border=True):
-                left, right = st.columns([10, 1])
-                with left:
+
+                # Two columns with a 10 : 1 ratio.
+                task_left, task_right = st.columns((10, 1))
+
+                # Left column:
+                with task_left:
+
+                    # Subheader: task description.
                     st.subheader(task["description"])
-                with right:
+
+                # Right column:
+                with task_right:
+
+                    # Complete task button.
                     st.button(
-                        label=">>",
                         key=task["task_id"],
+                        label = ">>",
                         on_click=complete_task,
-                        kwargs={"task_id": task["task_id"]},
+                        kwargs={"task_id": task["task_id"]}
                     )
-                st.write(f"{task['priority']} | {task['created_date']}")
 
 
-# Right column: Display completed tasks.
+# Right column:
 with column_completed:
-    st.subheader("Completed Tasks")
+
+    # Header: Completed Tasks
+    st.header("Completed Tasks")
+
+    # For loop for tasks in TASK_LIST.
     for task in TASK_LIST:
+
+        # Filter completed tasks only.
         if task["status"] == "Completed":
+
+            # Container with border for a task.
             with st.container(border=True):
-                left, right = st.columns([10, 1])
-                with left:
+
+                # Two columns with a 10 : 1 ratio.
+                task_left, task_right = st.columns((10, 1))
+
+                # Left column:
+                with task_left:
+
+                    # Subheader: task description.
                     st.subheader(task["description"])
-                with right:
+
+                # Right column:
+                with task_right:
+
+                    # Delete task button.
                     st.button(
-                        label="X",
                         key=task["task_id"],
+                        label = "X",
                         on_click=delete_task,
-                        kwargs={"task_id": task["task_id"]},
+                        kwargs={"task_id": task["task_id"]}
                     )
-                st.write(f"{task['priority']} | {task['completed_date']}")

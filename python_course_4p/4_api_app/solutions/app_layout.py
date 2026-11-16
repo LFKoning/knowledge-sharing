@@ -17,7 +17,7 @@ column_add, column_active, column_completed = st.columns(3, gap="large")
 # Left column:
 with column_add:
 
-    # Header: Add Task.
+    # Header: New Task.
     st.header("New Task")
 
 # Center column:
@@ -41,7 +41,7 @@ with column_active:
         # Right column:
         with task_right:
 
-            # Create subheader: [X]
+            # Create subheader: >>
             st.subheader(">>")
 
 

@@ -8,7 +8,7 @@ st.set_page_config(page_title="Hello World!", layout="wide")
 st.title("Hello World!")
 
 # And a header
-st.header("Tekst header")
+st.header("Text Header")
 
 # And a subheader.
 st.subheader("Let's get started with StreamLit! \N{grinning face}")

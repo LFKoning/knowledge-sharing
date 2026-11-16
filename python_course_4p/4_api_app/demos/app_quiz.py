@@ -5,20 +5,19 @@ import random
 import streamlit as st
 
 
-# Picking a door
+# Pick the winning a door.
 correct_door = random.randint(1, 3)
 
 
 def check_door(door_number):
-    """Check the winning door."""
+    """Check if user picked the winning door."""
     feedback.empty()
     if door_number == correct_door:
         feedback.markdown("### Hurrah YOU WON!")
     else:
         feedback.write(
-            f"### Too bad, YOU LOST!\n\nThe correct door was {correct_door}."
+            f"### Too bad, YOU LOST!\n\nThe correct door was: #{correct_door}."
         )
-
 
 st.subheader("Quiz: Can you pick the right door?!?")
 st.divider()
@@ -30,6 +29,7 @@ with st.container(horizontal_alignment="center"):
 
 st.divider()
 
+# Create 3 columns for the buttons.
 left, center, right = st.columns(3)
 
 with left:

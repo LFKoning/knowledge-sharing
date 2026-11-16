@@ -31,7 +31,7 @@ def store_task(todo_task: ToDoTask) -> None:
     # Construct the file path from the task ID.
     task_path = TODO_FOLDER / f"{todo_task.task_id}.json"
 
-    # Open JSON-file in the TODO_FOlDER.
+    # Open JSON-file in the TODO_FOLDER.
     with open(task_path, "w", encoding="utf8") as task_file:
         # Dump the ToDoTask as JSON.
         task_json = todo_task.model_dump_json()
