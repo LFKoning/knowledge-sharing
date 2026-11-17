@@ -2,7 +2,6 @@
 
 import streamlit as st
 
-
 # Dummy task list.
 TASK_LIST = [
     {"task_id": 1, "description": "Task 1", "priority": "High", "status": "Completed"},
@@ -14,6 +13,7 @@ TASK_LIST = [
 def add_task(task_description, task_priority):
     """Add a new task with provided description and priority."""
     feedback.write(f"Added task: {task_description} -- Priority: {task_priority}")
+
 
 def complete_task(task_id):
     """Complete task with the provided task_id."""
@@ -47,16 +47,18 @@ with column_add:
     st.header("New Task")
 
     # Form for adding tasks.
-    with st.form("add_task_form", clear_on_submit=True):
+    with st.form(key="add_task_form", clear_on_submit=True):
 
         # Text input for description.
-        description = st.text_input("Description")
+        description = st.text_input(label="Description")
 
         # Selectbox for priority (High, Medium, Low).
-        priority = st.selectbox("Priority", options=["High", "Medium", "Low"], index=1)
+        priority = st.selectbox(
+            label="Priority", options=["High", "Medium", "Low"], index=1
+        )
 
         # Submit button labeled Add Task.
-        submit = st.form_submit_button("Add Task")
+        submit = st.form_submit_button(label="Add Task")
 
         # On submit:
         if submit:
@@ -88,8 +90,8 @@ with column_active:
             # Container with border for a task.
             with st.container(border=True):
 
-                # Two columns with a 10 : 1 ratio.
-                task_left, task_right = st.columns((10, 1))
+                # Two columns with a 5 : 1 ratio.
+                task_left, task_right = st.columns((5, 1))
 
                 # Left column:
                 with task_left:
@@ -103,9 +105,9 @@ with column_active:
                     # Complete task button.
                     st.button(
                         key=task["task_id"],
-                        label = ">>",
+                        label=">>",
                         on_click=complete_task,
-                        kwargs={"task_id": task["task_id"]}
+                        kwargs={"task_id": task["task_id"]},
                     )
 
 
@@ -124,8 +126,8 @@ with column_completed:
             # Container with border for a task.
             with st.container(border=True):
 
-                # Two columns with a 10 : 1 ratio.
-                task_left, task_right = st.columns((10, 1))
+                # Two columns with a 5 : 1 ratio.
+                task_left, task_right = st.columns((5, 1))
 
                 # Left column:
                 with task_left:
@@ -139,7 +141,7 @@ with column_completed:
                     # Delete task button.
                     st.button(
                         key=task["task_id"],
-                        label = "X",
+                        label="X",
                         on_click=delete_task,
-                        kwargs={"task_id": task["task_id"]}
+                        kwargs={"task_id": task["task_id"]},
                     )

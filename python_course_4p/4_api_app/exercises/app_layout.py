@@ -3,7 +3,7 @@
 import streamlit as st
 
 # Page configuration.
-st.set_page_config(page_title="TO DO list", layout="wider")
+st.set_page_config(page_title="TO DO list", layout="wide")
 
 # Add title element.
 
@@ -24,7 +24,7 @@ st.divider()
 
     # Add a container with border for a task.
 
-        # Create 2 columns with ratio 10 : 1.
+        # Create 2 columns with ratio 5 : 1.
 
         # Left column:
 

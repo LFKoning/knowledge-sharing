@@ -1,7 +1,6 @@
 """Pydantic data model for to do application."""
 
 from uuid import uuid4
-import datetime as dt
 from typing import Literal
 
 from pydantic import BaseModel, Field
@@ -18,4 +17,3 @@ class ToDoTask(BaseModel):
     description: str
     priority: ToDoPriority = "Medium"
     status: ToDoStatus = "Active"
-    created_date: str = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")

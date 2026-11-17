@@ -78,8 +78,8 @@ with column_active:
             # Container with border for a task.
             with st.container(border=True):
 
-                # Two columns with a 10 : 1 ratio.
-                task_left, task_right = st.columns((10, 1))
+                # Two columns with a 5 : 1 ratio.
+                task_left, task_right = st.columns((5, 1))
 
                 # Left column:
                 with task_left:
@@ -114,8 +114,8 @@ with column_completed:
             # Container with border for a task.
             with st.container(border=True):
 
-                # Two columns with a 10 : 1 ratio.
-                task_left, task_right = st.columns((10, 1))
+                # Two columns with a 5 : 1 ratio.
+                task_left, task_right = st.columns((5, 1))
 
                 # Left column:
                 with task_left:

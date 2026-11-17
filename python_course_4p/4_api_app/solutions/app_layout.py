@@ -29,8 +29,8 @@ with column_active:
     # Add a container with border for a task.
     with st.container(border=True):
 
-        # Create 2 columns with ratio 10 : 1.
-        task_left, task_right = st.columns((10, 1))
+        # Create 2 columns with ratio 5 : 1.
+        task_left, task_right = st.columns((5, 1))
 
         # Left column:
         with task_left:
