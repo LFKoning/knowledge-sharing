@@ -3,7 +3,7 @@
 from typing import Literal
 from fastapi import FastAPI
 
-TaskStatus = Literal["Active", "Completed"]
+ToDoStatus = Literal["Active", "Completed"]
 
 app = FastAPI()
 
@@ -15,6 +15,6 @@ def delete_task(task_id: int) -> str:
 
 
 @app.get("/update")
-def update_task(task_id: int, status: TaskStatus) -> str:
+def update_task(task_id: int, status: ToDoStatus) -> str:
     """Update a task status using query parameters."""
     return f"Set status to {status} for task: {task_id}"

@@ -33,7 +33,8 @@ def store_task(todo_task: ToDoTask) -> None:
 
     # Open JSON-file in the TODO_FOLDER.
     with open(task_path, "w", encoding="utf8") as task_file:
-        # Dump the ToDoTask as JSON.
+
+        # Dump the ToDoTask as JSON and write to file.
         task_json = todo_task.model_dump_json()
         task_file.write(task_json)
 
@@ -58,7 +59,7 @@ def list_tasks() -> list[ToDoTask]:
     # List all JSON-files in the TODO_FOLDER using glob().
     task_paths = TODO_FOLDER.glob("*.json")
 
-    # Load all JSON-files into the tasks list.
+    # Load JSON-files into a list of ToDoTask objects.
     task_list = []
     for task_path in task_paths:
 

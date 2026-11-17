@@ -47,7 +47,7 @@ with column_active:
                 # Left column:
                 with task_left:
 
-                    # TODO: Change subheader to task description.
+                    # TODO: Subheader for the task description.
 
                 # Right column:
                 with task_right:

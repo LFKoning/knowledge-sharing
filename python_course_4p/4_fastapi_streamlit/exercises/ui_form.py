@@ -10,14 +10,32 @@ TASK_LIST = [
     {"task_id": 3, "description": "Task 3", "priority": "Medium", "status": "Active"},
 ]
 
+
+def add_task(task_description, task_priority):
+    """Add a new task with provided description and priority."""
+    feedback.write(f"Added task: {task_description} -- Priority: {task_priority}")
+
+def complete_task(task_id):
+    """Complete task with the provided task_id."""
+    feedback.write(f"Completed task: {task_id}")
+
+
+def delete_task(task_id):
+    """Delete task with the provided task_id."""
+    feedback.write(f"Deleted task: {task_id}")
+
+
 # Page configuration.
 st.set_page_config(page_title="TO DO list", layout="wide")
 
 # To Do list title element.
-st.title("\N{memo} TO DO List")
+st.title("\N{MEMO} TO DO List")
 
 # Divider line.
 st.divider()
+
+# Debug feedback container.
+feedback = st.container()
 
 # Create 3 column layout.
 column_add, column_active, column_completed = st.columns(3, gap="large")
@@ -26,7 +44,24 @@ column_add, column_active, column_completed = st.columns(3, gap="large")
 with column_add:
 
     # Header: New Task.
-    st.header("New Task")
+    st.header("Add Task")
+
+
+    # TODO: Add your form here.
+
+        # TODO: Add a text input for the description.
+
+        # TODO: Add a selectbox for priority ("High", "Medium", "Low").
+
+        # TODO: Add a submit button labeled "Add Task".
+
+
+        # TODO: On submit:
+
+            # TODO: Check for a valid description.
+
+            # TODO: Call the add_task function.
+
 
 # Center column:
 with column_active:
@@ -40,7 +75,7 @@ with column_active:
         # Filter active tasks only.
         if task["status"] == "Active":
 
-            # Add a container with border for a task.
+            # Container with border for a task.
             with st.container(border=True):
 
                 # Two columns with a 5 : 1 ratio.
@@ -49,14 +84,19 @@ with column_active:
                 # Left column:
                 with task_left:
 
-                    # Subheader: task description.
+                    # Subheader: Task description.
                     st.subheader(task["description"])
 
                 # Right column:
                 with task_right:
 
-                    # Subheader: >>
-                    st.subheader(">>")
+                    # Complete task button.
+                    st.button(
+                        key=task["task_id"],
+                        label = ">>",
+                        on_click=complete_task,
+                        kwargs={"task_id": task["task_id"]}
+                    )
 
 
 # Right column:
@@ -71,7 +111,7 @@ with column_completed:
         # Filter completed tasks only.
         if task["status"] == "Completed":
 
-            # Add a container with border for a task.
+            # Container with border for a task.
             with st.container(border=True):
 
                 # Two columns with a 5 : 1 ratio.
@@ -80,11 +120,16 @@ with column_completed:
                 # Left column:
                 with task_left:
 
-                    # Subheader: task description.
+                    # Subheader: Task description.
                     st.subheader(task["description"])
 
                 # Right column:
                 with task_right:
 
-                    # Subheader: X
-                    st.subheader("X")
+                    # Delete task button.
+                    st.button(
+                        key=task["task_id"],
+                        label = "X",
+                        on_click=delete_task,
+                        kwargs={"task_id": task["task_id"]}
+                    )

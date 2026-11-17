@@ -1,9 +1,9 @@
 """Streamlit counter demo."""
 
 import random
+import time
 
 import streamlit as st
-
 
 # Pick the winning a door.
 correct_door = random.randint(1, 3)
@@ -11,21 +11,23 @@ correct_door = random.randint(1, 3)
 
 def check_door(door_number):
     """Check if user picked the winning door."""
-    feedback.empty()
     if door_number == correct_door:
         feedback.markdown("### Hurrah YOU WON!")
     else:
         feedback.write(
             f"### Too bad, YOU LOST!\n\nThe correct door was: #{correct_door}."
         )
+    time.sleep(2)
 
-st.subheader("Quiz: Can you pick the right door?!?")
-st.divider()
 
-# Display output.
 with st.container(horizontal_alignment="center"):
-    feedback = st.container(width="content")
-    feedback.write("Pick a door below...")
+    # Quiz header.
+    with st.container(width="content"):
+        st.subheader("Can you guess the right door?!?")
+
+    # Feedback container.
+    with st.container(width="content"):
+        feedback = st.empty()
 
 st.divider()
 

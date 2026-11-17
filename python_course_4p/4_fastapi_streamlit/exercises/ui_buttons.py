@@ -64,7 +64,7 @@ with column_active:
                 # Left column:
                 with task_left:
 
-                    # Subheader: task description.
+                    # Subheader: Task description.
                     st.subheader(task["description"])
 
                 # Right column:
@@ -98,7 +98,7 @@ with column_completed:
                 # Left column:
                 with task_left:
 
-                    # Subheader: task description.
+                    # Subheader: Task description.
                     st.subheader(task["description"])
 
                 # Right column:

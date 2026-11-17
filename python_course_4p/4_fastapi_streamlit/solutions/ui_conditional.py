@@ -10,17 +10,6 @@ TASK_LIST = [
     {"task_id": 3, "description": "Task 3", "priority": "Medium", "status": "Active"},
 ]
 
-
-def complete_task(task_id):
-    """Complete task with the provided task_id."""
-    feedback.write(f"Completed task: {task_id}")
-
-
-def delete_task(task_id):
-    """Delete task with the provided task_id."""
-    feedback.write(f"Deleted task: {task_id}")
-
-
 # Page configuration.
 st.set_page_config(page_title="TO DO list", layout="wide")
 
@@ -30,9 +19,6 @@ st.title("\N{memo} TO DO List")
 # Divider line.
 st.divider()
 
-# Debug feedback container.
-feedback = st.container()
-
 # Create 3 column layout.
 column_add, column_active, column_completed = st.columns(3, gap="large")
 
@@ -41,7 +27,6 @@ with column_add:
 
     # Header: New Task.
     st.header("New Task")
-
 
 # Center column:
 with column_active:
@@ -55,7 +40,7 @@ with column_active:
         # Filter active tasks only.
         if task["status"] == "Active":
 
-            # Container with border for a task.
+            # Add a container with border for a task.
             with st.container(border=True):
 
                 # Two columns with a 5 : 1 ratio.
@@ -70,13 +55,8 @@ with column_active:
                 # Right column:
                 with task_right:
 
-                    # Complete task button.
-                    st.button(
-                        key=task["task_id"],
-                        label = ">>",
-                        on_click=complete_task,
-                        kwargs={"task_id": task["task_id"]}
-                    )
+                    # Subheader: >>
+                    st.subheader(">>")
 
 
 # Right column:
@@ -91,7 +71,7 @@ with column_completed:
         # Filter completed tasks only.
         if task["status"] == "Completed":
 
-            # Container with border for a task.
+            # Add a container with border for a task.
             with st.container(border=True):
 
                 # Two columns with a 5 : 1 ratio.
@@ -100,16 +80,11 @@ with column_completed:
                 # Left column:
                 with task_left:
 
-                    # Subheader: task description.
+                    # Subheader: Task description.
                     st.subheader(task["description"])
 
                 # Right column:
                 with task_right:
 
-                    # Delete task button.
-                    st.button(
-                        key=task["task_id"],
-                        label = "X",
-                        on_click=delete_task,
-                        kwargs={"task_id": task["task_id"]}
-                    )
+                    # Subheader: X
+                    st.subheader("X")

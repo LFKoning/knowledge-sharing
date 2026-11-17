@@ -13,11 +13,11 @@ with left_col:
 
     # L1 container.
     with st.container(border=True):
-        st.subheader("L1 container")
+        st.subheader("L1 Container")
 
     # L2 container.
     with st.container(border=True):
-        st.subheader("L2 container")
+        st.subheader("L2 Container")
 
 
 # Right column elements.
@@ -26,4 +26,4 @@ with right_col:
 
     # R2 container.
     with st.container(border=True):
-        st.subheader("R1 container")
+        st.subheader("R1 Container")
