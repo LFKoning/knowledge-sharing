@@ -73,7 +73,7 @@ with column_active:
                     # Complete task button.
                     st.button(
                         key=task["task_id"],
-                        label = ">>",
+                        label=">>",
                         on_click=complete_task,
                         kwargs={"task_id": task["task_id"]}
                     )
@@ -109,7 +109,7 @@ with column_completed:
                     # Delete task button.
                     st.button(
                         key=task["task_id"],
-                        label = "X",
+                        label="X",
                         on_click=delete_task,
                         kwargs={"task_id": task["task_id"]}
                     )
